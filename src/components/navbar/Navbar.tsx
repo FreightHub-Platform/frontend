@@ -1,6 +1,6 @@
-import Link from 'next/link';
 import Image from 'next/image'
 import styles from './navbar.module.css'
+import Links from './links/Links';
 
 const Navbar = () => {
   return (
@@ -16,10 +16,7 @@ const Navbar = () => {
         <button className={styles.btn}>ABOUT</button>
         <button className={styles.btn}>FAQ</button>
       </div>
-      <div className={styles.right}>
-      <Link href="/login" className={styles.sign}><button className={styles.signBtn}>SIGN IN</button></Link>
-      <button className={styles.signBtn}>SIGN UP</button>
-      </div>
+      <Links /> 
     </div>
   )
 }

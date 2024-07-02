@@ -8,36 +8,14 @@
 
 
 .title{
-  text-align: center;
-  font-weight: bold;
-  font-size: 18px;
-  margin-bottom: 20px;
-}
-
-.icons{
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin: 10px;
-}
-
-.icon{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-  border: 1px solid rgb(205, 205, 205);
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.6s;
-}
-
-.icon:hover{
-  background-color: rgba(211, 211, 211, 0.71);
+  color: #FB8C00;
+  font-weight: 600;
+  font-size: 23px;
+  margin-bottom: 7px;
 }
 
 .container p{
-  text-align: center;
+  font-size: 15px;
   color: rgb(110, 109, 109);
   margin-bottom: 10px;
 }
@@ -58,8 +36,8 @@
 
 .sign_in{
   display: flex;
-  gap: 8px;
   justify-content: center;
+  gap: 8px;
 }
 
 .desc{

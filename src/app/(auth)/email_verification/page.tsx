@@ -1,14 +1,15 @@
 import Image from 'next/image'
 import Navbar from '../../../components/navbar/Navbar'
-import styles from './login.module.css'
-import LoginBox from '../../../components/login/Login'
+import styles from './email_verification.module.css'
+import Verification from '../../../components/verification/Verfication'
 
-const Login = () => {
-  return (
+
+const EmailVerification = () => {
+  return(
     <div className={styles.container}>
       <Navbar />
       <div className={styles.left}>
-        <LoginBox />
+        <Verification />
       </div>
       <div className={styles.right}>
         <Image className={styles.img} src="/images/home-page-side.png" alt='' fill />
@@ -17,4 +18,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default EmailVerification
