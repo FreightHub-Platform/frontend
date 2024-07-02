@@ -1,0 +1,76 @@
+.container{
+  border: 2px solid;
+  border-color: #FB8C00;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+}
+
+
+.title{
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.icons{
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin: 10px;
+}
+
+.icon{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid rgb(205, 205, 205);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.6s;
+}
+
+.icon:hover{
+  background-color: rgba(211, 211, 211, 0.71);
+}
+
+.container p{
+  text-align: center;
+  color: rgb(110, 109, 109);
+  margin-bottom: 10px;
+}
+
+.input_feilds{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.signup_button{
+  display: flex;
+}
+
+.btn:hover{
+  background-color: #EF6C00;
+}
+
+.sign_in{
+  display: flex;
+  gap: 8px;
+}
+
+.desc{
+  color: gray;
+}
+
+.sign{
+  font-weight: bold;
+  color: #EF6C00;
+  cursor: pointer;
+}
+
+.sign:hover{
+  text-decoration: underline;
+}

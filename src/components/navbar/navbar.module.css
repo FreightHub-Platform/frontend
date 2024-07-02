@@ -1,0 +1,77 @@
+.container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  top: 30px;
+  left: 20%;
+  height: 65px;
+  width: 60%;
+  z-index: 10;
+  padding: 15px;
+  border: 2px solid #FB8C00;
+  border-radius: 8px;
+  background-color: aliceblue;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+}
+
+.left{
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.companyName{
+  font-weight: 500;
+}
+
+.logo{
+  margin-right: 18px;
+}
+
+.middle{
+  display: flex;
+  gap: 55px;
+}
+
+.right{
+  display: flex;
+  gap: 30px;
+}
+
+.btn{
+  background-color: #FFA726;
+  width: 85px;
+  height: 30px;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 13px;
+  transition: 0.5s;
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+}
+
+
+.btn:hover{
+  background-color: #e69a01;
+}
+
+.right{
+  margin-right: 20px;
+}
+
+.signBtn{
+  width: 85px;
+  height: 30px;
+  border-radius: 30px;
+  background-color: #FF6D00;
+  border: 2px solid #FF6D00;
+  font-size: 13px;
+  transition: 0.5s;
+  font-weight: 600;
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+}
+
+.signBtn:hover{
+  background-color: #ea6601;
+}
