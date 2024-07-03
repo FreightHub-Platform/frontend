@@ -1,0 +1,95 @@
+.container{
+  border: 2px solid;
+  border-color: #FB8C00;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+}
+
+.title{
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.alertCheckEmail{
+  text-align: center;
+  font-size: 15px;
+  width: 450px;
+}
+
+.email{
+  margin: 15px;
+}
+
+.digitInput{
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.in{
+  border: 1px solid rgb(210, 210, 210);
+  width: 50px;
+  height: 50px;
+  border-radius: 20px;
+  margin-bottom: 15px;
+}
+
+.digitInput input{
+  text-align: center;
+  font-size: 35px;
+}
+
+.in::-webkit-outer-spin-button,
+.in::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+.signup_button{
+  display: flex;
+  justify-content: center;
+}
+
+.btn:hover{
+  background-color: #EF6C00;
+}
+
+.code{
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.desc{
+  color: gray;
+}
+
+.resend{
+  font-weight: 600;
+  color: #EF6C00;
+  cursor: pointer;
+}
+
+.resend:hover{
+  text-decoration: underline;
+}
+
+.return{
+  display: flex;
+  justify-content: center;
+}
+
+.sign{
+  font-weight: 600;
+  color: #EF6C00;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.sign:hover{
+  text-decoration: underline;
+}

@@ -2,9 +2,6 @@
 
 import Box from '@mui/material/Box';
 import styles from './register.module.css';
-import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded';
-import AppleIcon from '@mui/icons-material/Apple';
-import GoogleIcon from '@mui/icons-material/Google';
 import TextField from '@mui/material/TextField';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
@@ -90,19 +87,6 @@ const RegisterBox = () => {
     <Box sx={{ minWidth: 275 }}>
       <div className={styles.container}>
         <div className={styles.title}>Register with</div>
-        <div className={styles.icons}>
-          <div className={styles.icon}>
-            <FacebookRoundedIcon />
-          </div>
-          <div className={styles.icon}>
-            <AppleIcon />
-          </div>
-          <div className={styles.icon}>
-            <GoogleIcon />
-          </div>
-           
-        </div>
-        <p>or</p>
         <div className={styles.input_feilds}>
           <TextField
             required

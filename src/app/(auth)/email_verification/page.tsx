@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Navbar from '../../../components/navbar/Navbar'
 import styles from './email_verification.module.css'
-import Verification from '../../../components/verification/Verfication'
+import Verification from '../../../components/verification/Verification'
 
 
 const EmailVerification = () => {

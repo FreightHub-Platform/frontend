@@ -1,6 +1,10 @@
+import styles from './footer.module.css'
+
 const Footer = () => {
   return (
-    <div>Footer</div>
+    <div className={styles.container}>
+      All rights reserved @FreightHub
+    </div>
   )
 }
 
