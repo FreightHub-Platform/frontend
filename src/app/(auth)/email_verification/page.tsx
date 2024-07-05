@@ -1,7 +1,8 @@
 import Image from 'next/image'
 import Navbar from '../../../components/navbar/Navbar'
 import styles from './email_verification.module.css'
-import Verification from '../../../components/verification/Verification'
+import Verification from '../../../components/Auth/verification/Verification'
+import Footer from '../../../components/footer/Footer'
 
 
 const EmailVerification = () => {
@@ -10,6 +11,7 @@ const EmailVerification = () => {
       <Navbar />
       <div className={styles.left}>
         <Verification />
+        <Footer />
       </div>
       <div className={styles.right}>
         <Image className={styles.img} src="/images/home-page-side.png" alt='' fill />
