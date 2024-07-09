@@ -1,17 +1,60 @@
+'use client'
+
 import Image from 'next/image'
 import styles from './business.module.css'
 import Navbar from '../../../components/navbar/Navbar'
 import ProcessBox from '../../../components/Auth/process/ProcessBox'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import OfflinePinRoundedIcon from '@mui/icons-material/OfflinePinRounded';
 import ErrorRoundedIcon from '@mui/icons-material/ErrorRounded';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import Footer from '../../../components/footer/Footer'
+
+const status = {
+    stepCompletion: 0,
+    business: false,
+    contact: false,
+    location: false
+  }
+
 
 const Business = () => {
 
 
-  
+  const [businessName, setBusinessName] = useState('');
+  const [businessError, setBusinessError] = useState(false);
+  const [registrationNo, setRegistrationNo] = useState('');
+  const [registrationError, setregistrationError] = useState(false);
+
+  const router = useRouter();
+
+  const handleNext = () => {
+
+    let hasError = false;
+
+    if(!businessName){
+      setBusinessError(true);
+      hasError = true
+    } else {
+      setBusinessError(false);
+    }
+
+    if(!registrationNo){
+      setregistrationError(true);
+      hasError = true
+    } else {
+      setregistrationError(false);
+    }
+
+    if(!hasError){
+      router.push('/contact_information')
+    }
+  }
+
 
   return (
     <div className={styles.container}>
@@ -22,7 +65,7 @@ const Business = () => {
         </div>
       </div>
       <div className={styles.bottom}>
-        <ProcessBox />
+        <ProcessBox step={status}/>
 
         <div className={styles.desc}>
           <div className={styles.titleContainer}>
@@ -55,19 +98,24 @@ const Business = () => {
             >
             <div>
               <TextField
-                required
+                error={businessError}
                 id="outlined-required"
                 label="Enter Your Business name:"
-                InputProps={{
-                  sx: { width: '100%' }
-                }}
+                color='warning'
+                value={businessName}
+                onChange={(e) => setBusinessName(e.target.value)}
+                helperText={businessError ? "Please enter your business name" : ""}
              />
             </div>
             <div>
               <TextField
-                required
+                error={registrationError}
                 id="outlined-required"
                 label="Your Business Registration No:"
+                color='warning'
+                value={registrationNo}
+                onChange={(e) => setRegistrationNo(e.target.value)}
+                helperText={registrationError ? "Please enter your business ragistration number" : ""}
              />
             </div>
             </Box>
@@ -79,16 +127,26 @@ const Business = () => {
                   type="file"
                   id="logo-upload"
                   accept="image/*"
-                  style={{ display: 'none' }}
+                  className={styles.logo}
                 />
+               
+                <label htmlFor="logo-upload" className={styles.logoLabel}>+</label>    
             </div>
           </div>
         </div>
 
         <div className={styles.options}>
-          <button className={styles.btn}>Draft</button>
-          <button className={styles.btn}>Next</button>
+          <button className={styles.btn}>
+            <UploadFileIcon />
+            Draft
+          </button>
+          <button className={styles.btn} onClick={handleNext}>
+            Next
+            <ArrowForwardIcon  />
+          </button>
         </div>
+
+        <Footer />
       </div>
     </div>
   )

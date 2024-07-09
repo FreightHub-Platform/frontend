@@ -106,11 +106,9 @@ const RegisterBox = () => {
               sx: { borderRadius: '60px' }
             }}
           />
-           <FormControl sx={{ m: 0, width: '30ch' }} variant="outlined">
+           <FormControl sx={{ m: 0, width: '30ch' }} variant="outlined" size="small">
           <InputLabel htmlFor="outlined-adornment-password">Password *</InputLabel>
-          <OutlinedInput
-            required
-            size="small"
+          <OutlinedInput 
             id="outlined-adornment-password"
             type={showPassword ? 'text' : 'password'}
             endAdornment={
@@ -129,11 +127,9 @@ const RegisterBox = () => {
             sx={{ borderRadius: '60px' }}
           />
         </FormControl>
-        <FormControl sx={{ m: 0, width: '30ch' }} variant="outlined">
+        <FormControl sx={{ m: 0, width: '30ch' }} variant="outlined" size="small">
         <InputLabel htmlFor="outlined-adornment-confirm-password" >Confirm Password *</InputLabel>
         <OutlinedInput
-          required
-          size="small"
           id="outlined-adornment-confirm-password"
           type={showConfirmPassword ? 'text' : 'password'}
           endAdornment={
