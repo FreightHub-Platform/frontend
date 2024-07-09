@@ -1,0 +1,165 @@
+.container{
+  display: grid;
+  grid-template-rows: 200px 1fr;
+  position: relative;
+}
+
+.top{
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.imageContainer{
+  width: 100%;
+  height: 200px;
+  position: relative;
+}
+
+.img{
+  object-fit: cover;
+}
+
+.bottom{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 40px;
+}
+
+
+.desc{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding: 0 80px;
+  align-items: center;
+}
+
+.title{
+  font-size: 25px;
+}
+
+.subtitle{
+  font-size: 15px;
+  color: rgb(177, 177, 177);
+}
+
+.status{
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.edit{
+  padding: 13px;
+  border-radius: 8px;
+  background-color: rgba(224, 224, 224, 0.50);
+  color: #FFCC80;
+  transition: 0.5s;
+}
+
+.edit:hover{
+  background-color: rgba(195, 195, 195, 0.5);
+}
+
+.editicon{
+  font-size: 23px;
+  margin-right: 8px;
+}
+
+.erricon{
+  font-size: 45px;
+  color: #D4B011;
+}
+
+.progress{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.detail p:first-child{
+  font-size: 20px;
+}
+
+.detail p:nth-child(2){
+  color: #7F4C0A;
+}
+
+.options{
+  display: flex;
+  width: 88%;
+  padding: 20px 80px;
+  justify-content: end;
+  gap: 15px;
+}
+
+.business{
+  flex: 1;
+}
+
+.btn, .submit{
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid rgb(157, 157, 157);
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.btn:hover{
+  color: #FFA726;
+}
+
+.submit:hover{
+  color: #34C759;
+}
+
+.input{
+  display: flex;
+  width: 92%;
+  padding: 20px 50px;
+  align-items: center;
+  background-color: #F5F5F5;
+  border-radius: 8px;
+}
+
+.left{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  justify-content: center;
+}
+
+.right{
+  width: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.locationMap{
+  border: 1px solid;
+  width: 450px;
+  height: 450px;
+}
+
+.line{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 10px;
+}
+
+.lft, .rgt, .textField{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.textField{
+  display: flex;
+}
