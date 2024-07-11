@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Footer from '../../../components/footer/Footer'
 
@@ -29,8 +29,28 @@ const Business = () => {
   const [businessError, setBusinessError] = useState(false);
   const [registrationNo, setRegistrationNo] = useState('');
   const [registrationError, setregistrationError] = useState(false);
+  const [logo, setLogo] = useState(null);
+  const [logoError, setLogoError] = useState(false);
+  const fileInputRef = useRef(null);
 
   const router = useRouter();
+
+  const handleLogoChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setLogo(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleImageClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
 
   const handleNext = () => {
 
@@ -48,6 +68,13 @@ const Business = () => {
       hasError = true
     } else {
       setregistrationError(false);
+    }
+
+    if(!logo){
+      setLogoError(true);
+      hasError = true
+    } else {
+      setLogoError(false);
     }
 
     if(!hasError){
@@ -122,15 +149,24 @@ const Business = () => {
           </div>
           <div className={styles.upload}>
             <div className={styles.head}>UPLOAD YOUR COMPANY LOGO</div>
-            <div className={styles.logoInput}>
+            <div className={styles.logoInput} onClick={handleImageClick}>
               <input
                   type="file"
                   id="logo-upload"
                   accept="image/*"
                   className={styles.logo}
+                  onChange={handleLogoChange}
+                  ref={fileInputRef}
                 />
-               
-                <label htmlFor="logo-upload" className={styles.logoLabel}>+</label>    
+                {!logo && (
+                  <div className={styles.logoLabel}>+</div>
+                )}
+                {logo && (
+                  <img src={logo} alt="Company Logo" className={styles.previewImage} />
+                )}
+            </div>
+            <div className={styles.logoerr}>
+              {logoError ? "Please input company logo" : ""}
             </div>
           </div>
         </div>
