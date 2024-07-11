@@ -54,27 +54,31 @@ const QontoStepIconRoot = styled('div')<{ ownerState: { active?: boolean } }>(
       height: 25,
       borderRadius: '50%',
       backgroundColor: 'currentColor',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
   }),
 );
 
-function QontoStepIcon(props: StepIconProps) {
-  const { active, completed, className } = props;
+function QontoStepIcon(props: StepIconProps & { stepNumber: number }) {
+  const { active, completed, className, stepNumber } = props;
 
   return (
     <QontoStepIconRoot ownerState={{ active }} className={className}>
       {completed ? (
         <CheckCircleIcon className="QontoStepIcon-completedIcon" />
       ) : (
-        <div className="QontoStepIcon-circle" />
+        <div className="QontoStepIcon-circle">
+          <span style={{ color: '#fff', fontSize: '13px' }}>{stepNumber}</span>
+        </div>
       )}
     </QontoStepIconRoot>
   );
 }
 
 
-const ProcessBox = ({step}) => {
-
+const ProcessBox = ({ step }) => {
   const path = usePathname();
 
   const steps = [
@@ -102,10 +106,12 @@ const ProcessBox = ({step}) => {
     <div className={styles.container}>
       <Box sx={{ width: '100%' }}>
         <Stepper activeStep={step.stepCompletion} alternativeLabel connector={<QontoConnector />}>
-          {steps.map((label) => (
+          {steps.map((label, index) => (
             <Step key={label.title}>
-              <StepLabel StepIconComponent={QontoStepIcon}>{label.title}</StepLabel>
-              <div className={styles.information} style={{marginLeft: '7vw', marginTop: '5px', marginBottom: '10px'}}>{label.semTitle}</div>
+              <StepLabel StepIconComponent={(props) => <QontoStepIcon {...props} stepNumber={index + 1} />}>
+                {label.title}
+              </StepLabel>
+              <div className={styles.information} style={{ marginLeft: '7vw', marginTop: '5px', marginBottom: '10px' }}>{label.semTitle}</div>
               <div className={styles.status} style={{
                 border: `1px solid ${label.pathName === path ? 'orange' : label.status ? 'rgb(3, 189, 3)' : 'rgb(199, 199, 199)'}`,
                 padding: '5px',
@@ -115,16 +121,14 @@ const ProcessBox = ({step}) => {
                 marginLeft: '7vw',
                 fontSize: '12px'
               }}>
-                {
-                  label.pathName === path ? 'In Process' : label.status ? 'Completed' : 'Pending'
-                }
+                {label.pathName === path ? 'In Process' : label.status ? 'Completed' : 'Pending'}
               </div>
-            </Step>  
+            </Step>
           ))}
         </Stepper>
       </Box>
     </div>
-  )
+  );
 }
 
 export default ProcessBox
