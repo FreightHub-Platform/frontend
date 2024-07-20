@@ -1,12 +1,11 @@
-import Sidebar from '../../../components/admin/sidebar/Sidebar'
-import styles from './main.module.css'
+import { Topbar } from "../../../components/admin/topbar/Topbar";
 
 const Admin = () => {
   return (
-    <div className={styles.container}>
-      <Sidebar />
+    <div className="bg-gray-100">
+      <Topbar />
     </div>
-  )
-}
+  );
+};
 
-export default Admin
+export default Admin;
