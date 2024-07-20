@@ -8,7 +8,7 @@ import SearchIcon from '@mui/icons-material/Search';
 const Search = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  borderRadius: theme.shape.borderRadius,
+  borderRadius: 20,
   backgroundColor: alpha(theme.palette.common.black, 0.15),
   '&:hover': {
     backgroundColor: alpha(theme.palette.common.black, 0.25),
@@ -32,9 +32,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     [theme.breakpoints.up('sm')]: {
-      width: '12ch',
+      width: '30ch',
       '&:focus': {
-        width: '20ch',
+        width: '40ch',
       },
     },
   },

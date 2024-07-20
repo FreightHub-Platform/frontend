@@ -1,11 +1,11 @@
 import { Topbar } from "../../../components/admin/topbar/Topbar";
 
-const Admin = () => {
+const Reviews = () => {
   return (
     <div className="bg-gray-100">
-      saDASDASDASDASDASDASDASDASDASDASDAD
+      <Topbar />
     </div>
   );
 };
 
-export default Admin;
+export default Reviews;
