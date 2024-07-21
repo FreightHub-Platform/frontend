@@ -7,14 +7,15 @@ import { cn } from "@nextui-org/theme";
 
 import SidebarItem from "./SidebarItem";
 import SidebarMenu from "./SidebarMenu";
-
+import { Button } from "@mui/material";
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 const Sidebar = () => {
-  const [isSidebarExpanded, setSidebarExpanded] = useState(true);
+  const [isSidebarExpanded, setSidebarExpanded] = useState(false);
   const navItems = NavItems();
   const pathname = usePathname();
 
-  
   const categorizedNavItems = navItems.reduce(
     (acc, item) => {
       const group = item.group || "Others";
@@ -35,19 +36,21 @@ const Sidebar = () => {
   return (
     <div
       className={cn(
-        isSidebarExpanded ? "w-[240px]" : "w-60px",
+        isSidebarExpanded ? "w-[240px]" : "w",
         "border-r transition-all duration-300 ease-in-out transform hidden flex-col sm:flex h-fill"
       )}
     >
-        <div className="flex flex-col px-3 pt-4 w-full h-full ">
-        {Object.keys(categorizedNavItems.groupedNavItems).map((group, index) => (
-          <SidebarMenu
-            key={index}
-            isExpanded={isSidebarExpanded}
-            items={categorizedNavItems.groupedNavItems[group]}
-            pathname={pathname}
-          />
-        ))}
+      <div className="flex flex-col px-3 pt-4 w-full h-full ">
+        {Object.keys(categorizedNavItems.groupedNavItems).map(
+          (group, index) => (
+            <SidebarMenu
+              key={index}
+              isExpanded={isSidebarExpanded}
+              items={categorizedNavItems.groupedNavItems[group]}
+              pathname={pathname}
+            />
+          )
+        )}
       </div>
       <div className="px-6 pb-4 ">
         {categorizedNavItems.bottom.map((item, index) => (
@@ -58,6 +61,37 @@ const Sidebar = () => {
             pathname={pathname}
           />
         ))}
+      </div>
+      <div className="absolute">
+        {isSidebarExpanded ? (
+          <button
+          type="button"
+          style={{ top: "39vh" }}
+          className={cn(
+            "absolute -z-10  left-52  h-16 rounded-xl  bg-white flex items-center justify-center",
+            isSidebarExpanded ? "transform rotate-180" : ""
+          )}
+          onClick={toggleSidebar}
+          title="Toggle Sidebar"
+        >
+            <span className="material-icons"><ArrowForwardIosIcon/></span>
+        </button>
+        ): (
+          <button
+          type="button"
+          style={{ top: "39vh" }}
+          className={cn(
+            "absolute -z-10  left-24 pl-4 w-8 h-16 rounded-xl  bg-white flex items-center justify-center",
+            isSidebarExpanded ? "transform rotate-180" : ""
+          )}
+          onClick={toggleSidebar}
+          title="Toggle Sidebar"
+        >
+            <span className="material-icons"><ArrowForwardIosIcon/></span>
+        </button>
+        )  
+        }
+        
       </div>
     </div>
   );
