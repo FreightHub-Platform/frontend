@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "Freight Hub",
   description: "Freight Hub is a logistics management system",
 };
-
+<p></p>
 export default function Layout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {

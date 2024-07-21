@@ -36,14 +36,14 @@ export function Topbar() {
         <div className="flex flex-row gap-x-6">
           <div className="flex flex-row gap-3">
             <div>
-              <Badge content="99+"  size="sm" shape="circle" color="danger" >
-                <IconButton aria-label="delete">
+              <IconButton aria-label="delete">
+                <Badge content="99+" size="sm" shape="circle" color="danger">
                   <NotificationsNoneOutlinedIcon
                     fontSize="large"
                     className="text-gray-600"
                   />
-                </IconButton>
-              </Badge>
+                </Badge>
+              </IconButton>
             </div>
             <div>
               <IconButton aria-label="delete">
