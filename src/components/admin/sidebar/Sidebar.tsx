@@ -1,25 +1,18 @@
 "use client";
-import React from "react";
-
-import { Fragment, useState } from "react";
-import Link from "next/link";
+import React, { useState } from "react";
+import { usePathname } from "next/navigation";
 
 import { NavItems } from "../../../app/admin/config";
 import { cn } from "@nextui-org/theme";
 
-import ChevronLeftOutlinedIcon from "@mui/icons-material/ChevronLeftOutlined";
-import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
-
-import { Tooltip } from "@nextui-org/tooltip";
-import { Button } from "@nextui-org/button";
 import SidebarItem from "./SidebarItem";
 import SidebarMenu from "./SidebarMenu";
-import { Dashboard } from "@mui/icons-material";
+
 
 const Sidebar = () => {
   const [isSidebarExpanded, setSidebarExpanded] = useState(true);
-
   const navItems = NavItems();
+  const pathname = usePathname();
 
   
   const categorizedNavItems = navItems.reduce(
@@ -46,26 +39,13 @@ const Sidebar = () => {
         "border-r transition-all duration-300 ease-in-out transform hidden flex-col sm:flex h-fill"
       )}
     >
-      {/* Top */}
-      {/* <div className="flex flex-col px-3 pt-4 w-full h-full "> */}
-        {/* <Button
-          onClick={toggleSidebar}
-          className="flex items-center justify-center mt-4"
-        >
-          {isSidebarExpanded ? (
-            <ChevronLeftOutlinedIcon />
-          ) : (
-            <ChevronRightOutlinedIcon />
-          )}
-        </Button> */}
-
-        {/* Sidebar Items */}
         <div className="flex flex-col px-3 pt-4 w-full h-full ">
         {Object.keys(categorizedNavItems.groupedNavItems).map((group, index) => (
           <SidebarMenu
             key={index}
             isExpanded={isSidebarExpanded}
             items={categorizedNavItems.groupedNavItems[group]}
+            pathname={pathname}
           />
         ))}
       </div>
@@ -75,14 +55,10 @@ const Sidebar = () => {
             key={index}
             item={item}
             isExpanded={isSidebarExpanded}
+            pathname={pathname}
           />
         ))}
       </div>
-
-      {/* Bottom */}
-      {/* <div className="mb-4">
-        <SidebarMenu />
-      </div> */}
     </div>
   );
 };
