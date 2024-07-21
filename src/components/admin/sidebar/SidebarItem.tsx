@@ -21,14 +21,17 @@ const SidebarItem = ({ item, isExpanded }) => {
     //     </div>
     //   </Link>
     // </Tooltip>
-    <div className="flex flex-row mb-2">
-      
-      <Button
-        startContent={<Icon>{item.icon}</Icon>}
-        className={cn("flex items-center justify-center w-full h-11")}
-      >
-        <span className="">{item.name}</span>
-      </Button>
+    <div className="flex flex-row mb-2 ">
+       <Link href={item.href || "#"} legacyBehavior>
+        <a className="w-full">
+          <Button
+            startContent={<Icon>{item.icon}</Icon>}
+            className={cn("flex items-center justify-center w-full h-11")}
+          >
+            {isExpanded && <span className="ml-4">{item.name}</span>}
+          </Button>
+        </a>
+      </Link>
     </div>
   );
 };
