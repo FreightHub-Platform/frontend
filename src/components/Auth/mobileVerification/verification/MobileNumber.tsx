@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import Link from 'next/link';
 import TextField from '@mui/material/TextField';
 
-const MobileNumber = () => {
+const MobileNumber = ({succesVerification}) => {
 
   const handleInput = (e) => {
     const value = e.target.value;
@@ -14,6 +14,10 @@ const MobileNumber = () => {
       e.target.value = value.slice(0, 1);
     }
   };
+
+  const handleverify =() => {
+    succesVerification();
+  }
 
   return (
     <Box sx={{ minWidth: 270 }}>
@@ -52,7 +56,7 @@ const MobileNumber = () => {
         <div className={styles.signup_button}>
           <Button variant="contained"
             sx={{width: '80%', backgroundColor: '#FB8C00', marginBottom: '10px'}}
-            className={styles.btn}>Verify</Button>
+            className={styles.btn} onClick={handleverify}>Verify</Button>
         </div>
         <div className={styles.code}>
           <div className={styles.desc}>Dont have a code?</div>

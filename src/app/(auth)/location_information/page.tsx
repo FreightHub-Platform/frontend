@@ -15,6 +15,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Footer from '../../../components/footer/Footer';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const currencies = [
   {
@@ -31,12 +32,27 @@ const currencies = [
   },
 ];
 
-const status = {
-  stepCompletion: 2,
-  business: true,
-  contact: true,
-  location: false
-}
+
+const steps = [
+  {
+    title: 'Business',
+    semTitle: 'Business Information',
+    pathName: '/business_information',
+    status: true
+  },
+  {
+    title: 'Contact',
+    semTitle: 'Contact Information',
+    pathName: '/contact_information',
+    status: true
+  },
+  {
+    title: 'Location',
+    semTitle: 'Location Information',
+    pathName: '/location_information',
+    status: false
+  }
+];
 
 
 const Location = () => {
@@ -119,7 +135,9 @@ const Location = () => {
         </div>
       </div>
       <div className={styles.bottom}>
-        <ProcessBox step={status}/>
+        <Box component="section" sx={{ p: 2, border: '2px solid #FB8C00', borderRadius: '20px', marginTop: '20px' }} minWidth={800}>
+          <ProcessBox step={steps} completion={2}/>
+        </Box>
 
         <div className={styles.desc}>
           <div className={styles.titleContainer}>
@@ -130,11 +148,24 @@ const Location = () => {
             <button className={styles.edit}><EditOutlinedIcon className={styles.editicon}/>Edit</button>
             <div className={styles.progress}>
               <div className={styles.icon}>
-                  <ErrorRoundedIcon className={styles.erricon}/>
+              { (name && email && address && contact && country && zipCode && vatNumber) ? <CheckCircleIcon className={styles.checkicon}/> : <ErrorRoundedIcon className={styles.erricon}/> }    
               </div>
               <div className={styles.detail}>
-                  <p>In Progress</p>
-                  <p>Fill all the fields</p>
+              { (name && email && address && contact && country && zipCode && vatNumber) ? 
+                    (
+                      <>
+                        <p>Saved</p>
+                        <p style={ {color: '#2AB930'} }>Uploaded</p>
+                      </>
+                    )
+                    :
+                    (
+                      <>
+                        <p>In Progress</p>
+                        <p>Fill all the fields</p>
+                      </>
+                    ) 
+                  }    
               </div>
             </div>
           </div>
@@ -187,6 +218,15 @@ const Location = () => {
               <div className={styles.lft}>
                 <label htmlFor="">Contact</label>
                 <TextField 
+                  sx={{
+                    "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
+                                            display: "none",
+                                          },
+                  "& input[type=number]": {
+                                            MozAppearance: "textfield",
+                                          },
+                  }}
+                  type='number'
                   error={contactError}
                   id="outlined-basic" 
                   variant="outlined" 

@@ -19,14 +19,18 @@ const style = {
   borderRadius: '16px',
 };
 
-const MobileVerification = () => {
+const MobileVerification = ({onVerificationSuccess, len}) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const handleverify = () => {
+    onVerificationSuccess()
+  }
+
   return (
     <div>
-      <Button onClick={handleOpen} className={styles.hoverButton}>Verify</Button>
+      <Button disabled={!len} onClick={handleOpen} className={styles.hoverButton}>Verify</Button>
         <Modal
           open={open}
           onClose={handleClose}
@@ -34,7 +38,7 @@ const MobileVerification = () => {
           aria-describedby="modal-modal-description"
         >
         <Box sx={style}>
-          <MobileNumber />
+          <MobileNumber succesVerification={handleverify}/>
         </Box>
       </Modal>
     </div>

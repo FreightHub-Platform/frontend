@@ -78,51 +78,29 @@ function QontoStepIcon(props: StepIconProps & { stepNumber: number }) {
 }
 
 
-const ProcessBox = ({ step }) => {
+const ProcessBox = ({ step, completion }) => {
   const path = usePathname();
-
-  const steps = [
-    {
-      title: 'Business',
-      semTitle: 'Business Information',
-      pathName: '/business_information',
-      status: step.business
-    },
-    {
-      title: 'Contact',
-      semTitle: 'Contact Information',
-      pathName: '/contact_information',
-      status: step.contact
-    },
-    {
-      title: 'Location',
-      semTitle: 'Location Information',
-      pathName: '/location_information',
-      status: step.location
-    }
-  ];
 
   return (
     <div className={styles.container}>
       <Box sx={{ width: '100%' }}>
-        <Stepper activeStep={step.stepCompletion} alternativeLabel connector={<QontoConnector />}>
-          {steps.map((label, index) => (
+        <Stepper activeStep={completion} alternativeLabel connector={<QontoConnector />}>
+          {step.map((label, index) => (
             <Step key={label.title}>
               <StepLabel StepIconComponent={(props) => <QontoStepIcon {...props} stepNumber={index + 1} />}>
                 {label.title}
+                <div className={styles.information} style={{ marginTop: '5px', marginBottom: '10px' }}>{label.semTitle}</div>
+                <div className={styles.status} style={{
+                  border: `1px solid ${label.pathName === path ? 'orange' : label.status ? 'rgb(3, 189, 3)' : 'rgb(199, 199, 199)'}`,
+                  padding: '5px',
+                  borderRadius: '8px',
+                  color: label.pathName === path ? 'orange' : label.status ? 'rgb(3, 189, 3)' : 'rgb(199, 199, 199)',
+                  display: 'inline-block',
+                  fontSize: '12px'
+                }}>
+                  {label.pathName === path ? 'In Process' : label.status ? 'Completed' : 'Pending'}
+                </div>
               </StepLabel>
-              <div className={styles.information} style={{ marginLeft: '7vw', marginTop: '5px', marginBottom: '10px' }}>{label.semTitle}</div>
-              <div className={styles.status} style={{
-                border: `1px solid ${label.pathName === path ? 'orange' : label.status ? 'rgb(3, 189, 3)' : 'rgb(199, 199, 199)'}`,
-                padding: '5px',
-                borderRadius: '8px',
-                color: label.pathName === path ? 'orange' : label.status ? 'rgb(3, 189, 3)' : 'rgb(199, 199, 199)',
-                display: 'inline-block',
-                marginLeft: '7vw',
-                fontSize: '12px'
-              }}>
-                {label.pathName === path ? 'In Process' : label.status ? 'Completed' : 'Pending'}
-              </div>
             </Step>
           ))}
         </Stepper>

@@ -1,0 +1,40 @@
+.container{
+  border: 2px solid #FB8C00;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title{
+  text-align: center;
+  font-size: 40px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.information{
+  display: flex;
+  gap: 30px;
+}
+
+.tinmeIN{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.subTitle{
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.submitBtn{
+  background-color: #FB8C00;
+  color: white;
+  padding: 10px 30px;
+  font-size: 20px;
+  border-radius: 8px;
+}
