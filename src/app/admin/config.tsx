@@ -19,7 +19,7 @@ export const NavItems = () => {
 
   return [
     {
-      group: "Management",
+      group: "",
       name: "Dashboard",
       href: "/admin/dashboard",
       icon: <DashboardOutlined />,

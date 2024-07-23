@@ -9,10 +9,9 @@ import SidebarItem from "./SidebarItem";
 import SidebarMenu from "./SidebarMenu";
 import { Button } from "@mui/material";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 const Sidebar = () => {
-  const [isSidebarExpanded, setSidebarExpanded] = useState(false);
+  const [isSidebarExpanded, setSidebarExpanded] = useState(true);
   const navItems = NavItems();
   const pathname = usePathname();
 
