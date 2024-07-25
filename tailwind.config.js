@@ -5,7 +5,7 @@ module.exports = {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./node_modules/@nextui-org/theme/dist/components/(avatar|badge|button|popover|ripple|spinner).js"
+    "./node_modules/@nextui-org/theme/dist/components/(avatar|badge|button|popover|ripple|spinner).js",
   ],
   theme: {
     extend: {
@@ -70,6 +70,10 @@ module.exports = {
         800: "#424242",
         900: "#212121",
       },
+      maxWidth: {
+        "content-full-minus-200": "calc(100% - 100px)",
+      },
+
     },
     fontFamily: {
       sans: ["Inter", "sans-serif"],
