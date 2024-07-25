@@ -22,7 +22,7 @@ export default function Layout({
               <div className=" w-full flex justify-center mx-auto overflow-auto h-[calc(100vh - 120px)] overflow-y-auto relative">
                 <div className=" w-full md:max-w6xl m-2">
                   <Breadcrumb />
-                  <div className="m-3 flex mx-auto"> {children}</div>
+                  <div className="m-3 flex flex-col mx-auto"> {children}</div>
                 </div>
               </div>
             </div>

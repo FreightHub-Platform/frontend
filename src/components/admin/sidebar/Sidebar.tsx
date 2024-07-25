@@ -8,7 +8,7 @@ import { cn } from "@nextui-org/theme";
 import SidebarItem from "./SidebarItem";
 import SidebarMenu from "./SidebarMenu";
 import { Button } from "@mui/material";
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 const Sidebar = () => {
   const [isSidebarExpanded, setSidebarExpanded] = useState(true);
@@ -64,33 +64,35 @@ const Sidebar = () => {
       <div className="absolute">
         {isSidebarExpanded ? (
           <button
-          type="button"
-          style={{ top: "39vh" }}
-          className={cn(
-            "absolute -z-10  left-52  h-16 rounded-xl  bg-white flex items-center justify-center",
-            isSidebarExpanded ? "transform rotate-180" : ""
-          )}
-          onClick={toggleSidebar}
-          title="Toggle Sidebar"
-        >
-            <span className="material-icons"><ArrowForwardIosIcon/></span>
-        </button>
-        ): (
+            type="button"
+            style={{ top: "39vh" }}
+            className={cn(
+              "absolute -z-10  left-52  h-16 rounded-xl  bg-white flex items-center justify-center",
+              isSidebarExpanded ? "transform rotate-180" : ""
+            )}
+            onClick={toggleSidebar}
+            title="Toggle Sidebar"
+          >
+            <span className="material-icons">
+              <ArrowForwardIosIcon />
+            </span>
+          </button>
+        ) : (
           <button
-          type="button"
-          style={{ top: "39vh" }}
-          className={cn(
-            "absolute -z-10  left-24 pl-4 w-8 h-16 rounded-xl  bg-white flex items-center justify-center",
-            isSidebarExpanded ? "transform rotate-180" : ""
-          )}
-          onClick={toggleSidebar}
-          title="Toggle Sidebar"
-        >
-            <span className="material-icons"><ArrowForwardIosIcon/></span>
-        </button>
-        )  
-        }
-        
+            type="button"
+            style={{ top: "39vh" }}
+            className={cn(
+              "absolute -z-10  left-24 pl-4 w-8 h-16 rounded-xl  bg-white flex items-center justify-center",
+              isSidebarExpanded ? "transform rotate-180" : ""
+            )}
+            onClick={toggleSidebar}
+            title="Toggle Sidebar"
+          >
+            <span className="material-icons">
+              <ArrowForwardIosIcon />
+            </span>
+          </button>
+        )}
       </div>
     </div>
   );
