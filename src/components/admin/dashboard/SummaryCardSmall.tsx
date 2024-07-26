@@ -11,7 +11,7 @@ const SummaryCardSmall = ({ borderColor, hoverBorderColor }) => {
 
   return (
     <div
-      className={`w-96 h-32 bg-white border-b-4 rounded-xl shadow-lg hover:shadow-2xl transition duration-500 transform ease-in-out hover:scale-105`}
+      className={`w-1/4 h-32 bg-white border-b-4 rounded-xl shadow-lg hover:shadow-2xl transition duration-500 transform ease-in-out hover:scale-105`}
       style={{ borderBottomColor: isHovered ? hoverBorderColor : borderColor }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
