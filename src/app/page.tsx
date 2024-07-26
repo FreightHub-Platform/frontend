@@ -22,12 +22,7 @@ const Home = () => {
       </div>
       
       <div className="container mx-auto px-4 lg:px-8 pt-36">
-        <center>
-          <button className="rounded-md bg-orange-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:text-2xl">
-            Sign Up Now!
-          </button>
-          <br /><br />
-        </center>
+        
         <br /><br />
         <p className="text-lg text-gray-700">
           Transforming Logistics for a Seamless Future
@@ -108,7 +103,7 @@ const Home = () => {
                 </div>
                 <div className="mb-4">
                   <label className="block text-gray-700 mb-2" htmlFor="message">Message</label>
-                  <textarea className="w-full px-3 py-2 border border-gray-300 rounded-lg" id="message" rows="4" placeholder="Your Message"></textarea>
+                  <textarea className="w-full px-3 py-2 border border-gray-300 rounded-lg" id="message"  placeholder="Your Message"></textarea>
                 </div>
                 <button className="rounded-md bg-orange-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:text-2xl">
                   Send Message
@@ -118,8 +113,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      <Footer />
+    <Footer />
     </div>
   )
 }
