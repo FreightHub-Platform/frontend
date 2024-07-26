@@ -10,6 +10,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import { Divider } from "@mui/material";
 import DeliveryPerformanceCard from "../../../components/admin/dashboard/DeliveryPerformanceCard";
+import DeliveryExceptions from "../../../components/admin/dashboard/DeliveryExceptions";
 
 const Admin = () => {
   const todayOnTheWay: number = 2;
@@ -90,7 +91,7 @@ const Admin = () => {
       </div>
 
       <div className="flex pb-9  px-6 gap-x-8   justify-between">
-        <div className=" w-2/6 bg-white rounded-md  px-7">
+        <div className=" w-2/6 pb-6 bg-white rounded-md  px-7">
           <div className="flex mt-4 flex-row justify-between mb-5 align-middle">
             <div className="text-lg">Delivery Performance</div>
             <div>
@@ -100,14 +101,58 @@ const Admin = () => {
             </div>
           </div>
           <div className=" flex flex-col gap-y-3">
-                      <DeliveryPerformanceCard  icon="gift" upordown="up" amount="299" text = "Packages in transit"  percentage="12%" bgColor="bg-green-300" />
-                      <DeliveryPerformanceCard  icon="gift" upordown="up" amount="299" text = "Packages in transit"  percentage="12%" bgColor="bg-green-300" />
-                      <DeliveryPerformanceCard  icon="gift" upordown="up" amount="299" text = "Packages in transit"  percentage="12%" bgColor="bg-green-300" />
-                      <DeliveryPerformanceCard  icon="gift" upordown="up" amount="299" text = "Packages in transit"  percentage="12%" bgColor="bg-green-300" />
-                      <DeliveryPerformanceCard  icon="gift" upordown="up" amount="299" text = "Packages in transit"  percentage="12%" bgColor="bg-green-300" />
+            <DeliveryPerformanceCard
+              icon="gift"
+              upordown="up"
+              amount="299"
+              text="Packages in transit"
+              percentage="12%"
+              bgColor="bg-green-300"
+            />
+            <DeliveryPerformanceCard
+              icon="gift"
+              upordown="up"
+              amount="299"
+              text="Packages in transit"
+              percentage="12%"
+              bgColor="bg-green-500"
+            />
+            <DeliveryPerformanceCard
+              icon="gift"
+              upordown="up"
+              amount="299"
+              text="Packages in transit"
+              percentage="12%"
+              bgColor="bg-green-600"
+            />
+            <DeliveryPerformanceCard
+              icon="gift"
+              upordown="up"
+              amount="299"
+              text="Packages in transit"
+              percentage="12%"
+              bgColor="bg-green-800"
+            />
+            <DeliveryPerformanceCard
+              icon="gift"
+              upordown="up"
+              amount="299"
+              text="Packages in transit"
+              percentage="12%"
+              bgColor="bg-green-900"
+            />
           </div>
         </div>
-        <div className=" w-2/6 bg-white rounded-md">asd</div>
+        <div className=" w-2/6 bg-white rounded-md p-5">
+          <div className="flex flex-row justify-between mb-5 align-middle ">
+            <div className="text-lg">Delivery Exceptions</div>
+            <div>
+            </div>
+          </div>
+          <div className="flex w-full justify-center content-center align-middle  mx-auto">
+          <DeliveryExceptions />            
+          </div>
+        </div>
         <div className=" w-2/6 bg-white rounded-md">dadas</div>
       </div>
 
