@@ -56,6 +56,17 @@ const Home = () => {
         </div>
       </section>
 
+      <section className="about-us py-20 bg-gray-100">
+        <div className="container mx-auto px-4 lg:px-8">
+          <h2 className="text-3xl font-bold text-center text-gray-900 sm:text-4xl">About Us</h2>
+          <div className="flex flex-wrap justify-center mt-10">
+            <div className="w-full md:w-2/3 p-4">
+              <p className="text-lg text-gray-700">FreightHub is a leading provider of logistics solutions, with a focus on innovation, efficiency, and customer satisfaction. Our team of experienced professionals is dedicated to delivering the highest quality service to meet your logistics needs. From air and ocean freight to land transportation, we offer a comprehensive range of services to help you succeed in today's competitive market.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="testimonials py-20 bg-white">
         <div className="container mx-auto px-4 lg:px-8">
           <h2 className="text-3xl font-bold text-center text-gray-900 sm:text-4xl">Testimonials</h2>
@@ -71,17 +82,6 @@ const Home = () => {
                 <p className="text-gray-700">"The best freight forwarding service we've ever used. Highly recommended!"</p>
                 <p className="mt-4 font-bold">- Jane Smith, Supply Chain Manager</p>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="about-us py-20 bg-gray-100">
-        <div className="container mx-auto px-4 lg:px-8">
-          <h2 className="text-3xl font-bold text-center text-gray-900 sm:text-4xl">About Us</h2>
-          <div className="flex flex-wrap justify-center mt-10">
-            <div className="w-full md:w-2/3 p-4">
-              <p className="text-lg text-gray-700">FreightHub is a leading provider of logistics solutions, with a focus on innovation, efficiency, and customer satisfaction. Our team of experienced professionals is dedicated to delivering the highest quality service to meet your logistics needs. From air and ocean freight to land transportation, we offer a comprehensive range of services to help you succeed in today's competitive market.</p>
             </div>
           </div>
         </div>
