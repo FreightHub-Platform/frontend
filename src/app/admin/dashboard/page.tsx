@@ -11,6 +11,7 @@ import ScheduleIcon from "@mui/icons-material/Schedule";
 import { Divider } from "@mui/material";
 import DeliveryPerformanceCard from "../../../components/admin/dashboard/DeliveryPerformanceCard";
 import DeliveryExceptions from "../../../components/admin/dashboard/DeliveryExceptions";
+import OrdersTabs from "../../../components/admin/dashboard/orders/OrdersTabs";
 
 const Admin = () => {
   const todayOnTheWay: number = 2;
@@ -31,7 +32,7 @@ const Admin = () => {
 
       <div className="flex py-9 px-6 gap-x-8   justify-between">
         <div className="w-2/4 pr-5 bg-white rounded-md pl-5">
-          <div className="flex mt-4 flex-row justify-between mb-5 align-middle ">
+          <div className="flex mt-4 flex-row justify-between align-middle ">
             <div className="text-lg">On Route Vehicles</div>
             <div>
               <IconButton aria-label="delete" size="small">
@@ -39,6 +40,7 @@ const Admin = () => {
               </IconButton>
             </div>
           </div>
+          <Divider className="mb-4 mt-1"/>
           <div>
             <SingleStackedBarChart
               onTheWay={todayOnTheWay}
@@ -92,7 +94,7 @@ const Admin = () => {
 
       <div className="flex pb-9  px-6 gap-x-8   justify-between">
         <div className=" w-2/6 pb-6 bg-white rounded-md  px-7">
-          <div className="flex mt-4 flex-row justify-between mb-5 align-middle">
+          <div className="flex mt-4 flex-row justify-between mb-3 align-middle">
             <div className="text-lg">Delivery Performance</div>
             <div>
               <IconButton aria-label="delete" size="small">
@@ -100,6 +102,8 @@ const Admin = () => {
               </IconButton>
             </div>
           </div>
+          <Divider className="mb-4 mt-1"/>
+
           <div className=" flex flex-col gap-y-3">
             <DeliveryPerformanceCard
               icon="gift"
@@ -119,7 +123,7 @@ const Admin = () => {
             />
             <DeliveryPerformanceCard
               icon="gift"
-              upordown="up"
+              upordown="down"
               amount="299"
               text="Packages in transit"
               percentage="12%"
@@ -135,7 +139,7 @@ const Admin = () => {
             />
             <DeliveryPerformanceCard
               icon="gift"
-              upordown="up"
+              upordown="down"
               amount="299"
               text="Packages in transit"
               percentage="12%"
@@ -144,21 +148,33 @@ const Admin = () => {
           </div>
         </div>
         <div className=" w-2/6 bg-white rounded-md p-5">
-          <div className="flex flex-row justify-between mb-5 align-middle ">
+          <div className="flex flex-row justify-between mb-3 align-middle ">
             <div className="text-lg">Delivery Exceptions</div>
-            <div>
-            </div>
+            <div></div>
           </div>
-          <div className="flex w-full justify-center content-center align-middle  mx-auto">
-          <DeliveryExceptions />            
+          <Divider className="mb-4 mt-1"/>
+          <div className="flex w-full justify-center content-center h-full align-middle  mx-auto">
+            <DeliveryExceptions />
           </div>
         </div>
-        <div className=" w-2/6 bg-white rounded-md">dadas</div>
+     
+        <div className=" w-2/6 bg-white h-[29rem] rounded-md">
+          <div className="flex mt-4 flex-row justify-between mb-1 align-middle px-5">
+            <div className="text-lg">Orders</div>
+            <div>
+              <IconButton aria-label="delete" size="small">
+                <RefreshIcon />
+              </IconButton>
+            </div>
+          </div>
+          <Divider className=" mt-2 px-3 mx-5"/>
+          <OrdersTabs />
+        </div>
       </div>
 
       <div className="flex pb-9 px-6 gap-x-8   justify-between">
         <div className="w-full flex flex-col p-5 bg-white rounded-md">
-          <div className="flex flex-row justify-between mb-5 align-middle ">
+          <div className="flex flex-row justify-between mb-2 align-middle ">
             <div className="text-lg">On Route Vehicles</div>
             <div>
               <IconButton aria-label="delete" size="small">
@@ -166,6 +182,7 @@ const Admin = () => {
               </IconButton>
             </div>
           </div>
+          <Divider className="mb-4 mt-1"/>
           <OnRouteVehicles />
         </div>
       </div>
