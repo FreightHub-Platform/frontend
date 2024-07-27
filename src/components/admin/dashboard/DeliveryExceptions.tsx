@@ -30,7 +30,6 @@ class DeliveryExceptions extends Component<{}, DonutState> {
         },
         dataLabels: {
           enabled: true,
-          // position:'bottom',
           formatter: function (val: number, opts: any) {
             return opts.w.config.series[opts.seriesIndex];
           }
@@ -48,7 +47,7 @@ class DeliveryExceptions extends Component<{}, DonutState> {
             }
           }
         },
-        colors: ['#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B']
+        colors: ['#ffa600', '#ffa600bc', '#ffa6006f', '#ffa6002d']
       },
       series: [13, 10, 8, 5],
       labels: ['Incorrect address', 'Weather conditions', 'Federal Holidays', 'Damage during transit']
@@ -57,7 +56,7 @@ class DeliveryExceptions extends Component<{}, DonutState> {
 
   render() {
     return (
-      <div className="donut">
+      <div className="donut ">
         <Chart options={this.state.options} series={this.state.series} type="donut" width="380" />
       </div>
     );
