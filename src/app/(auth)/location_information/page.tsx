@@ -16,21 +16,7 @@ import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Footer from '../../../components/footer/Footer';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-
-const currencies = [
-  {
-    value: 'Sri Lanka',
-  },
-  {
-    value: 'America',
-  },
-  {
-    value: 'United States',
-  },
-  {
-    value: 'Italy',
-  },
-];
+import { useRouter } from 'next/navigation'
 
 
 const steps = [
@@ -57,37 +43,27 @@ const steps = [
 
 const Location = () => {
 
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [address, setAddress] = useState('')
-  const [contact, setContact] = useState('')
-  const [country, setCountry] = useState('')
-  const [zipCode, setZipCode] = useState('')
-  const [vatNumber, setVatNumber] = useState('')
+  const router = useRouter()
 
-  const [nameError, setNameError] = useState(false)
-  const [emailError, setEmailError] = useState(false)
+  const [address, setAddress] = useState('')
+  const [postalCode, setPostalCode] = useState('')
+  const [city, setCity] = useState('')
+  const [province, setProvince] = useState('')
+
   const [addressError, setAddressError] = useState(false)
-  const [contactError, setContactError] = useState(false)
-  const [countryError, setCountryError] = useState(false)
-  const [zipCodeError, setZipCodeError] = useState(false)
-  const [vatNumberError, setVatNumberError] = useState(false)
+  const [postalCodeError, setPostalCodeError] = useState(false)
+  const [cityError, setCityError] = useState(false)
+  const [provinceError, setProvinceError] = useState(false)
+
 
   const handleSubmit = () => {
     let hasError = false
 
-    if(!country){
-      setCountryError(true)
+    if(!city){
+      setCityError(true)
       hasError = true
     } else {
-      setCountryError(false)
-    }
-
-    if(!email){
-      setEmailError(true)
-      hasError = true
-    } else {
-      setEmailError(false)
+      setCityError(false)
     }
 
     if(!address){
@@ -97,32 +73,22 @@ const Location = () => {
       setAddressError(false)
     }
 
-    if(!contact){
-      setContactError(true)
+    if(!postalCode){
+      setPostalCodeError(true)
       hasError = true
     } else {
-      setContactError(false)
+      setPostalCodeError(false)
     }
 
-    if(!name){
-      setNameError(true)
+    if(!province){
+      setProvinceError(true)
       hasError = true
     } else {
-      setNameError(false)
+      setProvinceError(false)
     }
 
-    if(!zipCode){
-      setZipCodeError(true)
-      hasError = true
-    } else {
-      setZipCodeError(false)
-    }
-
-    if(!vatNumber){
-      setVatNumberError(true)
-      hasError = true
-    } else {
-      setVatNumberError(false)
+    if(!hasError){
+      router.replace("/consigner/dashboard")
     }
   }
 
@@ -148,10 +114,10 @@ const Location = () => {
             <button className={styles.edit}><EditOutlinedIcon className={styles.editicon}/>Edit</button>
             <div className={styles.progress}>
               <div className={styles.icon}>
-              { (name && email && address && contact && country && zipCode && vatNumber) ? <CheckCircleIcon className={styles.checkicon}/> : <ErrorRoundedIcon className={styles.erricon}/> }    
+              { (address && postalCode && city && province) ? <CheckCircleIcon className={styles.checkicon}/> : <ErrorRoundedIcon className={styles.erricon}/> }    
               </div>
               <div className={styles.detail}>
-              { (name && email && address && contact && country && zipCode && vatNumber) ? 
+              { (address && postalCode && city && province) ? 
                     (
                       <>
                         <p>Saved</p>
@@ -173,32 +139,6 @@ const Location = () => {
 
         <div className={styles.input}>
           <div className={styles.left}>
-            <div className={styles.line}>
-              <div className={styles.lft}>
-                <label htmlFor="">Name</label>
-                <TextField 
-                  error={nameError}
-                  id="outlined-basic" 
-                  variant="outlined" 
-                  color='warning'
-                  value={name}
-                  onChange={e => setName(e.target.value)}
-                  helperText={nameError ? "Please enter name" : ''}
-                  />
-              </div>
-              <div className={styles.rgt}>
-                <label htmlFor="">Email</label>
-                <TextField 
-                  error={emailError}
-                  id="outlined-basic" 
-                  variant="outlined" 
-                  color='warning'
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  helperText={emailError ? "Please enter email" : ""}
-                  />
-              </div>
-            </div>
             <div className={styles.textField}>
               <label htmlFor="">Billing address</label>
               <TextField
@@ -216,7 +156,7 @@ const Location = () => {
             </div>
             <div className={styles.line}>
               <div className={styles.lft}>
-                <label htmlFor="">Contact</label>
+                <label htmlFor="">Postal Code</label>
                 <TextField 
                   sx={{
                     "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
@@ -227,61 +167,44 @@ const Location = () => {
                                           },
                   }}
                   type='number'
-                  error={contactError}
+                  error={postalCodeError}
                   id="outlined-basic" 
                   variant="outlined" 
                   color='warning'
-                  value={contact}
-                  onChange={(e) => setContact(e.target.value)}
-                  helperText={contactError ? "Please enter contact number" : ""}
+                  value={postalCode}
+                  onChange={(e) => setPostalCode(e.target.value)}
+                  helperText={postalCodeError ? "Please enter postal code" : ""}
                   />
               </div>
               <div className={styles.rgt}>
-                <label htmlFor="">Country</label>
-                <TextField
-                  error={countryError}
+                <label htmlFor="">City</label>
+                <TextField 
+                  error={cityError}
+                  id="outlined-basic" 
+                  variant="outlined" 
                   color='warning'
-                  id="outlined-select-currency"
-                  select
-                  value={country}
-                  onChange={e => setCountry(e.target.value)}
-                  helperText={countryError ? "Please select country" : ""}
-                >
-                  {currencies.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.value}
-                    </MenuItem>
-                  ))}
-                </TextField>
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  helperText={cityError ? "Please enter city" : ""}
+                  />
               </div>
             </div>
             <div className={styles.line}>
               <div className={styles.lft}>
-                <label htmlFor="">Zip code</label>
+                <label htmlFor="">Province</label>
                 <TextField 
-                  error={zipCodeError}
+                  error={provinceError}
                   id="outlined-basic" 
                   variant="outlined" 
                   color='warning'
-                  value={zipCode}
-                  onChange={(e) => setZipCode(e.target.value)}
-                  helperText={zipCodeError ? "Please enter zip code" : ""}
-                  />
-              </div>
-              <div className={styles.rgt}>
-                <label htmlFor="">Vat number</label>
-                <TextField 
-                  error={vatNumberError}
-                  id="outlined-basic" 
-                  variant="outlined" 
-                  color='warning'
-                  value={vatNumber}
-                  onChange={(e) => setVatNumber(e.target.value)}
-                  helperText={vatNumberError ? "Please enter vat number" : ""}
+                  value={province}
+                  onChange={(e) => setProvince(e.target.value)}
+                  helperText={provinceError ? "Please enter province" : ""}
                   />
               </div>
             </div>
-          </div> 
+          </div>
+
           <div className={styles.right}>
             <div className={styles.locationMap}></div>
           </div>

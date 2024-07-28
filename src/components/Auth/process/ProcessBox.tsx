@@ -89,14 +89,15 @@ const ProcessBox = ({ step, completion }) => {
             <Step key={label.title}>
               <StepLabel StepIconComponent={(props) => <QontoStepIcon {...props} stepNumber={index + 1} />}>
                 {label.title}
-                <div className={styles.information} style={{ marginTop: '5px', marginBottom: '10px' }}>{label.semTitle}</div>
+                <div className={styles.information} style={{ marginTop: '5px', marginBottom: '10px', fontSize: '15px', fontWeight: 500 }}>{label.semTitle}</div>
                 <div className={styles.status} style={{
                   border: `1px solid ${label.pathName === path ? 'orange' : label.status ? 'rgb(3, 189, 3)' : 'rgb(199, 199, 199)'}`,
                   padding: '5px',
                   borderRadius: '8px',
                   color: label.pathName === path ? 'orange' : label.status ? 'rgb(3, 189, 3)' : 'rgb(199, 199, 199)',
                   display: 'inline-block',
-                  fontSize: '12px'
+                  fontSize: '10px',
+                  fontWeight: 'bold',
                 }}>
                   {label.pathName === path ? 'In Process' : label.status ? 'Completed' : 'Pending'}
                 </div>
