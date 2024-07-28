@@ -75,6 +75,11 @@
   color: #D4B011;
 }
 
+.checkicon{
+  font-size: 45px;
+  color: #2AB930;
+}
+
 .progress{
   display: flex;
   gap: 10px;

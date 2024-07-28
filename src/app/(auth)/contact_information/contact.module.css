@@ -75,6 +75,11 @@
   color: #D4B011;
 }
 
+.checkicon{
+  font-size: 45px;
+  color: #2AB930;
+}
+
 .progress{
   display: flex;
   gap: 10px;
@@ -133,4 +138,10 @@
   display: flex;
   align-items: center;
   gap: 15px;
+}
+
+.in::-webkit-outer-spin-button,
+.in::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

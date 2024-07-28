@@ -15,63 +15,55 @@ import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Footer from '../../../components/footer/Footer';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { useRouter } from 'next/navigation'
 
-const currencies = [
+
+const steps = [
   {
-    value: 'Sri Lanka',
+    title: 'Business',
+    semTitle: 'Business Information',
+    pathName: '/business_information',
+    status: true
   },
   {
-    value: 'America',
+    title: 'Contact',
+    semTitle: 'Contact Information',
+    pathName: '/contact_information',
+    status: true
   },
   {
-    value: 'United States',
-  },
-  {
-    value: 'Italy',
-  },
+    title: 'Location',
+    semTitle: 'Location Information',
+    pathName: '/location_information',
+    status: false
+  }
 ];
-
-const status = {
-  stepCompletion: 2,
-  business: true,
-  contact: true,
-  location: false
-}
 
 
 const Location = () => {
 
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [address, setAddress] = useState('')
-  const [contact, setContact] = useState('')
-  const [country, setCountry] = useState('')
-  const [zipCode, setZipCode] = useState('')
-  const [vatNumber, setVatNumber] = useState('')
+  const router = useRouter()
 
-  const [nameError, setNameError] = useState(false)
-  const [emailError, setEmailError] = useState(false)
+  const [address, setAddress] = useState('')
+  const [postalCode, setPostalCode] = useState('')
+  const [city, setCity] = useState('')
+  const [province, setProvince] = useState('')
+
   const [addressError, setAddressError] = useState(false)
-  const [contactError, setContactError] = useState(false)
-  const [countryError, setCountryError] = useState(false)
-  const [zipCodeError, setZipCodeError] = useState(false)
-  const [vatNumberError, setVatNumberError] = useState(false)
+  const [postalCodeError, setPostalCodeError] = useState(false)
+  const [cityError, setCityError] = useState(false)
+  const [provinceError, setProvinceError] = useState(false)
+
 
   const handleSubmit = () => {
     let hasError = false
 
-    if(!country){
-      setCountryError(true)
+    if(!city){
+      setCityError(true)
       hasError = true
     } else {
-      setCountryError(false)
-    }
-
-    if(!email){
-      setEmailError(true)
-      hasError = true
-    } else {
-      setEmailError(false)
+      setCityError(false)
     }
 
     if(!address){
@@ -81,32 +73,22 @@ const Location = () => {
       setAddressError(false)
     }
 
-    if(!contact){
-      setContactError(true)
+    if(!postalCode){
+      setPostalCodeError(true)
       hasError = true
     } else {
-      setContactError(false)
+      setPostalCodeError(false)
     }
 
-    if(!name){
-      setNameError(true)
+    if(!province){
+      setProvinceError(true)
       hasError = true
     } else {
-      setNameError(false)
+      setProvinceError(false)
     }
 
-    if(!zipCode){
-      setZipCodeError(true)
-      hasError = true
-    } else {
-      setZipCodeError(false)
-    }
-
-    if(!vatNumber){
-      setVatNumberError(true)
-      hasError = true
-    } else {
-      setVatNumberError(false)
+    if(!hasError){
+      router.replace("/consigner/dashboard")
     }
   }
 
@@ -119,7 +101,9 @@ const Location = () => {
         </div>
       </div>
       <div className={styles.bottom}>
-        <ProcessBox step={status}/>
+        <Box component="section" sx={{ p: 2, border: '2px solid #FB8C00', borderRadius: '20px', marginTop: '20px' }} minWidth={800}>
+          <ProcessBox step={steps} completion={2}/>
+        </Box>
 
         <div className={styles.desc}>
           <div className={styles.titleContainer}>
@@ -130,11 +114,24 @@ const Location = () => {
             <button className={styles.edit}><EditOutlinedIcon className={styles.editicon}/>Edit</button>
             <div className={styles.progress}>
               <div className={styles.icon}>
-                  <ErrorRoundedIcon className={styles.erricon}/>
+              { (address && postalCode && city && province) ? <CheckCircleIcon className={styles.checkicon}/> : <ErrorRoundedIcon className={styles.erricon}/> }    
               </div>
               <div className={styles.detail}>
-                  <p>In Progress</p>
-                  <p>Fill all the fields</p>
+              { (address && postalCode && city && province) ? 
+                    (
+                      <>
+                        <p>Saved</p>
+                        <p style={ {color: '#2AB930'} }>Uploaded</p>
+                      </>
+                    )
+                    :
+                    (
+                      <>
+                        <p>In Progress</p>
+                        <p>Fill all the fields</p>
+                      </>
+                    ) 
+                  }    
               </div>
             </div>
           </div>
@@ -142,32 +139,6 @@ const Location = () => {
 
         <div className={styles.input}>
           <div className={styles.left}>
-            <div className={styles.line}>
-              <div className={styles.lft}>
-                <label htmlFor="">Name</label>
-                <TextField 
-                  error={nameError}
-                  id="outlined-basic" 
-                  variant="outlined" 
-                  color='warning'
-                  value={name}
-                  onChange={e => setName(e.target.value)}
-                  helperText={nameError ? "Please enter name" : ''}
-                  />
-              </div>
-              <div className={styles.rgt}>
-                <label htmlFor="">Email</label>
-                <TextField 
-                  error={emailError}
-                  id="outlined-basic" 
-                  variant="outlined" 
-                  color='warning'
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  helperText={emailError ? "Please enter email" : ""}
-                  />
-              </div>
-            </div>
             <div className={styles.textField}>
               <label htmlFor="">Billing address</label>
               <TextField
@@ -185,63 +156,55 @@ const Location = () => {
             </div>
             <div className={styles.line}>
               <div className={styles.lft}>
-                <label htmlFor="">Contact</label>
+                <label htmlFor="">Postal Code</label>
                 <TextField 
-                  error={contactError}
+                  sx={{
+                    "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
+                                            display: "none",
+                                          },
+                  "& input[type=number]": {
+                                            MozAppearance: "textfield",
+                                          },
+                  }}
+                  type='number'
+                  error={postalCodeError}
                   id="outlined-basic" 
                   variant="outlined" 
                   color='warning'
-                  value={contact}
-                  onChange={(e) => setContact(e.target.value)}
-                  helperText={contactError ? "Please enter contact number" : ""}
+                  value={postalCode}
+                  onChange={(e) => setPostalCode(e.target.value)}
+                  helperText={postalCodeError ? "Please enter postal code" : ""}
                   />
               </div>
               <div className={styles.rgt}>
-                <label htmlFor="">Country</label>
-                <TextField
-                  error={countryError}
+                <label htmlFor="">City</label>
+                <TextField 
+                  error={cityError}
+                  id="outlined-basic" 
+                  variant="outlined" 
                   color='warning'
-                  id="outlined-select-currency"
-                  select
-                  value={country}
-                  onChange={e => setCountry(e.target.value)}
-                  helperText={countryError ? "Please select country" : ""}
-                >
-                  {currencies.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.value}
-                    </MenuItem>
-                  ))}
-                </TextField>
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  helperText={cityError ? "Please enter city" : ""}
+                  />
               </div>
             </div>
             <div className={styles.line}>
               <div className={styles.lft}>
-                <label htmlFor="">Zip code</label>
+                <label htmlFor="">Province</label>
                 <TextField 
-                  error={zipCodeError}
+                  error={provinceError}
                   id="outlined-basic" 
                   variant="outlined" 
                   color='warning'
-                  value={zipCode}
-                  onChange={(e) => setZipCode(e.target.value)}
-                  helperText={zipCodeError ? "Please enter zip code" : ""}
-                  />
-              </div>
-              <div className={styles.rgt}>
-                <label htmlFor="">Vat number</label>
-                <TextField 
-                  error={vatNumberError}
-                  id="outlined-basic" 
-                  variant="outlined" 
-                  color='warning'
-                  value={vatNumber}
-                  onChange={(e) => setVatNumber(e.target.value)}
-                  helperText={vatNumberError ? "Please enter vat number" : ""}
+                  value={province}
+                  onChange={(e) => setProvince(e.target.value)}
+                  helperText={provinceError ? "Please enter province" : ""}
                   />
               </div>
             </div>
-          </div> 
+          </div>
+
           <div className={styles.right}>
             <div className={styles.locationMap}></div>
           </div>

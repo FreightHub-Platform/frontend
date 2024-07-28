@@ -12,7 +12,7 @@ const Orders =() => {
                 Filters
             </div>
             <div>
-                < OrdersTable/>
+                Table
             </div>
         </div>
     )

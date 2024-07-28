@@ -16,6 +16,8 @@ import Switch, { SwitchProps } from '@mui/material/Switch';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import FormHelperText from '@mui/material/FormHelperText';
 
 const IOSSwitch = styled((props: SwitchProps) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />))
@@ -71,15 +73,51 @@ const IOSSwitch = styled((props: SwitchProps) => (
 
 const LoginBox = () => {
 
+  const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
-  
+  const [email,setEmail] = useState("");
+  const [emailError,setemailError] = useState(false);
+  const [password, setPassword] = useState("")
+  const [passwordError, setPasswordError] = useState(false);
+  const [emailVerfication, setEmailVerfication] = useState(false);
+
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
 
+
+  const handleSignIn = () => {
+    let hasError = false;
+
+    if(!email) {
+      setemailError(true)
+      hasError = true
+    } else {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if(!(emailRegex.test(email))){
+        setemailError(true)
+        setEmailVerfication(true)
+        hasError = true
+      } else {
+        setemailError(false)
+        setEmailVerfication(false)
+      }
+    }
+
+    if(!password){
+      setPasswordError(true)
+      hasError = true
+    } else {
+      setPasswordError(false)
+    }
+
+    if(!hasError){
+      router.push("/business_information")
+    }
+  }
 
   return (
     <Box sx={{ minWidth: 275 }}>
@@ -88,18 +126,27 @@ const LoginBox = () => {
         <p>Enter your email and password to sign in</p>
         <div className={styles.input_feilds}>
           <TextField
+            value={email}
+            error={emailError}
+            size="small"
+            onChange={(e) => setEmail(e.target.value)}
+            color='warning'
             required
             id="outlined-required"
             label="Email"
+            helperText={emailVerfication ? "Please enter valid email address" : emailError ? "Please enter email address" : ""}
             InputProps={{
               sx: { borderRadius: '60px' }
             }}
           />
-          <FormControl sx={{ m: 0, width: '30ch' }} variant="outlined">
-            <InputLabel htmlFor="outlined-adornment-password">Password *</InputLabel>
-            <OutlinedInput
-              required
+          <FormControl sx={{ m: 0, width: '30ch' }} variant="outlined" size="small">
+            <InputLabel htmlFor="outlined-adornment-password" required color='warning'>Password</InputLabel>
+            <OutlinedInput 
+              color='warning'
               id="outlined-adornment-password"
+              error={passwordError}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               type={showPassword ? 'text' : 'password'}
               endAdornment={
                 <InputAdornment position="end">
@@ -116,19 +163,24 @@ const LoginBox = () => {
               label="Password"
               sx={{ borderRadius: '60px' }}
             />
+            {passwordError && (
+              <FormHelperText error >
+                Please enter a password.
+              </FormHelperText>
+            )}
           </FormControl>
         
         </div>
         <div className={styles.remember_me}>
           <FormControlLabel
-          control={<IOSSwitch sx={{ m: 2 }} defaultChecked />}
+          control={<IOSSwitch sx={{ m: 2 }} />}
           label="Remember me"
           />
         </div>
         <div className={styles.signup_button}>
           <Button variant="contained"
             sx={{width: '100%', backgroundColor: '#FB8C00', marginBottom: '10px'}}
-            className={styles.btn}>Sign in</Button>
+            className={styles.btn} onClick={handleSignIn}>Sign in</Button>
         </div>
         <div className={styles.sign_in}>
           <div className={styles.desc}>Don't have an account?</div>
