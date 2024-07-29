@@ -84,6 +84,12 @@ const Contact = () => {
     }
 
     if(!hasError){
+
+      const contactInformation = {
+        "mainNumber": mobile,
+        "altNumber": alternative
+      }
+
       router.push('/location_information')
     }
   }

@@ -97,6 +97,11 @@ const Location = () => {
     }
 
     if(!hasError){
+
+      const location_information = {
+        // object eka hadanna
+      }
+
       router.replace("/consigner/orders")
     }
   }

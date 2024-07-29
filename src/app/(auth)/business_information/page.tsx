@@ -94,7 +94,15 @@ const Business = () => {
     }
 
     if(!hasError){
-      router.push('/contact_information')
+      const businessIinformation = {
+        "businessName": businessName,
+        "brn": registrationNo
+      }
+      
+      if(true){
+        router.push('/contact_information')
+      }
+      
     }
   }
 

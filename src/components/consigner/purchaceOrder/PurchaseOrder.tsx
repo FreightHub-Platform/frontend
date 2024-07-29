@@ -1,6 +1,6 @@
 "use client"
+
 import Box from '@mui/material/Box';
-import styles from './purchaseOrder.module.css'
 import ProcessBox from '../../Auth/process/ProcessBox';
 import TextField from '@mui/material/TextField';
 
@@ -11,7 +11,6 @@ import SearchIcon from '@mui/icons-material/Search';
 
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from 'next/link';
 import { useState } from 'react';
 
 
@@ -46,6 +45,7 @@ const PurchaseOrder = ({closeFunction}) => {
   const [storeContactError, setStoreContactError] = useState(false)
   const [storeEmail, setStoreEmail] = useState("")
   const [storeEmailError, setStoreEmailError] = useState(false)
+  const [emailVerification, setEmailVerification] = useState(false)
   const [date, setDate] = useState("")
   const [dateError, setDateError] = useState(false)
   const [drop_offTime, setDro_offTime] = useState("")
@@ -55,17 +55,85 @@ const PurchaseOrder = ({closeFunction}) => {
   const [storeName, setStoreName] = useState("")
   const [storeNameError, setStoreNameError] = useState(false)
 
+  const [allowSharing, setAllowSharing] = useState(false)
+
   const today = new Date().toISOString().split('T')[0];
 
   const handleSubmit = () => {
-    const newDetail = {
-      "order_no": orderNo,
-      "store_contact": storeContact,
-      "store_email": storeEmail,
-      "date": date
-    }
+    let hasError = false
 
-    closeFunction(newDetail);
+    // if(!orderNo){
+    //   hasError = true
+    //   setOrderNoError(true)
+    // } else {
+    //   setOrderNoError(false)
+    // }
+
+    // if(!storeContact){
+    //   hasError = true
+    //   setStoreContactError(true)
+    // } else {
+    //   setStoreContactError(false)
+    // }
+
+    // if(!storeEmail) {
+    //   setStoreEmailError(true)
+    //   hasError = true
+    // } else {
+    //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    //   if(!(emailRegex.test(storeEmail))){
+    //     setStoreEmailError(true)
+    //     setEmailVerification(true)
+    //     hasError = true
+    //   } else {
+    //     setStoreEmailError(false)
+    //     setEmailVerification(false)
+    //   }
+    // }
+
+    // if(!date){
+    //   hasError = true
+    //   setDateError(true)
+    // } else {
+    //   setDateError(false)
+    // }
+
+    // if(!drop_offTime){
+    //   hasError = true
+    //   setDrop_offTimeError(true)
+    // } else {
+    //   setDrop_offTimeError(false)
+    // }
+
+    // if(!address){
+    //   hasError = true
+    //   setAddressError(true)
+    // } else {
+    //   setAddressError(false)
+    // }
+
+    // if(!storeName){
+    //   hasError = true
+    //   setStoreNameError(true)
+    // } else {
+    //   setStoreNameError(false)
+    // }
+
+    if(!hasError){
+      
+      const newDetail = {
+        "order_no": orderNo,
+        "store_contact": storeContact,
+        "store_email": storeEmail,
+        "date": date,
+        "drop_off_time": drop_offTime,
+        "address": address,
+        "store_name": storeName,
+        "allow_shearing": allowSharing
+      }
+      
+      closeFunction(newDetail);
+    }
   }
 
   return ( 
@@ -90,21 +158,29 @@ const PurchaseOrder = ({closeFunction}) => {
                   error={storeNameError}
                   value={storeName}
                   helperText={storeNameError ? "Please enter store name" : ""}
-                  onChange={(e) => seOrderNo(e.target.value)}
+                  onChange={(e) => setStoreName(e.target.value)}
                   sx={{flex: 1}}
                 />
 
                 <TextField
+                  sx={{
+                    "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
+                                            display: "none",
+                                          },
+                  "& input[type=number]": {
+                                            MozAppearance: "textfield",
+                                          },
+                                          flex: 1}}
                   size="small"
                   color='warning'
                   error={storeContactError}
                   required
+                  type='number'
                   id="outlined-required"
                   label="Store contact number"
                   value={storeContact}
                   helperText={storeContactError ? "Please enter contact number" : ""}
-                  onChange={(e) => seOrderNo(e.target.value)}
-                  sx={{flex: 1}}
+                  onChange={(e) => setStoreContact(e.target.value)}
                 />
               </div>
               <div className='flex flex-row gap-4 items-center'>
@@ -129,8 +205,8 @@ const PurchaseOrder = ({closeFunction}) => {
                   id="outlined-required"
                   label="Email"
                   value={storeEmail}
-                  helperText={storeEmailError ? "Please enter store email address" : ""}
-                  onChange={(e) => setStoreContact(e.target.value)}
+                  helperText={emailVerification ? "Please enter valid email address" : storeEmailError ? "Please enter email address" : ""}
+                  onChange={(e) => setStoreEmail(e.target.value)}
                   sx={{flex: 1}}
                 />
               </div>
@@ -144,11 +220,11 @@ const PurchaseOrder = ({closeFunction}) => {
                   type='time'
                   label="Drop-off time"
                   value={drop_offTime}
-                  helperText={drop_offTime ? "Please enter drop_off time" : ""}
+                  helperText={drop_offTimeError ? "Please enter drop_off time" : ""}
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  onChange={(e) => setStoreEmail(e.target.value)}
+                  onChange={(e) => setDro_offTime(e.target.value)}
                   sx={{flex: 1}}
                 />
 
@@ -184,14 +260,14 @@ const PurchaseOrder = ({closeFunction}) => {
                   id="ooutlined-multiline-static"
                   label="Address"
                   value={address}
-                  onChange={(e) => seOrderNo(e.target.value)}
+                  onChange={(e) => setAddress(e.target.value)}
                   sx={{flex: 1}}
                 />
               </div>
                 
               </Box>
               <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <FormControlLabel control={<Checkbox />} label="Allow Load Sharing" />
+                <FormControlLabel control={<Checkbox />} label="Allow Load Sharing" onChange={() => setAllowSharing(true)}/>
               </Box>
             </Box>
           </Box>

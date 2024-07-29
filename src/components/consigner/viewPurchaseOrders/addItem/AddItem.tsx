@@ -20,6 +20,7 @@ const AddItem = ({ order, key, cancelOrder }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [allowSharing, setAllowSharing] = useState(order.allow_shearing)
 
   const [items, setItems] = useState([]);
 
@@ -32,6 +33,8 @@ const AddItem = ({ order, key, cancelOrder }) => {
     setItems(prev => prev.filter((_, i) => i !== index));
   }
 
+  console.log(allowSharing)
+
 
   return (
     <Box component="section" className='px-5 py-2 mb-2 shadow-lg rounded-lg border-orange-500 border-1 rounded-md flex flex-col'>
@@ -39,7 +42,7 @@ const AddItem = ({ order, key, cancelOrder }) => {
         <div className='bg-zinc-300 px-4 py-1 rounded-3xl font-semibold text-xs'>PO {order.order_no}</div>
         <div>
           <FormControlLabel 
-            control={<Checkbox className='text-sm'/>} 
+            control={<Checkbox className='text-sm' defaultChecked={order.allow_shearing} onClick={() => setAllowSharing(!allowSharing)}/>} 
             label={
               <Typography className='text-sm'>
                 Allow Load Sharing

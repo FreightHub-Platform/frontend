@@ -65,17 +65,49 @@ const ItemForm = ({addItems}) => {
 
     let hasError = false
 
-    const newItem = {
-      "name": name,
-      "weight": weight,
-      "cbm": cbm,
-      "type": type,
-      "refrigirated": refrigirated,
-      "hazardous": hazardous,
-      "perishable": perishable
+    if(!name){
+      hasError = true
+      setNameError(true)
+    } else {
+      setNameError(false)  
     }
 
-    addItems(newItem)
+    if(!weight){
+      hasError = true
+      setWeightError(true)
+    } else {
+      setWeightError(false)
+    }
+
+    if(!cbm){
+      hasError = true
+      setCbmError(true)      
+    } else {
+      setCbmError(false)
+    }
+
+    if(!tpyeError){
+      hasError = true
+      setTypeError(true)  
+    } else {
+      setTypeError(false)
+    }
+
+    if(!hasError){
+
+      const newItem = {
+        "name": name,
+        "weight": weight,
+        "cbm": cbm,
+        "type": type,
+        "refrigirated": refrigirated,
+        "hazardous": hazardous,
+        "perishable": perishable
+      }
+      
+      addItems(newItem)
+    }
+
   }
 
   return (
@@ -101,6 +133,15 @@ const ItemForm = ({addItems}) => {
           <div className='flex flex-col gap-2 mb-3'>
             <p className='font-semibold text-center text-base'>Weight(kg):</p>
             <TextField
+              sx={{
+                "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
+                                        display: "none",
+                                      },
+              "& input[type=number]": {
+                                        MozAppearance: "textfield",
+                                      },
+              }}
+              type='number'
               size='small'
               error={weightError}
               color='warning' 
@@ -114,6 +155,15 @@ const ItemForm = ({addItems}) => {
           <div className='flex flex-col gap-2 mb-3'>
             <p className='font-semibold text-center text-base'>CBM:</p>
             <TextField
+              sx={{
+                "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
+                                        display: "none",
+                                      },
+              "& input[type=number]": {
+                                        MozAppearance: "textfield",
+                                      },
+              }}
+              type='number'
               size='small'
               error={cbmError}
               color='warning' 

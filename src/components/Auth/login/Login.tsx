@@ -18,6 +18,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import FormHelperText from '@mui/material/FormHelperText';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 const IOSSwitch = styled((props: SwitchProps) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />))
@@ -70,17 +72,28 @@ const IOSSwitch = styled((props: SwitchProps) => (
     },
 }));
 
-
 const LoginBox = () => {
-
   const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
-  const [email,setEmail] = useState("");
-  const [emailError,setemailError] = useState(false);
-  const [password, setPassword] = useState("")
+  const [email, setEmail] = useState("");
+  const [emailError, setemailError] = useState(false);
+  const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState(false);
-  const [emailVerfication, setEmailVerfication] = useState(false);
+  const [emailVerification, setEmailVerification] = useState(false);
+  const [emailWrong, setEmailWrong] = useState(false)
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -88,41 +101,42 @@ const LoginBox = () => {
     event.preventDefault();
   };
 
-
   const handleSignIn = () => {
     let hasError = false;
 
-    if(!email) {
-      setemailError(true)
-      hasError = true
+    if (!email) {
+      setemailError(true);
+      hasError = true;
     } else {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if(!(emailRegex.test(email))){
-        setemailError(true)
-        setEmailVerfication(true)
-        hasError = true
+      if (!emailRegex.test(email)) {
+        setemailError(true);
+        setEmailVerification(true);
+        hasError = true;
       } else {
-        setemailError(false)
-        setEmailVerfication(false)
+        setemailError(false);
+        setEmailVerification(false);
       }
     }
 
-    if(!password){
-      setPasswordError(true)
-      hasError = true
+    if (!password) {
+      setPasswordError(true);
+      hasError = true;
     } else {
-      setPasswordError(false)
+      setPasswordError(false);
     }
 
-    if(!hasError){
-      if(email === "admin@gmail.com"){
-        router.push("/admin/dashboard")
-      } else {
-        router.push("/business_information")
-      }
-      
+    if (!hasError) {
+      handleClick();
+      setEmailWrong(true);
+      // Uncomment and adjust the following lines as needed
+      // if (email === "admin@gmail.com") {
+      //   router.push("/admin/dashboard");
+      // } else {
+      //   router.push("/business_information");
+      // }
     }
-  }
+  };
 
   return (
     <Box sx={{ minWidth: 275 }}>
@@ -139,7 +153,7 @@ const LoginBox = () => {
             required
             id="outlined-required"
             label="Email"
-            helperText={emailVerfication ? "Please enter valid email address" : emailError ? "Please enter email address" : ""}
+            helperText={emailVerification ? "Please enter valid email address" : emailError ? "Please enter email address" : ""}
             InputProps={{
               sx: { borderRadius: '60px' }
             }}
@@ -173,13 +187,17 @@ const LoginBox = () => {
                 Please enter a password.
               </FormHelperText>
             )}
+            {emailWrong && (
+              <FormHelperText error >
+                Incorrect email or password.
+              </FormHelperText>
+            )}
           </FormControl>
-        
         </div>
         <div className={styles.remember_me}>
           <FormControlLabel
-          control={<IOSSwitch sx={{ m: 2 }} />}
-          label="Remember me"
+            control={<IOSSwitch sx={{ m: 2 }} />}
+            label="Remember me"
           />
         </div>
         <div className={styles.signup_button}>
@@ -192,7 +210,25 @@ const LoginBox = () => {
           <Link href="/register" className={styles.sign}>Sign up</Link>
         </div>
       </div>
+      <div>
+        <Snackbar 
+          open={open} 
+          autoHideDuration={6000} 
+          onClose={handleClose}// Positioning at the top
+        >
+          <Alert
+            onClose={handleClose}
+            severity="error"
+            variant="filled"
+            sx={{ width: '100%' }}
+          >
+            This is a success Alert inside a Snackbar!
+          </Alert>
+        </Snackbar>
+        
+      </div>
     </Box>
-  )
+  );
 }
-export default LoginBox
+
+export default LoginBox;

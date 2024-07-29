@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Orders from "../../../components/consigner/orders/Orders";
-import styles from './orders.module.css'
+
 
 const OrdersPage = () => {
     return (
