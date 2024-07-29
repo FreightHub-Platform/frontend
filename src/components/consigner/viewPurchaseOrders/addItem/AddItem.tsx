@@ -5,6 +5,7 @@ import ItemCard from './itemCard/ItemCard';
 import Modal from '@mui/material/Modal';
 import { useState } from 'react';
 import ItemForm from './itemForm/ItemForm';
+import Typography from '@mui/material/Typography';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -33,25 +34,34 @@ const AddItem = ({ order, key, cancelOrder }) => {
 
 
   return (
-    <Box component="section" className='mb-2 px-5 py-2 shadow-lg rounded-lg border-orange-500 border-1 rounded-md flex flex-col gap-1'>
-      <div className='flex flex-row justify-between mt-2 items-center'>
-        <div className='bg-zinc-300 px-4 py-1 rounded-3xl font-semibold text-sm'>PO {order.order_no}</div>
-        <div><FormControlLabel control={<Checkbox />} label="Allow Load Sharing" className='text-sm' /></div>
+    <Box component="section" className='px-5 py-2 mb-2 shadow-lg rounded-lg border-orange-500 border-1 rounded-md flex flex-col'>
+      <div className='flex flex-row justify-between items-center'>
+        <div className='bg-zinc-300 px-4 py-1 rounded-3xl font-semibold text-xs'>PO {order.order_no}</div>
+        <div>
+          <FormControlLabel 
+            control={<Checkbox className='text-sm'/>} 
+            label={
+              <Typography className='text-sm'>
+                Allow Load Sharing
+              </Typography>
+            }
+          />
+        </div>
       </div>
 
-      <div className='flex flex-col gap-1'>
-        <div className='flex'>
-          <p className='font-semibold mr-1 text-sm'>Drop-Off Location:</p>
-          <p className='text-sm'>SAMAN STORES JAFFNA</p>
+      <div className='flex flex-col'>
+        <div className='flex items-center'>
+          <p className='font-semibold mr-1 text-xs'>Drop-Off Location:</p>
+          <p className='text-xs'>SAMAN STORES JAFFNA</p>
         </div>
-        <div className='flex'>
-          <p className='font-semibold mr-1 text-sm'>Drop-Off Date:</p>
-          <p className='text-sm'>10/12/2024</p>
+        <div className='flex items-center mb-1'>
+          <p className='font-semibold mr-1 text-xs'>Drop-Off Date:</p>
+          <p className='text-xs'>10/12/2024</p>
         </div>
       </div>
 
       <div>
-        <button className='bg-primary py-1 px-8 rounded-lg text-white hover:bg-orange-400 ml-3 text-sm' onClick={handleOpen}>+ Add an Item</button>
+        <button className='bg-primary py-1 px-8 rounded-lg text-white hover:bg-orange-500 text-xs duration-500' onClick={handleOpen}>+ Add an Item</button>
         <Modal
           open={open}
           onClose={handleClose}
@@ -69,7 +79,7 @@ const AddItem = ({ order, key, cancelOrder }) => {
       </div>
 
       <div className='flex flex-row justify-end'>
-        <button className='bg-primary py-1 px-12 rounded-lg text-white hover:bg-orange-400 ml-10 text-sm' onClick={cancelOrder}>Cancel</button>
+        <button className='bg-primary py-1 px-10 rounded-lg text-white hover:bg-orange-500 text-xs duration-500' onClick={cancelOrder}>Cancel</button>
       </div>
     </Box>
   )

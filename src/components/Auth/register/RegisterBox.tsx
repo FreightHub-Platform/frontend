@@ -85,8 +85,8 @@ const RegisterBox = () => {
     event.preventDefault();
   };
 
-  const [userName, setUserName] = useState("");
-  const [userNameError, setuserNameError] = useState(false);
+  // const [userName, setUserName] = useState("");
+  // const [userNameError, setuserNameError] = useState(false);
   const [email, setEmail] = useState("");
   const [emailError, setemailError] = useState(false);
   const [emailVerfication, setEmailVerfication] = useState(false);
@@ -99,25 +99,25 @@ const RegisterBox = () => {
 
   const handleNavigation = () => {
     const userDetails = {
-      "username": userName,
+      // "username": userName,
       "email": email,
       "password": password
     }
     
-    if(handleSignup(userDetails)){
-      router.push("/login")
-    }
+    
+    router.push("/login")
+    
   }
 
   const handleSignupButton =() => {
     let hasError = false;
 
-    if(!userName){
-      setuserNameError(true);
-      hasError = true;
-    } else {
-      setuserNameError(false);
-    }
+    // if(!userName){
+    //   setuserNameError(true);
+    //   hasError = true;
+    // } else {
+    //   setuserNameError(false);
+    // }
 
     if(!email) {
       setemailError(true)
@@ -166,7 +166,7 @@ const RegisterBox = () => {
         <div className={styles.title}>Register</div>
 
         <div className={styles.input_feilds}>
-          <TextField
+          {/* <TextField
             color='warning'
             error={userNameError}
             required
@@ -179,7 +179,7 @@ const RegisterBox = () => {
             InputProps={{
               sx: { borderRadius: '60px'}
             }}
-          />
+          /> */}
           <TextField
             color='warning'
             required

@@ -1,18 +1,13 @@
+import OnRouteVehicles from "./OrdersTable/OnRouteVehicles";
 import OrdersTable from "./OrdersTable/OrdersTable";
 
 
 const Orders =() => {
 
     return (
-        <div>
+        <div>          
             <div>
-                Search
-            </div>
-            <div>
-                Filters
-            </div>
-            <div>
-                Table
+                <OnRouteVehicles/>
             </div>
         </div>
     )
