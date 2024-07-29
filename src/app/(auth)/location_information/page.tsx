@@ -45,12 +45,14 @@ const Location = () => {
 
   const router = useRouter()
 
-  const [address, setAddress] = useState('')
+  const [address1, setAddress1] = useState('')
+  const [address2, setAddress2] = useState('')
   const [postalCode, setPostalCode] = useState('')
   const [city, setCity] = useState('')
   const [province, setProvince] = useState('')
 
-  const [addressError, setAddressError] = useState(false)
+  const [address1Error, setAddress1Error] = useState(false)
+  const [address2Error, setAddress2Error] = useState(false)
   const [postalCodeError, setPostalCodeError] = useState(false)
   const [cityError, setCityError] = useState(false)
   const [provinceError, setProvinceError] = useState(false)
@@ -66,11 +68,18 @@ const Location = () => {
       setCityError(false)
     }
 
-    if(!address){
-      setAddressError(true)
+    if(!address1){
+      setAddress1Error(true)
       hasError = true
     } else {
-      setAddressError(false)
+      setAddress1Error(false)
+    }
+
+    if(!address2){
+      setAddress2Error(true)
+      hasError = true
+    } else {
+      setAddress2Error(false)
     }
 
     if(!postalCode){
@@ -88,7 +97,7 @@ const Location = () => {
     }
 
     if(!hasError){
-      router.replace("/consigner/dashboard")
+      router.replace("/consigner/orders")
     }
   }
 
@@ -114,10 +123,10 @@ const Location = () => {
             <button className={styles.edit}><EditOutlinedIcon className={styles.editicon}/>Edit</button>
             <div className={styles.progress}>
               <div className={styles.icon}>
-              { (address && postalCode && city && province) ? <CheckCircleIcon className={styles.checkicon}/> : <ErrorRoundedIcon className={styles.erricon}/> }    
+              { (address1 && address2 && postalCode && city && province) ? <CheckCircleIcon className={styles.checkicon}/> : <ErrorRoundedIcon className={styles.erricon}/> }    
               </div>
               <div className={styles.detail}>
-              { (address && postalCode && city && province) ? 
+              { (address1 && address2 && postalCode && city && province) ? 
                     (
                       <>
                         <p>Saved</p>
@@ -139,7 +148,7 @@ const Location = () => {
 
         <div className={styles.input}>
           <div className={styles.left}>
-            <div className={styles.textField}>
+            {/* <div className={styles.textField}>
               <label htmlFor="">Billing address</label>
               <TextField
                 error={addressError}
@@ -153,6 +162,41 @@ const Location = () => {
                 helperText={addressError ? "Please enter address" : ""}
                 sx={{width: '100%'}}
               />
+            </div> */}
+            <div className={styles.line}>
+              <div className={styles.lft}>
+                <label htmlFor="">Address 1</label>
+                <TextField 
+                  sx={{
+                    "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
+                                            display: "none",
+                                          },
+                  "& input[type=number]": {
+                                            MozAppearance: "textfield",
+                                          },
+                  }}
+                  type='number'
+                  error={address1Error}
+                  id="outlined-basic" 
+                  variant="outlined" 
+                  color='warning'
+                  value={address1}
+                  onChange={(e) => setAddress1(e.target.value)}
+                  helperText={address1Error ? "Please enter address" : ""}
+                  />
+              </div>
+              <div className={styles.rgt}>
+                <label htmlFor="">Address 2</label>
+                <TextField 
+                  error={address2Error}
+                  id="outlined-basic" 
+                  variant="outlined" 
+                  color='warning'
+                  value={address2}
+                  onChange={(e) => setAddress2(e.target.value)}
+                  helperText={address2Error ? "Please enter address" : ""}
+                  />
+              </div>
             </div>
             <div className={styles.line}>
               <div className={styles.lft}>
@@ -205,9 +249,6 @@ const Location = () => {
             </div>
           </div>
 
-          <div className={styles.right}>
-            <div className={styles.locationMap}></div>
-          </div>
         </div>
 
         <div className={styles.options}>

@@ -115,7 +115,12 @@ const LoginBox = () => {
     }
 
     if(!hasError){
-      router.push("/business_information")
+      if(email === "admin@gmail.com"){
+        router.push("/admin/dashboard")
+      } else {
+        router.push("/business_information")
+      }
+      
     }
   }
 

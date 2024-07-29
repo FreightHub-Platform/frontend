@@ -182,19 +182,19 @@ const Business = () => {
             <div className={styles.head}>UPLOAD YOUR COMPANY LOGO</div>
             <div className={styles.logoInput} onClick={handleImageClick}>
               <input
-                  type="file"
-                  id="logo-upload"
-                  accept="image/*"
-                  className={styles.logo}
-                  onChange={handleLogoChange}
-                  ref={fileInputRef}
-                />
-                {!logo && (
-                  <div className={styles.logoLabel}>+</div>
-                )}
-                {logo && (
-                  <img src={logo} alt="Company Logo" className={styles.previewImage} />
-                )}
+                type="file"
+                id="logo-upload"
+                accept="image/*"
+                className={styles.logo}
+                onChange={handleLogoChange}
+                ref={fileInputRef}
+              />
+              {!logo && (
+                <div className={styles.logoLabel}>+</div>
+              )}
+              {logo && (
+                <img src={logo} alt="Company Logo" className={styles.previewImage} />
+              )}
             </div>
             <div className={styles.logoerr}>
               {logoError ? "Please input company logo" : ""}
