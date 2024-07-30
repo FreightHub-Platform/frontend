@@ -18,7 +18,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import FormHelperText from '@mui/material/FormHelperText';
-import { handleSignup } from '../../../utils/api';
+import { handleSignup } from '../../../utils/regapi';
 
 const IOSSwitch = styled((props: SwitchProps) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />))
@@ -99,9 +99,9 @@ const RegisterBox = () => {
 
   const handleNavigation = () => {
     const userDetails = {
-      "username": userName,
-      "email": email,
-      "password": password
+      "username": email,
+      "password": password,
+      "role": "consigner"
     }
     
     if(handleSignup(userDetails)){

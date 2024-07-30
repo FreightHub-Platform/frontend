@@ -18,6 +18,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import FormHelperText from '@mui/material/FormHelperText';
+import { handleSignin } from '../../../utils/loginapi';
 
 const IOSSwitch = styled((props: SwitchProps) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />))
@@ -115,7 +116,43 @@ const LoginBox = () => {
     }
 
     if(!hasError){
-      router.push("/business_information")
+      handleNavigation()
+      // router.push("/business_information")
+    }
+  }
+
+  const handleNavigation = async () => {
+    try {
+      // Call handleSignin and await the result
+      const userDetails = { username: email, password: password };
+      const data = await handleSignin(userDetails);
+
+      // Dissect the data
+      const { completion, role } = data;
+
+      // Perform navigation based on the response data
+      if (role == "consigner") {
+        switch (completion) {
+          case 0:
+            router.push('/business_information');
+            break;
+          case 1:
+            router.push('/contact_information');
+            break;
+          case 2:
+            router.push('/location_information');
+            break;
+          case 3:
+            router.push('consigner/dashboard');
+            break;
+        }
+      } else {
+        router.push('/login');
+      }
+    } catch (error) {
+      // Handle error case
+      console.error('Sign-in error:', error);
+      // Optionally, show an error message to the user
     }
   }
 
