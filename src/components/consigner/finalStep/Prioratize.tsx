@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import ProcessBox from '../../Auth/process/ProcessBox';
 import OptimizeRoutes from './optimizeCard/OptimizeRoutes';
 import Modal from '@mui/material/Modal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CanceledPlacement from '../purchaceOrder/alerts/canceled/CanceledPlacement';
 import SucessPlacement from '../purchaceOrder/alerts/success/SuccessPlacement';
 import { useRouter } from 'next/navigation';
@@ -53,6 +53,31 @@ const Prioratize = () => {
   const handleSuccessOpen = () => setSuccessOpen(true);
   const handleSuccessClose = () => setSuccessOpen(false);
 
+  const [ordersDetails, setOrdersDetails] = useState({
+    pickup_date: '',
+    from: '',
+    to: '',
+    orders: []
+  });
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedOrderDetails = localStorage.getItem('ordersDetails');
+      if (storedOrderDetails) {
+        const parsedOrder = JSON.parse(storedOrderDetails);
+        setOrdersDetails({
+          pickup_date: parsedOrder.pickup_date || '',
+          from: parsedOrder.from || '',
+          to: parsedOrder.to || '',
+          orders: parsedOrder.orders || [] 
+        });
+      }
+    }
+  }, []);
+
+  const fromDate = ordersDetails.from ? Number(ordersDetails.from.split(':')[0]) : 0;
+  const toDate = ordersDetails.to ? Number(ordersDetails.to.split(':')[0]) : 0;
+
   const handleBack = () => {
     router.back()
   }
@@ -78,11 +103,14 @@ const Prioratize = () => {
               </div>
               <div className='flex flex-row items-center'>
                 <p className='text-sm font-semibold mr-1'>Pickup Date:</p>
-                <p className='text-sm'>10/10/2030</p>
+                <p className='text-sm'>{ordersDetails.pickup_date}</p>
               </div>
               <div className='flex flex-row items-center'>
                 <p className='text-sm font-semibold mr-1'>Pickup Time:</p>
-                <p className='text-sm'>1:00 AM - 2:00 AM</p>
+                <p className='text-sm'>
+                {ordersDetails.from}{(fromDate >= 0 && fromDate < 12) ? ' AM' : ' PM'} - 
+                {ordersDetails.to}{(toDate >= 0 && toDate < 12) ? ' AM' : ' PM'}
+                </p>
               </div>
             </div>
             <div className='border-2 flex-1 py-3 px-3 rounded-lg shadow-lg'>
@@ -120,6 +148,7 @@ const Prioratize = () => {
               </button>
               <Modal
                 open={openDecline}
+                onClose={handleDeclineClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
               >
@@ -132,6 +161,7 @@ const Prioratize = () => {
               </button>
               <Modal
                 open={openSuccess}
+                onClose={handleSuccessClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
               >
