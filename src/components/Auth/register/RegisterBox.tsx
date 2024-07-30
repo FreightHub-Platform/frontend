@@ -97,13 +97,18 @@ const RegisterBox = () => {
   const [passwordMissMatch, setPasswordMissMatch] = useState(false);
 
 
-  const handleNavigation = () => {
+  const handleNavigation = async () => {
     const userDetails = {
       "username": email,
       "password": password,
       "role": "consigner"
     }
-    router.push("/login")
+    const data = await handleSignup(userDetails);
+    if(data){
+      router.push("/login")
+    } else {
+      alert("Email Exists")
+    }
   }
 
   const handleSignupButton =() => {

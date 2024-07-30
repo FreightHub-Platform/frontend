@@ -1,6 +1,7 @@
 'use client'
 
 import styles from './contact.module.css'
+import Cookies from 'js-cookie'
 
 //Components
 import Navbar from '../../../components/navbar/Navbar'
@@ -13,9 +14,11 @@ import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image'
+import { updateContact } from '../../../utils/loginapi'
+import { getConsignerById } from '../../../utils/consigner'
 
 //Icons
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -62,11 +65,29 @@ const Contact = () => {
   const [alternative, setAlternative] = useState('')
   const [alternativeError, setAlternativeError] = useState(false)
 
+  useEffect(() => {
+    const fetchConsignerData = async () => {
+      
+      const consigner = {"id": localStorage.getItem("id")}
+      try {
+        const data = await getConsignerById(consigner, Cookies.get('jwt'));
+        if (data && data.mainNumber && data.altNumber) {
+          setMobile(data.mainNumber);
+          setAlternative(data.altNumber);
+        }
+      } catch (error) {
+        console.error('Error fetching consigner data:', error);
+      }
+    };
+
+    fetchConsignerData();
+  }, []);
+
   const handleVerificationSuccess = () => {
     setVerification(true)
   }
 
-  const handleNext = () => {
+  const handleNext = async () => {
     let hasError = false
 
     if(!mobile || mobile.length != 10){
@@ -86,11 +107,19 @@ const Contact = () => {
     if(!hasError){
 
       const contactInformation = {
+        "id": localStorage.getItem("id"),
         "mainNumber": mobile,
         "altNumber": alternative
       }
 
-      router.push('/location_information')
+      const data = await updateContact(contactInformation, Cookies.get('jwt'));
+
+      if(data) {
+        router.push('/location_information')
+      } else {
+        alert("Something is wrong");
+      }
+      
     }
   }
 

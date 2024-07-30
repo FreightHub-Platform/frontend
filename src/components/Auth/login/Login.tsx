@@ -1,5 +1,5 @@
 "use client"
-
+import Cookies from 'js-cookie';
 import styles from './login.module.css'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -128,7 +128,6 @@ const LoginBox = () => {
     }
 
     if(!hasError){
-      handleClick();
       handleNavigation()
       // router.push("/business_information")
     }
@@ -142,9 +141,9 @@ const LoginBox = () => {
 
       // Dissect the data
       const { completion, role } = data;
-      setEmailWrong(true);
+      localStorage.setItem('id', data.id);
+      Cookies.set('jwt', data.token, { expires: 1 });
 
-      // Perform navigation based on the response data
       if (role == "consigner") {
         switch (completion) {
           case 0:
@@ -160,11 +159,22 @@ const LoginBox = () => {
             router.push('consigner/dashboard');
             break;
         }
+      } else if (role == "admin") {
+        router.push('/admin/dashboard');
+      } else if (role == "review_board") {
+        // router.push('/review_board/dashboard');
+      } else if (role == "fleet_owner") {
+        // router.push('/fleet_owner/dashboard');
+        console.log('fleet_owner');
       } else {
-        router.push('/login');
+        setEmailWrong(true);
+        handleClick();
+        // router.push('/login');
       }
     } catch (error) {
       // Handle error case
+      setEmailWrong(true);
+      handleClick();
       console.error('Sign-in error:', error);
       // Optionally, show an error message to the user
     }
@@ -254,7 +264,7 @@ const LoginBox = () => {
             variant="filled"
             sx={{ width: '100%' }}
           >
-            This is a success Alert inside a Snackbar!
+            Please Check Your Credentials
           </Alert>
         </Snackbar>
         
