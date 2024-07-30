@@ -7,8 +7,13 @@ const SucessPlacement = () => {
 
   const router = useRouter()
 
+
   const handleSubmit =() => {
-    router.replace("/consigner/orders")
+    const orderdetails = localStorage.getItem('ordersDetails')
+    const orderParse = JSON.parse(orderdetails)
+    console.log(orderParse)
+    // localStorage.clear();
+    // router.replace("/consigner/orders")
   }
 
   return (

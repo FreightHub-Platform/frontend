@@ -7,6 +7,7 @@ const CanceledPlacement = () => {
   const router = useRouter()
 
   const handleSubmit =() => {
+    localStorage.clear();
     router.replace("/consigner/orders")
   }
 
