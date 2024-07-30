@@ -10,24 +10,9 @@ import { useRouter } from 'next/navigation';
 import './styles.css';
 
 const steps = [
-  {
-    title: '',
-    semTitle: 'Pickup Information',
-    pathName: '/consigner/orders/new/pickup_information',
-    status: true
-  },
-  {
-    title: '',
-    semTitle: 'Purchase Order',
-    pathName: '/consigner/orders/new/purchase_order',
-    status: false
-  },
-  {
-    title: '',
-    semTitle: 'Finalize',
-    pathName: '/finalize',
-    status: false
-  }
+  { title: '', semTitle: 'Pickup Information', pathName: '/consigner/orders/new/pickup_information', status: true },
+  { title: '', semTitle: 'Purchase Order', pathName: '/consigner/orders/new/purchase_order', status: false },
+  { title: '', semTitle: 'Finalize', pathName: '/consigner/orders/new/finalize', status: false }
 ];
 
 const style = {
@@ -42,9 +27,8 @@ const style = {
 const ViewPurchaseOrders = () => {
   const router = useRouter();
 
-  // Initialize state with search params
   const [ordersDetails, setOrdersDetails] = useState({
-    pickup_date:  '',
+    pickup_date: '',
     from: '',
     to: '',
     orders: []
@@ -52,52 +36,60 @@ const ViewPurchaseOrders = () => {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const storedOrdersDetails = JSON.parse(localStorage.getItem('ordersDetails'));
-      if (storedOrdersDetails) {
-        setOrdersDetails(storedOrdersDetails);
+      const storedOrderDetails = localStorage.getItem('ordersDetails');
+      if (storedOrderDetails) {
+        const parsedOrder = JSON.parse(storedOrderDetails);
+        setOrdersDetails({
+          pickup_date: parsedOrder.pickup_date || '',
+          from: parsedOrder.from || '',
+          to: parsedOrder.to || '',
+          orders: parsedOrder.orders || [] 
+        });
       }
     }
   }, []);
 
-  console.log(ordersDetails)
-
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  
+
   const handleNext = () => {
     router.push('/consigner/orders/new/finalize');
   }
 
   const handlePurchaseOrder = (newDetail) => {
-    const updatedOrdersDetails = {
-      ...ordersDetails,
-      orders: [...ordersDetails.orders, newDetail]
-    };
+    const updatedOrders = [
+      ...ordersDetails.orders,
+      newDetail
+    ];
+    const updatedOrdersDetails = { ...ordersDetails, orders: updatedOrders };
+    localStorage.setItem('ordersDetails', JSON.stringify(updatedOrdersDetails));
     setOrdersDetails(updatedOrdersDetails);
-    localStorage.setItem('ordersDetails', JSON.stringify(updatedOrdersDetails)); // Save to local storage
     handleClose();
   }
 
   const handleCancelPurchaseOrder = (index) => {
     const updatedOrders = ordersDetails.orders.filter((_, i) => i !== index);
-    const updatedOrdersDetails = {
-      ...ordersDetails,
-      orders: updatedOrders
-    };
+    const updatedOrdersDetails = { ...ordersDetails, orders: updatedOrders };
+    localStorage.setItem('ordersDetails', JSON.stringify(updatedOrdersDetails));
     setOrdersDetails(updatedOrdersDetails);
-    localStorage.setItem('ordersDetails', JSON.stringify(updatedOrdersDetails)); 
   }
 
-  const fromDate = Number(ordersDetails.from.split(':')[0]);
-  const toDate = Number(ordersDetails.to.split(':')[0]);
+  const handleUpdateOrderItems = (orderIndex, updatedItems) => {
+    const updatedOrders = ordersDetails.orders.map((order, index) => {
+      if (index === orderIndex) {
+        return { ...order, items: updatedItems };
+      }
+      return order;
+    });
 
-  useEffect(() => {
-    const storedOrdersDetails = JSON.parse(localStorage.getItem('ordersDetails'));
-    if (storedOrdersDetails) {
-      setOrdersDetails(storedOrdersDetails);
-    }
-  }, [ordersDetails]);
+    const updatedOrdersDetails = { ...ordersDetails, orders: updatedOrders };
+    localStorage.setItem('ordersDetails', JSON.stringify(updatedOrdersDetails));
+    setOrdersDetails(updatedOrdersDetails);
+  }
+
+  const fromDate = ordersDetails.from ? Number(ordersDetails.from.split(':')[0]) : 0;
+  const toDate = ordersDetails.to ? Number(ordersDetails.to.split(':')[0]) : 0;
 
   return (
     <Box component="section" className='w-4/5'>
@@ -123,8 +115,8 @@ const ViewPurchaseOrders = () => {
               <div className='flex items-center'>
                 <p className='font-semibold mr-1 text-xs'>Pickup Time:</p>
                 <p className='text-xs'>
-                  {ordersDetails.from}{(fromDate > 0 && fromDate < 12) ? ' AM' : ' PM'} - 
-                  {ordersDetails.to}{(toDate > 0 && toDate < 12) ? ' AM' : ' PM'}
+                  {ordersDetails.from}{(fromDate >= 0 && fromDate < 12) ? ' AM' : ' PM'} - 
+                  {ordersDetails.to}{(toDate >= 0 && toDate < 12) ? ' AM' : ' PM'}
                 </p>
               </div>
             </div>
@@ -147,6 +139,8 @@ const ViewPurchaseOrders = () => {
             <AddItem 
               order={detail} 
               key={index} 
+              orderIndex={index} // Pass the index of the order
+              updateOrderItems={handleUpdateOrderItems}
               cancelOrder={() => handleCancelPurchaseOrder(index)} 
             />
           ))}
@@ -157,7 +151,7 @@ const ViewPurchaseOrders = () => {
         </div>
       </Box>
     </Box>
-  )
+  );
 }
 
 export default ViewPurchaseOrders;

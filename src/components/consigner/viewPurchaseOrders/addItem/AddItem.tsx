@@ -3,7 +3,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import ItemCard from './itemCard/ItemCard';
 import Modal from '@mui/material/Modal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ItemForm from './itemForm/ItemForm';
 import Typography from '@mui/material/Typography';
 
@@ -16,24 +16,28 @@ const style = {
   width: 1100,
 };
 
-const AddItem = ({ order, key, cancelOrder }) => {
+const AddItem = ({ order, orderIndex, updateOrderItems, cancelOrder }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [allowSharing, setAllowSharing] = useState(order.allow_shearing)
 
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(order.items || []);
+
 
   const addItem = (newItem) => {
-    setItems(prev => [...prev, newItem])
-    handleClose()
+    const updatedItems = [...items, newItem];
+    setItems(updatedItems);
+    updateOrderItems(orderIndex, updatedItems);
+    handleClose();
   }
 
   const handleCancelItems = (index) => {
-    setItems(prev => prev.filter((_, i) => i !== index));
+    const updatedItems = items.filter((_, i) => i !== index);
+    setItems(updatedItems);
+    updateOrderItems(orderIndex, updatedItems);
   }
 
-  console.log(allowSharing)
 
 
   return (
