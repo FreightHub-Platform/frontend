@@ -55,21 +55,26 @@ const Business = () => {
 
   useEffect(() => {
     const fetchConsignerData = async () => {
-      
       const consigner = {"id": localStorage.getItem("id")}
       try {
         const data = await getConsignerById(consigner, Cookies.get('jwt'));
         if (data && data.businessName && data.brn) {
           setBusinessName(data.businessName);
           setRegistrationNo(data.brn);
+  
+          // Handle the logo URL
+          if (data.logo) {
+            setLogo(data.logo); // Set the URL to the state
+          }
         }
       } catch (error) {
         console.error('Error fetching consigner data:', error);
       }
     };
-
+  
     fetchConsignerData();
   }, []);
+  
 
 
   const handleLogoChange = (event) => {
@@ -115,11 +120,14 @@ const Business = () => {
     }
 
     if(!hasError){
+
+      console.log(logo)
       
       const businessInformation = {
         "id": localStorage.getItem("id"),
         "businessName": businessName,
-        "brn": registrationNo
+        "brn": registrationNo,
+        "logo": logo
       }
       try {
         const data = await updateBusiness(businessInformation, Cookies.get('jwt'));

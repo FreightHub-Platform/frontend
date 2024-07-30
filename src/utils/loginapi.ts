@@ -51,9 +51,7 @@ export const handleSignin = async (userDetails: { username: string, password: st
 };
 
 //UPDATE BUSINESS INFORMATION
-export const updateBusiness = async (businessInformation: {id: string, businessName: string, brn: string }, jwt: any) => {
-
-
+export const updateBusiness = async (businessInformation, jwt) => {
   try {
     const response = await fetch('http://localhost:8080/api/consigner/register/0', {
       method: 'POST',
@@ -64,10 +62,12 @@ export const updateBusiness = async (businessInformation: {id: string, businessN
       body: JSON.stringify(businessInformation),
     });
 
-    if (response.ok) {
-      return true;
-    } else {
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Response Error:', errorText);
       return false;
+    } else {
+      return true;
     }
   } catch (error) {
     console.error('Error:', error);

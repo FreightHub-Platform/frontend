@@ -1,6 +1,8 @@
 import Box from '@mui/material/Box'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { useRouter } from 'next/navigation';
+import { saveOrder } from '../../../../../utils/order';
+import Cookies from 'js-cookie';
 
 
 const SucessPlacement = () => {
@@ -8,10 +10,25 @@ const SucessPlacement = () => {
   const router = useRouter()
 
 
-  const handleSubmit =() => {
-    const orderdetails = localStorage.getItem('ordersDetails')
-    const orderParse = JSON.parse(orderdetails)
-    console.log(orderParse)
+  const handleSubmit = async () => {
+    const orderDetailsString = localStorage.getItem('ordersDetails')
+    let orderDetails = orderDetailsString ? JSON.parse(orderDetailsString) : null;
+    const id = localStorage.getItem('id');
+    if (orderDetails && id) {
+      orderDetails.userId = id;
+    }
+    const orderDetailsJson = JSON.stringify(orderDetails);
+    console.log(orderDetailsJson);
+
+    const success = await saveOrder(orderDetailsJson, Cookies.get('jwt'));
+    console.log(Cookies.get('jwt'))
+    console.log(success)
+    
+    if (success) {
+      // localStorage.clear();
+      // router.replace("/consigner/orders")
+    }
+
     // localStorage.clear();
     // router.replace("/consigner/orders")
   }
