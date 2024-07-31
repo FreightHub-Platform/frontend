@@ -86,7 +86,7 @@ const ItemForm = ({addItems}) => {
       setCbmError(false)
     }
 
-    if(!tpyeError){
+    if(!type){
       hasError = true
       setTypeError(true)  
     } else {
@@ -99,7 +99,7 @@ const ItemForm = ({addItems}) => {
         "itemName": name,
         "weight": weight,
         "cbm": cbm,
-        "iTypeId": 1,
+        "iTypeId": type,
         "refrigerated": refrigirated,
         "hazardous": hazardous,
         "perishable": perishable,

@@ -66,15 +66,35 @@ const ViewPurchaseOrders = () => {
     if (reason === 'clickaway') {
       return;
     }
-
     setOpenNotification(false);
   };
+
+  const [openItemNotification, setOpenItemNotification] = useState(false);
+
+  const handleItemNotificationClick = () => {
+    setOpenItemNotification(true);
+  };
+
+  const handleItemNotificationClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenItemNotification(false);
+  };
+
 
   const handleNext = () => {
     if(!ordersDetails.purchaseOrders.length){
       handleNotificationClick()
     } else {
-      router.push('/consigner/orders/new/finalize');
+      ordersDetails.purchaseOrders.forEach(item => {
+        if(!item.items || !item.items.length){
+          handleItemNotificationClick()
+        } else {
+          router.push('/consigner/orders/new/finalize');
+        }
+      })
+      
     }
   }
 
@@ -185,6 +205,18 @@ const ViewPurchaseOrders = () => {
             sx={{ width: '100%' }}
           >
             Please add a Purchase Order
+          </Alert>
+        </Snackbar>
+      </div>
+      <div>
+        <Snackbar open={openItemNotification} autoHideDuration={4000} onClose={handleItemNotificationClose}>
+          <Alert
+            onClose={handleItemNotificationClose}
+            severity="error"
+            variant="filled"
+            sx={{ width: '100%' }}
+          >
+            Please add Items for Purchase Order
           </Alert>
         </Snackbar>
       </div>

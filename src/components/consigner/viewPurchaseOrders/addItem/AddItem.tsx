@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import ItemForm from './itemForm/ItemForm';
 import Typography from '@mui/material/Typography';
 
+
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -43,10 +44,10 @@ const AddItem = ({ order, orderIndex, updateOrderItems, cancelOrder }) => {
   return (
     <Box component="section" className='px-5 py-2 mb-2 shadow-lg rounded-lg border-orange-500 border-1 rounded-md flex flex-col'>
       <div className='flex flex-row justify-between items-center'>
-        <div className='bg-zinc-300 px-4 py-1 rounded-3xl font-semibold text-xs'>PO {order.order_no}</div>
+        <div className='bg-zinc-300 px-4 py-1 rounded-3xl font-semibold text-xs'>PO {order.poNumber}</div>
         <div>
           <FormControlLabel 
-            control={<Checkbox className='text-sm' defaultChecked={order.allow_shearing} onClick={() => setAllowSharing(!allowSharing)}/>} 
+            control={<Checkbox className='text-sm' defaultChecked={order.ltlFlag} onClick={() => setAllowSharing(!allowSharing)}/>} 
             label={
               <Typography className='text-sm'>
                 Allow Load Sharing
@@ -59,11 +60,11 @@ const AddItem = ({ order, orderIndex, updateOrderItems, cancelOrder }) => {
       <div className='flex flex-col'>
         <div className='flex items-center'>
           <p className='font-semibold mr-1 text-xs'>Drop-Off Location:</p>
-          <p className='text-xs'>SAMAN STORES JAFFNA</p>
+          <p className='text-xs'>{order.storeName}</p>
         </div>
         <div className='flex items-center mb-1'>
           <p className='font-semibold mr-1 text-xs'>Drop-Off Date:</p>
-          <p className='text-xs'>10/12/2024</p>
+          <p className='text-xs'>{order.dropDate}</p>
         </div>
       </div>
 
