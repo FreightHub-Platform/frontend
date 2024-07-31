@@ -29,14 +29,11 @@ const SucessPlacement = () => {
     const success = await saveOrder(orderDetailsJson, Cookies.get('jwt'));
     console.log(Cookies.get('jwt'))
     console.log(success)
-
-    localStorage.clear();
-    router.replace("/consigner/orders")
     
-    // if (success) {
-    //   localStorage.clear();
-    //   router.replace("/consigner/orders")
-    // }
+    if (success) {
+      localStorage.clear();
+      router.replace("/consigner/orders")
+    }
 
   }
 
