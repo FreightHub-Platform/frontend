@@ -122,14 +122,14 @@ const PurchaseOrder = ({closeFunction}) => {
     if(!hasError){
       
       const newDetail = {
-        "order_no": orderNo,
-        "store_contact": storeContact,
-        "store_email": storeEmail,
-        "date": date,
-        "drop_off_time": drop_offTime,
+        "poNumber": orderNo,
+        "contactNumber": storeContact,
+        "email": storeEmail,
+        "dropDate": date,
+        "dropTime": drop_offTime,
         "address": address,
-        "store_name": storeName,
-        "allow_shearing": allowSharing
+        "storeName": storeName,
+        "ltlFlag": allowSharing
       }
       
       closeFunction(newDetail);

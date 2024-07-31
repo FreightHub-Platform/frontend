@@ -1,5 +1,5 @@
 "use client"
-
+import Cookies from 'js-cookie';
 import styles from './login.module.css'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -18,6 +18,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import FormHelperText from '@mui/material/FormHelperText';
+import { handleSignin } from '../../../utils/loginapi';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
@@ -126,15 +127,56 @@ const LoginBox = () => {
       setPasswordError(false);
     }
 
-    if (!hasError) {
-      handleClick();
+    if(!hasError){
+      handleNavigation()
+      // router.push("/business_information")
+    }
+  }
+
+  const handleNavigation = async () => {
+    try {
+      // Call handleSignin and await the result
+      const userDetails = { username: email, password: password };
+      const data = await handleSignin(userDetails);
+
+      // Dissect the data
+      const { completion, role } = data;
+      localStorage.setItem('id', data.id);
+      Cookies.set('jwt', data.token, { expires: 1 });
+
+      if (role == "consigner") {
+        switch (completion) {
+          case 0:
+            router.push('/business_information');
+            break;
+          case 1:
+            router.push('/contact_information');
+            break;
+          case 2:
+            router.push('/location_information');
+            break;
+          case 3:
+            router.push('consigner/dashboard');
+            break;
+        }
+      } else if (role == "admin") {
+        router.push('/admin/dashboard');
+      } else if (role == "review_board") {
+        // router.push('/review_board/dashboard');
+      } else if (role == "fleet_owner") {
+        // router.push('/fleet_owner/dashboard');
+        console.log('fleet_owner');
+      } else {
+        setEmailWrong(true);
+        handleClick();
+        // router.push('/login');
+      }
+    } catch (error) {
+      // Handle error case
       setEmailWrong(true);
-      // Uncomment and adjust the following lines as needed
-      // if (email === "admin@gmail.com") {
-      //   router.push("/admin/dashboard");
-      // } else {
-      //   router.push("/business_information");
-      // }
+      handleClick();
+      console.error('Sign-in error:', error);
+      // Optionally, show an error message to the user
     }
   };
 
@@ -222,7 +264,7 @@ const LoginBox = () => {
             variant="filled"
             sx={{ width: '100%' }}
           >
-            This is a success Alert inside a Snackbar!
+            Please Check Your Credentials
           </Alert>
         </Snackbar>
         

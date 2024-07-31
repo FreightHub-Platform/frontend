@@ -54,10 +54,10 @@ const Prioratize = () => {
   const handleSuccessClose = () => setSuccessOpen(false);
 
   const [ordersDetails, setOrdersDetails] = useState({
-    pickup_date: '',
-    from: '',
-    to: '',
-    orders: []
+    pickupDate: '',
+    fromTime: '',
+    toTime: '',
+    purchaseOrders: []
   });
 
   useEffect(() => {
@@ -66,17 +66,17 @@ const Prioratize = () => {
       if (storedOrderDetails) {
         const parsedOrder = JSON.parse(storedOrderDetails);
         setOrdersDetails({
-          pickup_date: parsedOrder.pickup_date || '',
-          from: parsedOrder.from || '',
-          to: parsedOrder.to || '',
-          orders: parsedOrder.orders || [] 
+          pickupDate: parsedOrder.pickupDate || '',
+          fromTime: parsedOrder.fromTime || '',
+          toTime: parsedOrder.toTime || '',
+          purchaseOrders: parsedOrder.orders || [] 
         });
       }
     }
   }, []);
 
-  const fromDate = ordersDetails.from ? Number(ordersDetails.from.split(':')[0]) : 0;
-  const toDate = ordersDetails.to ? Number(ordersDetails.to.split(':')[0]) : 0;
+  const fromDate = ordersDetails.fromTime ? Number(ordersDetails.fromTime.split(':')[0]) : 0;
+  const toDate = ordersDetails.toTime ? Number(ordersDetails.toTime.split(':')[0]) : 0;
 
   const handleBack = () => {
     router.back()
@@ -103,13 +103,13 @@ const Prioratize = () => {
               </div>
               <div className='flex flex-row items-center'>
                 <p className='text-sm font-semibold mr-1'>Pickup Date:</p>
-                <p className='text-sm'>{ordersDetails.pickup_date}</p>
+                <p className='text-sm'>{ordersDetails.pickupDate}</p>
               </div>
               <div className='flex flex-row items-center'>
                 <p className='text-sm font-semibold mr-1'>Pickup Time:</p>
                 <p className='text-sm'>
-                {ordersDetails.from}{(fromDate >= 0 && fromDate < 12) ? ' AM' : ' PM'} - 
-                {ordersDetails.to}{(toDate >= 0 && toDate < 12) ? ' AM' : ' PM'}
+                {ordersDetails.fromTime}{(fromDate >= 0 && fromDate < 12) ? ' AM' : ' PM'} - 
+                {ordersDetails.toTime}{(toDate >= 0 && toDate < 12) ? ' AM' : ' PM'}
                 </p>
               </div>
             </div>
