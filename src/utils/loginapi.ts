@@ -122,11 +122,12 @@ export const updateLocation = async (locationInformation: any, jwt: any) => {
 };
 
 //MOBILE VERIFICATION
-export const sendMobileNumber = async (mobileNumber) => {
+export const sendMobileNumber = async (mobileNumber, jwt) => {
   try {
     const response = await fetch(`http://localhost:8080/api/otpv1/sendOtp?phoneNumber=${mobileNumber}`, {
       method: 'POST',
       headers: {
+        'Authorization': `Bearer ${jwt}`,
         'Content-Type': 'application/json',
       },
     });
@@ -143,11 +144,12 @@ export const sendMobileNumber = async (mobileNumber) => {
 }
 
 //VERIFY MOBILE NUMBER
-export const verifyMobileNumber = async (mobileNumber, otp) => {
+export const verifyMobileNumber = async (mobileNumber, otp, jwt) => {
   try {
     const response = await fetch(`http://localhost:8080/api/otpv1/verifyOtp?phoneNumber=${mobileNumber}&otp=${otp}`, {
       method: 'POST',
       headers: {
+        'Authorization': `Bearer ${jwt}`,
         'Content-Type': 'application/json',
       },
     });

@@ -12,6 +12,7 @@ import MobileNumber from './verification/MobileNumber';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { sendMobileNumber } from '../../../utils/loginapi';
+import Cookies from 'js-cookie';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -32,7 +33,7 @@ const MobileVerification = ({onVerificationSuccess, len, mobileNumber}) => {
 
   const handleVerifyOpen = async () => {
     try {
-      const data = await sendMobileNumber(mobileNumber)
+      const data = await sendMobileNumber(mobileNumber, Cookies.get('jwt'))
       if (data) {
         handleOpen()
       }

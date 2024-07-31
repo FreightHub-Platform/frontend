@@ -7,7 +7,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Avatar } from "@nextui-org/avatar";
 import Image from "next/image";
 import Logo from "../../../../public/images/Logo.svg";
-import SearchIn from "./Searchinput";
+import SearchIn from "./SeachInput";
 import { Badge } from "@nextui-org/badge";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
@@ -77,7 +77,7 @@ export function Topbar() {
           <div className="flex flex-row gap-6">
             <div className="flex flex-col  align-middle my-auto">
               <p className="text-medium">John Doe</p>
-              <p className="text-sm text-gray-500">Review</p>
+              <p className="text-sm text-gray-500">Consigner</p>
             </div>
             <IconButton aria-label="delete">
               <ExpandMoreIcon />

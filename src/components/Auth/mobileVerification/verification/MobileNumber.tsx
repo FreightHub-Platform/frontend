@@ -7,6 +7,7 @@ import Link from 'next/link';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import { verifyMobileNumber } from '../../../../utils/loginapi';
+import Cookies from 'js-cookie';
 
 
 const MobileNumber = ({Verification, mNumber}) => {
@@ -26,7 +27,8 @@ const MobileNumber = ({Verification, mNumber}) => {
   const handleSubmit = async () => {
     
     const enteredCode = inputs.join('');
-    const value = await verifyMobileNumber(mNumber, enteredCode)
+    const value = await verifyMobileNumber(mNumber, enteredCode,  Cookies.get('jwt'))
+    console.log(value)
     if (value) {
       Verification(true);
     } else {
