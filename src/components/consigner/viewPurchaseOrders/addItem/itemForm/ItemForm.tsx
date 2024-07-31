@@ -65,36 +65,36 @@ const ItemForm = ({addItems}) => {
 
     let hasError = false
 
-    // if(!name){
-    //   hasError = true
-    //   setNameError(true)
-    // } else {
-    //   setNameError(false)  
-    // }
+    if(!name){
+      hasError = true
+      setNameError(true)
+    } else {
+      setNameError(false)  
+    }
 
-    // if(!weight){
-    //   hasError = true
-    //   setWeightError(true)
-    // } else {
-    //   setWeightError(false)
-    // }
+    if(!weight){
+      hasError = true
+      setWeightError(true)
+    } else {
+      setWeightError(false)
+    }
 
-    // if(!cbm){
-    //   hasError = true
-    //   setCbmError(true)      
-    // } else {
-    //   setCbmError(false)
-    // }
+    if(!cbm){
+      hasError = true
+      setCbmError(true)      
+    } else {
+      setCbmError(false)
+    }
 
-    // if(!tpyeError){
-    //   hasError = true
-    //   setTypeError(true)  
-    // } else {
-    //   setTypeError(false)
-    // }
+    if(!tpyeError){
+      hasError = true
+      setTypeError(true)  
+    } else {
+      setTypeError(false)
+    }
 
     
-
+    if(!hasError){
       const newItem = {
         "name": name,
         "weight": weight,
@@ -106,7 +106,7 @@ const ItemForm = ({addItems}) => {
       }
       
       addItems(newItem)
-    
+    }
 
   }
 

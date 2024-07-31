@@ -81,6 +81,11 @@ const NewOrder = () => {
     }
 
     if(!hasError){
+
+      if(localStorage.getItem('ordersDetails') !== null){
+        localStorage.removeItem('ordersDetails')
+      }
+
       const order = {
         "pickup_date": pickupdate,
         "from": from,
@@ -91,6 +96,8 @@ const NewOrder = () => {
     }
  
   }
+
+  const today = new Date().toISOString().split('T')[0];
 
   return (
     
@@ -118,6 +125,9 @@ const NewOrder = () => {
                   onChange={(e) => setPickupDate(e.target.value)}
                   InputLabelProps={{
                     shrink: true,
+                  }}
+                  inputProps={{
+                    min: today, 
                   }}
                 />
               

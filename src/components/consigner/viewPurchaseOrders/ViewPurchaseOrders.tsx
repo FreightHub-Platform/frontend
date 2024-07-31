@@ -7,6 +7,9 @@ import Modal from '@mui/material/Modal';
 import { useState, useEffect } from 'react';
 import PurchaseOrder from '../purchaceOrder/PurchaseOrder';
 import { useRouter } from 'next/navigation';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+
 import './styles.css';
 
 const steps = [
@@ -53,8 +56,26 @@ const ViewPurchaseOrders = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const [openNotification, setOpenNotification] = useState(false);
+
+  const handleNotificationClick = () => {
+    setOpenNotification(true);
+  };
+
+  const handleNotificationClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenNotification(false);
+  };
+
   const handleNext = () => {
-    router.push('/consigner/orders/new/finalize');
+    if(!ordersDetails.orders.length){
+      handleNotificationClick()
+    } else {
+      // router.push('/consigner/orders/new/finalize');
+    }
   }
 
   const handlePurchaseOrder = (newDetail) => {
@@ -88,9 +109,6 @@ const ViewPurchaseOrders = () => {
     setOrdersDetails(updatedOrdersDetails);
   }
 
-  const fromDate = ordersDetails.from ? Number(ordersDetails.from.split(':')[0]) : 0;
-  const toDate = ordersDetails.to ? Number(ordersDetails.to.split(':')[0]) : 0;
-
   return (
     <Box component="section" className='w-4/5'>
       <Box component="section" className='border-orange-500 border-2 rounded-md my-3 bg-white p-3'>
@@ -115,8 +133,8 @@ const ViewPurchaseOrders = () => {
               <div className='flex items-center'>
                 <p className='font-semibold mr-1 text-xs'>Pickup Time:</p>
                 <p className='text-xs'>
-                  {ordersDetails.from}{(fromDate >= 0 && fromDate < 12) ? ' AM' : ' PM'} - 
-                  {ordersDetails.to}{(toDate >= 0 && toDate < 12) ? ' AM' : ' PM'}
+                  {ordersDetails.from} - 
+                  {ordersDetails.to}
                 </p>
               </div>
             </div>
@@ -146,10 +164,24 @@ const ViewPurchaseOrders = () => {
           ))}
         </Box>
         <div className='flex flex-row justify-between px-10'>
-          <button className='bg-primary py-1 px-10 rounded-lg text-white hover:bg-orange-500 text-xs duration-500' onClick={() => router.back()}>Back</button>
+          <button className='bg-primary py-1 px-10 rounded-lg text-white hover:bg-orange-500 text-xs duration-500' onClick={() => {
+            router.back()
+          }}>Back</button>
           <button className='bg-primary py-1 px-10 rounded-lg text-white hover:bg-orange-500 text-xs duration-500' onClick={handleNext}>Next</button>
         </div>
       </Box>
+      <div>
+        <Snackbar open={openNotification} autoHideDuration={4000} onClose={handleNotificationClose}>
+          <Alert
+            onClose={handleNotificationClose}
+            severity="error"
+            variant="filled"
+            sx={{ width: '100%' }}
+          >
+            Please add a Purchase Order
+          </Alert>
+        </Snackbar>
+      </div>
     </Box>
   );
 }
