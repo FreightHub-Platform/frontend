@@ -62,62 +62,62 @@ const PurchaseOrder = ({closeFunction}) => {
   const handleSubmit = () => {
     let hasError = false
 
-    // if(!orderNo){
-    //   hasError = true
-    //   setOrderNoError(true)
-    // } else {
-    //   setOrderNoError(false)
-    // }
+    if(!orderNo){
+      hasError = true
+      setOrderNoError(true)
+    } else {
+      setOrderNoError(false)
+    }
 
-    // if(!storeContact){
-    //   hasError = true
-    //   setStoreContactError(true)
-    // } else {
-    //   setStoreContactError(false)
-    // }
+    if(!storeContact){
+      hasError = true
+      setStoreContactError(true)
+    } else {
+      setStoreContactError(false)
+    }
 
-    // if(!storeEmail) {
-    //   setStoreEmailError(true)
-    //   hasError = true
-    // } else {
-    //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    //   if(!(emailRegex.test(storeEmail))){
-    //     setStoreEmailError(true)
-    //     setEmailVerification(true)
-    //     hasError = true
-    //   } else {
-    //     setStoreEmailError(false)
-    //     setEmailVerification(false)
-    //   }
-    // }
+    if(!storeEmail) {
+      setStoreEmailError(true)
+      hasError = true
+    } else {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if(!(emailRegex.test(storeEmail))){
+        setStoreEmailError(true)
+        setEmailVerification(true)
+        hasError = true
+      } else {
+        setStoreEmailError(false)
+        setEmailVerification(false)
+      }
+    }
 
-    // if(!date){
-    //   hasError = true
-    //   setDateError(true)
-    // } else {
-    //   setDateError(false)
-    // }
+    if(!date){
+      hasError = true
+      setDateError(true)
+    } else {
+      setDateError(false)
+    }
 
-    // if(!drop_offTime){
-    //   hasError = true
-    //   setDrop_offTimeError(true)
-    // } else {
-    //   setDrop_offTimeError(false)
-    // }
+    if(!drop_offTime){
+      hasError = true
+      setDrop_offTimeError(true)
+    } else {
+      setDrop_offTimeError(false)
+    }
 
-    // if(!address){
-    //   hasError = true
-    //   setAddressError(true)
-    // } else {
-    //   setAddressError(false)
-    // }
+    if(!address){
+      hasError = true
+      setAddressError(true)
+    } else {
+      setAddressError(false)
+    }
 
-    // if(!storeName){
-    //   hasError = true
-    //   setStoreNameError(true)
-    // } else {
-    //   setStoreNameError(false)
-    // }
+    if(!storeName){
+      hasError = true
+      setStoreNameError(true)
+    } else {
+      setStoreNameError(false)
+    }
 
     if(!hasError){
       
