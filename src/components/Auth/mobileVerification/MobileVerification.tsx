@@ -31,9 +31,19 @@ const MobileVerification = ({onVerificationSuccess, len, mobileNumber}) => {
 
   const [success, setSuccess] = useState(false)
 
+  function removeLeadingZero(mobileNumber: string): string {
+    if (mobileNumber.startsWith('0')) {
+      return mobileNumber.substring(1);
+    }
+    return mobileNumber;
+  }
+
   const handleVerifyOpen = async () => {
+    
+    const tempMobileNumber = removeLeadingZero(mobileNumber);
+
     try {
-      const data = await sendMobileNumber(mobileNumber, Cookies.get('jwt'))
+      const data = await sendMobileNumber(tempMobileNumber, Cookies.get('jwt'))
       if (data) {
         handleOpen()
       }

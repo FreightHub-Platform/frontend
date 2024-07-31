@@ -24,10 +24,19 @@ const MobileNumber = ({Verification, mNumber}) => {
     setInputs(newInputs);
   };
 
+  function removeLeadingZero(mobileNumber: string): string {
+    if (mobileNumber.startsWith('0')) {
+      return mobileNumber.substring(1);
+    }
+    return mobileNumber;
+  }
+
   const handleSubmit = async () => {
+
+    const tempMnumber = removeLeadingZero(mNumber);
     
     const enteredCode = inputs.join('');
-    const value = await verifyMobileNumber(mNumber, enteredCode,  Cookies.get('jwt'))
+    const value = await verifyMobileNumber(tempMnumber, enteredCode,  Cookies.get('jwt'))
     console.log(value)
     if (value) {
       Verification(true);
