@@ -1,5 +1,6 @@
 'use client'
 
+import Cookies from 'js-cookie';
 import Image from 'next/image'
 import styles from './business.module.css'
 import Navbar from '../../../components/navbar/Navbar'
@@ -10,10 +11,12 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Footer from '../../../components/footer/Footer'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { updateBusiness } from '../../../utils/loginapi'
+import { getConsignerById } from '../../../utils/consigner'
 
   const steps = [
     {
@@ -50,6 +53,29 @@ const Business = () => {
 
   const router = useRouter();
 
+  useEffect(() => {
+    const fetchConsignerData = async () => {
+      const consigner = {"id": localStorage.getItem("id")}
+      try {
+        const data = await getConsignerById(consigner, Cookies.get('jwt'));
+        if (data && data.businessName && data.brn) {
+          setBusinessName(data.businessName);
+          setRegistrationNo(data.brn);
+  
+          // Handle the logo URL
+          if (data.logo) {
+            setLogo(data.logo); // Set the URL to the state
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching consigner data:', error);
+      }
+    };
+  
+    fetchConsignerData();
+  }, []);
+  
+
 
   const handleLogoChange = (event) => {
     const file = event.target.files[0];
@@ -68,7 +94,7 @@ const Business = () => {
     }
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
 
     let hasError = false;
 
@@ -94,13 +120,25 @@ const Business = () => {
     }
 
     if(!hasError){
-      const businessIinformation = {
-        "businessName": businessName,
-        "brn": registrationNo
-      }
+
+      console.log(logo)
       
-      if(true){
-        router.push('/contact_information')
+      const businessInformation = {
+        "id": localStorage.getItem("id"),
+        "businessName": businessName,
+        "brn": registrationNo,
+        "logo": logo
+      }
+      try {
+        const data = await updateBusiness(businessInformation, Cookies.get('jwt'));
+
+        if(data){
+          router.push('/contact_information')
+        } else {
+          alert("brn already exist")
+        }
+      } catch (error) {
+        console.error('Error:', error);
       }
       
     }

@@ -1,5 +1,6 @@
 'use client'
 
+import Cookies from 'js-cookie'
 import styles from './location.module.css'
 import Navbar from '../../../components/navbar/Navbar'
 import ProcessBox from '../../../components/Auth/process/ProcessBox'
@@ -12,11 +13,13 @@ import Image from 'next/image'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckIcon from '@mui/icons-material/Check';
 import MenuItem from '@mui/material/MenuItem';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Footer from '../../../components/footer/Footer';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useRouter } from 'next/navigation'
+import { updateLocation } from '../../../utils/loginapi'
+import { getConsignerById } from '../../../utils/consigner'
 
 
 const steps = [
@@ -57,8 +60,29 @@ const Location = () => {
   const [cityError, setCityError] = useState(false)
   const [provinceError, setProvinceError] = useState(false)
 
+  useEffect(() => {
+    const fetchConsignerData = async () => {
+      
+      const consigner = {"id": localStorage.getItem("id")}
+      try {
+        const data = await getConsignerById(consigner, Cookies.get('jwt'));
+        if (data && data.addressLine1 && data.addressLine2 && data.city && data.province && data.postalCode) {
+          setAddress1(data.addressLine1);
+          setAddress2(data.addressLine2);
+          setCity(data.city);
+          setProvince(data.province);
+          setPostalCode(data.postalCode);
+        }
+      } catch (error) {
+        console.error('Error fetching consigner data:', error);
+      }
+    };
 
-  const handleSubmit = () => {
+    fetchConsignerData();
+  }, []);
+
+
+  const handleSubmit = async () => {
     let hasError = false
 
     if(!city){
@@ -98,11 +122,22 @@ const Location = () => {
 
     if(!hasError){
 
-      const location_information = {
-        // object eka hadanna
+      const locationInformation = {
+        "id": localStorage.getItem("id"),
+        "addressLine1": address1,
+        "addressLine2": address2,
+        "city": city,
+        "province": province,
+        "postalCode": postalCode
       }
 
-      router.replace("/consigner/orders")
+      const data = await updateLocation(locationInformation, Cookies.get('jwt'));
+
+      if (data) {
+        router.push('/consigner/dashboard')
+      } else {
+        alert("Something is wrong");
+      }
     }
   }
 
@@ -163,7 +198,7 @@ const Location = () => {
                 placeholder="Address"
                 color='warning'
                 value={address}
-                onChange={e => setAddress(e.target.value)}
+                onChange={e => setAddress(e.tarf.value)}
                 helperText={addressError ? "Please enter address" : ""}
                 sx={{width: '100%'}}
               />
@@ -180,7 +215,7 @@ const Location = () => {
                                             MozAppearance: "textfield",
                                           },
                   }}
-                  type='number'
+                  type='string'
                   error={address1Error}
                   id="outlined-basic" 
                   variant="outlined" 

@@ -96,11 +96,11 @@ const ItemForm = ({addItems}) => {
     
     if(!hasError){
       const newItem = {
-        "name": name,
+        "itemName": name,
         "weight": weight,
         "cbm": cbm,
-        "type": type,
-        "refrigirated": refrigirated,
+        "iTypeId": 1,
+        "refrigerated": refrigirated,
         "hazardous": hazardous,
         "perishable": perishable
       }

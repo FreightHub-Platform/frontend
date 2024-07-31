@@ -87,9 +87,9 @@ const NewOrder = () => {
       }
 
       const order = {
-        "pickup_date": pickupdate,
-        "from": from,
-        "to": to
+        "pickupDate": pickupdate,
+        "fromTime": from,
+        "toTime": to
       }
       localStorage.setItem('ordersDetails', JSON.stringify(order))
       router.push(`/consigner/orders/new/purchase_order`)

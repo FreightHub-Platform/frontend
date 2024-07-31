@@ -31,10 +31,10 @@ const ViewPurchaseOrders = () => {
   const router = useRouter();
 
   const [ordersDetails, setOrdersDetails] = useState({
-    pickup_date: '',
-    from: '',
-    to: '',
-    orders: []
+    pickupDate: '',
+    fromTime: '',
+    toTime: '',
+    purchaseOrders: []
   });
 
   useEffect(() => {
@@ -43,10 +43,10 @@ const ViewPurchaseOrders = () => {
       if (storedOrderDetails) {
         const parsedOrder = JSON.parse(storedOrderDetails);
         setOrdersDetails({
-          pickup_date: parsedOrder.pickup_date || '',
-          from: parsedOrder.from || '',
-          to: parsedOrder.to || '',
-          orders: parsedOrder.orders || [] 
+          pickupDate: parsedOrder.pickupDate || '',
+          fromTime: parsedOrder.fromTime || '',
+          toTime: parsedOrder.toTime || '',
+          purchaseOrders: parsedOrder.purchaseOrders || [] 
         });
       }
     }
@@ -80,34 +80,38 @@ const ViewPurchaseOrders = () => {
 
   const handlePurchaseOrder = (newDetail) => {
     const updatedOrders = [
-      ...ordersDetails.orders,
+      ...ordersDetails.purchaseOrders,
       newDetail
     ];
-    const updatedOrdersDetails = { ...ordersDetails, orders: updatedOrders };
+    const updatedOrdersDetails = { ...ordersDetails, purchaseOrders: updatedOrders };
     localStorage.setItem('ordersDetails', JSON.stringify(updatedOrdersDetails));
     setOrdersDetails(updatedOrdersDetails);
     handleClose();
   }
 
   const handleCancelPurchaseOrder = (index) => {
-    const updatedOrders = ordersDetails.orders.filter((_, i) => i !== index);
-    const updatedOrdersDetails = { ...ordersDetails, orders: updatedOrders };
+    const updatedOrders = ordersDetails.purchaseOrders.filter((_, i) => i !== index);
+    const updatedOrdersDetails = { ...ordersDetails, purchaseOrders: updatedOrders };
     localStorage.setItem('ordersDetails', JSON.stringify(updatedOrdersDetails));
     setOrdersDetails(updatedOrdersDetails);
   }
 
   const handleUpdateOrderItems = (orderIndex, updatedItems) => {
-    const updatedOrders = ordersDetails.orders.map((order, index) => {
+    const updatedOrders = ordersDetails.purchaseOrders.map((order, index) => {
       if (index === orderIndex) {
         return { ...order, items: updatedItems };
       }
       return order;
     });
 
-    const updatedOrdersDetails = { ...ordersDetails, orders: updatedOrders };
+    const updatedOrdersDetails = { ...ordersDetails, purchaseOrders: updatedOrders };
     localStorage.setItem('ordersDetails', JSON.stringify(updatedOrdersDetails));
     setOrdersDetails(updatedOrdersDetails);
   }
+
+  const fromDate = ordersDetails.fromTime ? Number(ordersDetails.fromTime.split(':')[0]) : 0;
+  const toDate = ordersDetails.toTime ? Number(ordersDetails.toTime.split(':')[0]) : 0;
+
 
   return (
     <Box component="section" className='w-4/5'>
@@ -128,13 +132,15 @@ const ViewPurchaseOrders = () => {
               </div>
               <div className='flex items-center'>
                 <p className='font-semibold mr-1 text-xs'>Pickup Date:</p>
-                <p className='text-xs'>{ordersDetails.pickup_date}</p>
+                <p className='text-xs'>{ordersDetails.pickupDate}</p>
               </div>
               <div className='flex items-center'>
                 <p className='font-semibold mr-1 text-xs'>Pickup Time:</p>
                 <p className='text-xs'>
+
                   {ordersDetails.from} - 
                   {ordersDetails.to}
+
                 </p>
               </div>
             </div>
@@ -153,7 +159,7 @@ const ViewPurchaseOrders = () => {
         </Box>
 
         <Box component="section" className='my-2 h-60 overflow-y-auto custom-scrollbar px-4'>
-          {ordersDetails.orders.map((detail, index) => (
+          {ordersDetails.purchaseOrders.map((detail, index) => (
             <AddItem 
               order={detail} 
               key={index} 

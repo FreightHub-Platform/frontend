@@ -18,7 +18,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import FormHelperText from '@mui/material/FormHelperText';
-import { handleSignup } from '../../../utils/api';
+import { handleSignup } from '../../../utils/regapi';
 
 const IOSSwitch = styled((props: SwitchProps) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />))
@@ -97,16 +97,18 @@ const RegisterBox = () => {
   const [passwordMissMatch, setPasswordMissMatch] = useState(false);
 
 
-  const handleNavigation = () => {
+  const handleNavigation = async () => {
     const userDetails = {
-      // "username": userName,
-      "email": email,
-      "password": password
+      "username": email,
+      "password": password,
+      "role": "consigner"
     }
-    
-    
-    router.push("/login")
-    
+    const data = await handleSignup(userDetails);
+    if(data){
+      router.push("/login")
+    } else {
+      alert("Email Exists")
+    }
   }
 
   const handleSignupButton =() => {
