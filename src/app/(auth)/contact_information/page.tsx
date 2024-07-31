@@ -53,7 +53,7 @@ const steps = [
   }
 ];
 
-const mobileCode = [ "070", "071", "072", "076", "077", "078" ]
+const mobileCode = [ "070", "071", "072", "076", "077", "078", "074" ]
 
 const Contact = () => {
 

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { Topbar } from "../../components/consigner/topbar/Topbar";
-import Sidebar from "../../components/consigner/sidebar/Sidebar";
+import { Topbar } from "../../components/review/topbar/Topbar";
+import Sidebar from "../../components/review/sidebar/Sidebar";
 
 export const metadata: Metadata = {
   title: "Freight Hub",

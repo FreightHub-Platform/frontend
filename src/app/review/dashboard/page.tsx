@@ -1,11 +1,11 @@
 import { Topbar } from "../../../components/review/topbar/Topbar";
 
-const Review = () => {
+const DAshboardPage = () => {
   return (
-    <div className="bg-gray-100 min-h-screen">
-      <Topbar />
-    </div>
+    <>
+    handleClose
+    </>
   );
 };
 
-export default Review;
+export default DAshboardPage;

@@ -1,9 +1,8 @@
 import { DashboardOutlined } from "@mui/icons-material";
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import ChecklistOutlinedIcon from '@mui/icons-material/ChecklistOutlined';
-import QuestionAnswerOutlinedIcon from '@mui/icons-material/QuestionAnswerOutlined';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 
 import { usePathname } from "next/navigation";
 
@@ -17,15 +16,15 @@ export const NavItems = () => {
   return [
     {
       group: "ACTIONS",
-      name: "Dashboard",
-      href: "/consigner/dashboard",
+      name: "Consigners",
+      href: "",
       icon: <DashboardOutlined />,
       active: pathname === "/consigner/dashboard",
       position: "top",
     },
     {
       group: "ACTIONS",
-      name: "Order List",
+      name: "Drivers",
       href: "/consigner/orders",
       icon: <ChecklistOutlinedIcon />,
       active: isNavItemActive(pathname, "/consigner/orders"),
@@ -33,9 +32,9 @@ export const NavItems = () => {
     },
     {
       group: "ACTIONS",
-      name: "Inbox",
+      name: "Vehicles",
       href: "/consigner/inbox",
-      icon: <QuestionAnswerOutlinedIcon />,
+      icon: <LocalShippingIcon />,
       active: isNavItemActive(pathname, "/consigner/inbox"),
       position: "top",
     },
