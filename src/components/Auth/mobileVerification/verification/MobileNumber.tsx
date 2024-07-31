@@ -5,15 +5,34 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Link from 'next/link';
 import TextField from '@mui/material/TextField';
+import { useState } from 'react';
 
-const MobileNumber = () => {
 
-  const handleInput = (e) => {
+const MobileNumber = ({Verification, mNumber}) => {
+
+  const [inputs, setInputs] = useState(Array(6).fill(''));
+
+  const handleInput = (index, e) => {
     const value = e.target.value;
     if (value.length > 1) {
       e.target.value = value.slice(0, 1);
     }
+    const newInputs = [...inputs];
+    newInputs[index] = e.target.value;
+    setInputs(newInputs);
   };
+
+  const handleSubmit = () => {
+    const enteredCode = inputs.join('');
+    const verificationCode = '123456'; 
+    if (enteredCode === verificationCode) {
+      Verification(true);
+    } else {
+      Verification(false);
+    }
+  };
+
+
 
   return (
     <Box sx={{ minWidth: 270 }}>
@@ -36,23 +55,27 @@ const MobileNumber = () => {
                 required
                 id="outlined-required"
                 label="Mobile Number"
-                defaultValue="0779876543"
+                defaultValue={mNumber}
               />
             </div>
           </Box>
         </div>
         <div className={styles.digitInput}>
-          <input type="number" className={styles.in} maxLength={1} onInput={handleInput}/>
-          <input type="number" className={styles.in} maxLength={1} onInput={handleInput}/>
-          <input type="number" className={styles.in} maxLength={1} onInput={handleInput}/>
-          <input type="number" className={styles.in} maxLength={1} onInput={handleInput}/>
-          <input type="number" className={styles.in} maxLength={1} onInput={handleInput}/>
-          <input type="number" className={styles.in} maxLength={1} onInput={handleInput}/>
+        {inputs.map((input, index) => (
+          <input
+            key={index}
+            type="number"
+            className={styles.in}
+            maxLength={1}
+            value={input}
+            onInput={(e) => handleInput(index, e)}
+          />
+        ))}
         </div>
         <div className={styles.signup_button}>
           <Button variant="contained"
             sx={{width: '80%', backgroundColor: '#FB8C00', marginBottom: '10px'}}
-            className={styles.btn}>Verify</Button>
+            className={styles.btn} onClick={handleSubmit}>Verify</Button>
         </div>
         <div className={styles.code}>
           <div className={styles.desc}>Dont have a code?</div>

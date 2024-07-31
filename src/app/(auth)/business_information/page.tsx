@@ -13,13 +13,28 @@ import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Footer from '../../../components/footer/Footer'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
-const status = {
-    stepCompletion: 0,
-    business: false,
-    contact: false,
-    location: false
-  }
+  const steps = [
+    {
+      title: 'Business',
+      semTitle: 'Business Information',
+      pathName: '/business_information',
+      status: false
+    },
+    {
+      title: 'Contact',
+      semTitle: 'Contact Information',
+      pathName: '/contact_information',
+      status: false
+    },
+    {
+      title: 'Location',
+      semTitle: 'Location Information',
+      pathName: '/location_information',
+      status: false
+    }
+  ];
 
 
 const Business = () => {
@@ -34,6 +49,7 @@ const Business = () => {
   const fileInputRef = useRef(null);
 
   const router = useRouter();
+
 
   const handleLogoChange = (event) => {
     const file = event.target.files[0];
@@ -78,7 +94,15 @@ const Business = () => {
     }
 
     if(!hasError){
-      router.push('/contact_information')
+      const businessIinformation = {
+        "businessName": businessName,
+        "brn": registrationNo
+      }
+      
+      if(true){
+        router.push('/contact_information')
+      }
+      
     }
   }
 
@@ -92,7 +116,9 @@ const Business = () => {
         </div>
       </div>
       <div className={styles.bottom}>
-        <ProcessBox step={status}/>
+        <Box component="section" sx={{ p: 2, border: '2px solid #FB8C00', borderRadius: '20px', marginTop: '20px' }} minWidth={800}>
+          <ProcessBox step={steps} completion={0}/>
+        </Box>
 
         <div className={styles.desc}>
           <div className={styles.titleContainer}>
@@ -103,11 +129,24 @@ const Business = () => {
             <button className={styles.edit}><EditOutlinedIcon className={styles.editicon}/>Edit</button>
             <div className={styles.progress}>
               <div className={styles.icon}>
-                  <ErrorRoundedIcon className={styles.erricon}/>
+                { (businessName && registrationNo && logo) ? <CheckCircleIcon className={styles.checkicon}/> : <ErrorRoundedIcon className={styles.erricon}/> }    
               </div>
               <div className={styles.detail}>
-                  <p>In Progress</p>
-                  <p>Fill all the fields</p>
+                  { (businessName && registrationNo && logo) ? 
+                    (
+                      <>
+                        <p>Saved</p>
+                        <p style={ {color: '#2AB930'} }>Uploaded</p>
+                      </>
+                    )
+                    :
+                    (
+                      <>
+                        <p>In Progress</p>
+                        <p>Fill all the fields</p>
+                      </>
+                    ) 
+                  }    
               </div>
             </div>
           </div>
@@ -151,19 +190,19 @@ const Business = () => {
             <div className={styles.head}>UPLOAD YOUR COMPANY LOGO</div>
             <div className={styles.logoInput} onClick={handleImageClick}>
               <input
-                  type="file"
-                  id="logo-upload"
-                  accept="image/*"
-                  className={styles.logo}
-                  onChange={handleLogoChange}
-                  ref={fileInputRef}
-                />
-                {!logo && (
-                  <div className={styles.logoLabel}>+</div>
-                )}
-                {logo && (
-                  <img src={logo} alt="Company Logo" className={styles.previewImage} />
-                )}
+                type="file"
+                id="logo-upload"
+                accept="image/*"
+                className={styles.logo}
+                onChange={handleLogoChange}
+                ref={fileInputRef}
+              />
+              {!logo && (
+                <div className={styles.logoLabel}>+</div>
+              )}
+              {logo && (
+                <img src={logo} alt="Company Logo" className={styles.previewImage} />
+              )}
             </div>
             <div className={styles.logoerr}>
               {logoError ? "Please input company logo" : ""}

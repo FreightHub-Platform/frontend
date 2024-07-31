@@ -1,16 +1,18 @@
 .container{
   border: 2px solid;
   border-color: #FB8C00;
-  padding: 30px;
+  padding: 15px 30px;
   border-radius: 8px;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+  max-height: 530px;
 }
 
 
 .title{
+  color: #FB8C00;
+  font-weight: 600;
+  font-size: 23px;
   text-align: center;
-  font-weight: bold;
-  font-size: 18px;
   margin-bottom: 20px;
 }
 
@@ -45,7 +47,7 @@
 .input_feilds{
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
 }
 
 .signup_button{
