@@ -11,6 +11,7 @@ import MobileNumber from './verification/MobileNumber';
 
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import { sendMobileNumber } from '../../../utils/loginapi';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -28,6 +29,17 @@ const MobileVerification = ({onVerificationSuccess, len, mobileNumber}) => {
   const handleClose = () => setOpen(false);
 
   const [success, setSuccess] = useState(false)
+
+  const handleVerifyOpen = async () => {
+    try {
+      const data = await sendMobileNumber(mobileNumber)
+      if (data) {
+        handleOpen()
+      }
+    } catch (error) {
+      console.error('Error fetching consigner data:', error);
+    }
+  }
 
   const handleverify = (value) => {
     if (value) {
@@ -57,7 +69,7 @@ const MobileVerification = ({onVerificationSuccess, len, mobileNumber}) => {
 
   return (
     <div>
-      <Button disabled={!len} onClick={handleOpen} className={styles.hoverButton}>Verify</Button>
+      <Button disabled={!len} onClick={handleVerifyOpen} className={styles.hoverButton}>Verify</Button>
         <Modal
           open={open}
           onClose={handleClose}

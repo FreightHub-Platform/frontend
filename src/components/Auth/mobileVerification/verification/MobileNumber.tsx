@@ -6,11 +6,12 @@ import Button from '@mui/material/Button';
 import Link from 'next/link';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
+import { verifyMobileNumber } from '../../../../utils/loginapi';
 
 
 const MobileNumber = ({Verification, mNumber}) => {
 
-  const [inputs, setInputs] = useState(Array(6).fill(''));
+  const [inputs, setInputs] = useState(Array(5).fill(''));
 
   const handleInput = (index, e) => {
     const value = e.target.value;
@@ -22,10 +23,11 @@ const MobileNumber = ({Verification, mNumber}) => {
     setInputs(newInputs);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    
     const enteredCode = inputs.join('');
-    const verificationCode = '123456'; 
-    if (enteredCode === verificationCode) {
+    const value = await verifyMobileNumber(mNumber, enteredCode)
+    if (value) {
       Verification(true);
     } else {
       Verification(false);
