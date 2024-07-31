@@ -17,20 +17,27 @@ const SucessPlacement = () => {
     if (orderDetails && id) {
       orderDetails.userId = id;
     }
+
+    orderDetails.purchaseOrders.forEach(item => {
+      item.items.forEach(ele => ele.iTypeId = 1)
+    })
+    console.log(orderDetails)    
+
     const orderDetailsJson = JSON.stringify(orderDetails);
     console.log(orderDetailsJson);
 
     const success = await saveOrder(orderDetailsJson, Cookies.get('jwt'));
     console.log(Cookies.get('jwt'))
     console.log(success)
-    
-    if (success) {
-      // localStorage.clear();
-      // router.replace("/consigner/orders")
-    }
 
-    // localStorage.clear();
-    // router.replace("/consigner/orders")
+    localStorage.clear();
+    router.replace("/consigner/orders")
+    
+    // if (success) {
+    //   localStorage.clear();
+    //   router.replace("/consigner/orders")
+    // }
+
   }
 
   return (

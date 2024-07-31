@@ -101,7 +101,13 @@ const Contact = () => {
       setAlternativeError(true)
       hasError = true
     } else {
-      setAlternativeError(false)
+      const prefix = alternative.substring(0, 3);
+      if(!mobileCode.includes(prefix)){
+        hasError = true
+        setAlternativeError(true)
+      } else {
+        setAlternativeError(false)
+      }
     }
 
     if(!hasError){
@@ -250,7 +256,7 @@ const Contact = () => {
             </Box>
           </div>
           <div className={styles.email}>
-            <Box
+            {/* <Box
                 component="form"
                 sx={{
                   '& .MuiTextField-root': { m: 1, width: '80%' },
@@ -267,7 +273,7 @@ const Contact = () => {
                     readOnly: true,
                   }}
                 />
-            </Box>
+            </Box> */}
           </div>
         </div>
 

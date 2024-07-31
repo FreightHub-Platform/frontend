@@ -32,6 +32,7 @@ const steps = [
   }
 ];
 
+const mobileCode = [ "070", "071", "072", "076", "077", "078", "074" ]
 
 const PurchaseOrder = ({closeFunction}) => {
 
@@ -65,11 +66,18 @@ const PurchaseOrder = ({closeFunction}) => {
       setOrderNoError(false)
     }
 
-    if(!storeContact){
+    if(!storeContact || storeContact.length != 10){
       hasError = true
       setStoreContactError(true)
     } else {
-      setStoreContactError(false)
+      const prefix = storeContact.substring(0, 3);
+      if(!mobileCode.includes(prefix)){
+        hasError = true
+        setStoreContactError(true)
+      } else {
+        setStoreContactError(false)
+      }
+      
     }
 
     if(!storeEmail) {
@@ -182,7 +190,7 @@ const PurchaseOrder = ({closeFunction}) => {
                   id="outlined-required"
                   label="Store contact number"
                   value={storeContact}
-                  helperText={storeContactError ? "Please enter contact number" : ""}
+                  helperText={storeContactError ? storeContact.length == 0 ? "Please enter contact number" : storeContact.length != 10 ? "Please enter valid mobile number" : "Please enter valid mobile number" : ""}
                   onChange={(e) => setStoreContact(e.target.value)}
                 />
               </div>

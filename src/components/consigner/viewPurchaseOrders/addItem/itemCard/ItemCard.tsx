@@ -10,7 +10,7 @@ const ItemCard = ({newItem, cancelItem}) => {
         <CloseIcon className='absolute top-1.5 right-1.5 text-sm'/>
         <div className='flex'>
           <p className='font-semibold mr-1 text-xs'>Type:</p>
-          <p className='text-xs'>{item.type}</p>
+          <p className='text-xs'>{item.iTypeId}</p>
         </div>
         <div className='flex'>
           <p className='font-semibold mr-1 text-xs'>Weight:</p>
