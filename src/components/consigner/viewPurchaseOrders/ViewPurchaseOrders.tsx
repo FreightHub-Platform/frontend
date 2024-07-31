@@ -71,10 +71,10 @@ const ViewPurchaseOrders = () => {
   };
 
   const handleNext = () => {
-    if(!ordersDetails.orders.length){
+    if(!ordersDetails.purchaseOrders.length){
       handleNotificationClick()
     } else {
-      // router.push('/consigner/orders/new/finalize');
+      router.push('/consigner/orders/new/finalize');
     }
   }
 
@@ -120,12 +120,12 @@ const ViewPurchaseOrders = () => {
           <ProcessBox step={steps} completion={1} />
         </Box>
 
-        <Box component="section" className='my-3 px-5 py-2 shadow-lg rounded-lg'>
+        <Box component="section" className='my-3 bg-slate-100 mx-10 px-5 py-3 shadow-lg  rounded-lg'>
           <div className='font-semibold text-sm'>
             <span className='bg-rose-200 px-4 py-1 rounded-3xl'>Pickup</span>  
           </div>
           <div className='flex flex-row justify-between px-2 mt-2 items-center'>
-            <div className='flex flex-col'>
+            <div className='flex flex-col gap-2 mt-2'>
               <div className='flex items-center'>
                 <p className='font-semibold mr-1 text-xs'>Pickup Location:</p>
                 <p className='text-xs'>Saman Stores Jaffna</p>
@@ -144,7 +144,7 @@ const ViewPurchaseOrders = () => {
                 </p>
               </div>
             </div>
-            <button className='bg-primary py-1 px-4 rounded-lg text-white hover:bg-orange-500 text-xs duration-500' onClick={handleOpen}>+ Add a Purchase Order</button>
+            <button className='bg-primary py-3 px-4 rounded-lg text-white hover:bg-orange-500 text-xs duration-500' onClick={handleOpen}>+ Add a Purchase Order</button>
             <Modal
               open={open}
               onClose={handleClose}
@@ -170,10 +170,10 @@ const ViewPurchaseOrders = () => {
           ))}
         </Box>
         <div className='flex flex-row justify-between px-10'>
-          <button className='bg-primary py-1 px-10 rounded-lg text-white hover:bg-orange-500 text-xs duration-500' onClick={() => {
+          <button className='bg-gray-500 py-3 px-10 rounded-lg text-white hover:bg-gray-600 text-xs duration-500' onClick={() => {
             router.back()
           }}>Back</button>
-          <button className='bg-primary py-1 px-10 rounded-lg text-white hover:bg-orange-500 text-xs duration-500' onClick={handleNext}>Next</button>
+          <button className='bg-success py-3 px-10 rounded-lg text-white hover:bg-green-600 text-xs duration-500' onClick={handleNext}>Next</button>
         </div>
       </Box>
       <div>

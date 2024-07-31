@@ -140,10 +140,10 @@ const Prioratize = () => {
 
           <div className='flex flex-row justify-between px-4'>
             <div>
-              <button className='bg-primary py-1 px-12 rounded-lg text-white hover:bg-orange-500 text-sm duration-500' onClick={handleBack}>Back</button>
+              <button className='bg-gray-400 py-3 px-12 rounded-lg text-white hover:bg-gray-500 text-sm duration-500' onClick={handleBack}>Back</button>
             </div>
             <div className='flex flex-row gap-10 px-4'>
-              <button className='bg-red-700 py-1 px-12 rounded-lg text-white hover:bg-red-800 text-sm duration-500' onClick={handleDeclineOpen}>
+              <button className='bg-red-700 py-3 px-12 rounded-lg text-white hover:bg-red-800 text-sm duration-500' onClick={handleDeclineOpen}>
                 Decline
               </button>
               <Modal
@@ -156,8 +156,8 @@ const Prioratize = () => {
                   <CanceledPlacement />
                 </Box>
               </Modal>
-              <button className='bg-primary py-1 px-12 rounded-lg text-white hover:bg-orange-500 text-sm duration-500' onClick={handleSuccessOpen}>
-                Next
+              <button className='bg-success py-1 px-12 rounded-lg text-white hover:bg-green-500 text-sm duration-500' onClick={handleSuccessOpen}>
+                Submit
               </button>
               <Modal
                 open={openSuccess}
