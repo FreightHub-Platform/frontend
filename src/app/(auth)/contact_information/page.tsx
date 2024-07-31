@@ -1,49 +1,82 @@
 'use client'
 
 import styles from './contact.module.css'
-import Image from 'next/image'
+
+//Components
 import Navbar from '../../../components/navbar/Navbar'
 import ProcessBox from '../../../components/Auth/process/ProcessBox'
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import ErrorRoundedIcon from '@mui/icons-material/ErrorRounded';
+import MobileVerification from '../../../components/Auth/mobileVerification/MobileVerification';
+import Footer from '../../../components/footer/Footer'
+
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import MobileVerification from '../../../components/Auth/mobileVerification/MobileVerification';
+import InputAdornment from '@mui/material/InputAdornment';
+
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Footer from '../../../components/footer/Footer'
+import Image from 'next/image'
 
-const status = {
-  stepCompletion: 1,
-  business: true,
-  contact: false,
-  location: false
-}
+//Icons
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import ErrorRoundedIcon from '@mui/icons-material/ErrorRounded';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CheckIcon from '@mui/icons-material/Check';
+
+
+
+
+const steps = [
+  {
+    title: 'Business',
+    semTitle: 'Business Information',
+    pathName: '/business_information',
+    status: true
+  },
+  {
+    title: 'Contact',
+    semTitle: 'Contact Information',
+    pathName: '/contact_information',
+    status: false
+  },
+  {
+    title: 'Location',
+    semTitle: 'Location Information',
+    pathName: '/location_information',
+    status: false
+  }
+];
+
+const mobileCode = [ "070", "071", "072", "076", "077", "078" ]
 
 const Contact = () => {
 
   const router = useRouter()
 
+  const [verification, setVerification] = useState(false)
   const [mobile, setMobile] = useState('')
   const [mobileError, setMobileError] = useState(false)
-  const [aternative, setAlternative] = useState('')
+  const [alternative, setAlternative] = useState('')
   const [alternativeError, setAlternativeError] = useState(false)
+
+  const handleVerificationSuccess = () => {
+    setVerification(true)
+  }
 
   const handleNext = () => {
     let hasError = false
 
-    if(!mobile){
+    if(!mobile || mobile.length != 10){
       setMobileError(true)
       hasError = true
     } else {
       setMobileError(false)
     }
 
-    if(!aternative){
+    if(!alternative || alternative.length != 10){
       setAlternativeError(true)
       hasError = true
     } else {
@@ -51,9 +84,35 @@ const Contact = () => {
     }
 
     if(!hasError){
+
+      const contactInformation = {
+        "mainNumber": mobile,
+        "altNumber": alternative
+      }
+
       router.push('/location_information')
     }
   }
+
+  const checkMobileCode = (value) => {
+    const prefix = value.substring(0, 3);
+    if (!mobileCode.includes(prefix)) {
+      setMobileError(true);
+    } else {
+      setMobileError(false);
+    }
+  }
+
+  const handleMobileChange = (e) => {
+    const value = e.target.value;
+    setMobile(value);
+
+    if (value.length == 10) {
+      checkMobileCode(value)
+    }
+  };
+
+  
 
   return (
     <div className={styles.container}>
@@ -64,8 +123,9 @@ const Contact = () => {
         </div>
       </div>
       <div className={styles.bottom}>
-        <ProcessBox step={status}/>
-
+        <Box component="section" sx={{ p: 2, border: '2px solid #FB8C00', borderRadius: '20px', marginTop: '20px' }} minWidth={800} >
+          <ProcessBox step={steps} completion={1}/>
+        </Box>
         <div className={styles.desc}>
           <div className={styles.titleContainer}>
             <div className={styles.title}>Contact Information</div>
@@ -75,11 +135,24 @@ const Contact = () => {
             <button className={styles.edit}><EditOutlinedIcon className={styles.editicon}/>Edit</button>
             <div className={styles.progress}>
               <div className={styles.icon}>
-                  <ErrorRoundedIcon className={styles.erricon}/>
+              { (verification && alternative.length == 10) ? <CheckCircleIcon className={styles.checkicon}/> : <ErrorRoundedIcon className={styles.erricon}/> }
               </div>
               <div className={styles.detail}>
-                  <p>In Progress</p>
-                  <p>Fill all the fields</p>
+                  { (verification && alternative.length == 10) ? 
+                    (
+                      <>
+                        <p>Saved</p>
+                        <p style={ {color: '#2AB930'} }>Uploaded</p>
+                      </>
+                    )
+                    :
+                    (
+                      <>
+                        <p>In Progress</p>
+                        <p>Fill all the fields</p>
+                      </>
+                    ) 
+                  }    
               </div>
             </div>
           </div>
@@ -97,25 +170,52 @@ const Contact = () => {
             >
             <div className={styles.verify}>
               <TextField
+                sx={{
+                  "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
+                                          display: "none",
+                                        },
+                "& input[type=number]": {
+                                          MozAppearance: "textfield",
+                                        },
+                }}
                 error={mobileError}
+                type='number'
                 color='warning'
                 id="outlined-required"
                 label="Mobile Number"
                 value={mobile}
-                onChange={(e) => setMobile(e.target.value)}
-                helperText={mobileError ? "Please enter mobile number" : ""}
+                onChange={handleMobileChange}
+                helperText={ mobileError ? mobile.length == 0 ? "Please enter mobile number" : mobile.length != 10 ? "Please enter valid mobile number" : "Please enter valid mobile number" : ""}
+                InputProps={{
+
+                  endAdornment:  verification ? (
+                    <InputAdornment position="end">
+                      <CheckIcon className='text-green-500'/>
+                    </InputAdornment>
+                  ) : null,
+                }}
              />
-             <MobileVerification />
+             <MobileVerification onVerificationSuccess={handleVerificationSuccess} len={mobile.length !== 10 ? false : true} mobileNumber={mobile}/>
             </div>
             <div>
               <TextField
+                sx={{
+                  "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
+                                          display: "none",
+                                        },
+                "& input[type=number]": {
+                                          MozAppearance: "textfield",
+                                        },
+                }}
                 error={alternativeError}
+                disabled={!verification ? true : false}
+                type='number'
                 color='warning'
                 id="outlined-required"
                 label="Alternative Mobile Number"
-                value={aternative}
+                value={alternative}
                 onChange={(e) => setAlternative(e.target.value)}
-                helperText={alternativeError ? "Please enter alternative mobile number" : ""}
+                helperText={ alternativeError ? alternative.length == 0 ? "Please enter alternative mobile number" : alternative.length != 10 ? "Please enter valid alternative mobile number" : "" : ""} 
              />
             </div>
             </Box>
@@ -158,6 +258,8 @@ const Contact = () => {
             <ArrowForwardIcon  />
           </button>
         </div>
+
+        
 
         <Footer />
       </div>

@@ -4,10 +4,13 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import { useState } from 'react';
-import MobileNumber from './verification/MobileNumber';
 import styles from './mobile.module.css'
+import * as React from 'react';
 
+import MobileNumber from './verification/MobileNumber';
 
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -19,14 +22,42 @@ const style = {
   borderRadius: '16px',
 };
 
-const MobileVerification = () => {
+const MobileVerification = ({onVerificationSuccess, len, mobileNumber}) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const [success, setSuccess] = useState(false)
+
+  const handleverify = (value) => {
+    if (value) {
+      setSuccess(true)
+      handleNotificationClick()
+      onVerificationSuccess()
+      handleClose()
+    } else {
+      handleNotificationClick()
+    }
+    
+  }
+
+  const [openNotification, setNotificationOpen] = useState(false);
+
+  const handleNotificationClick = () => {
+    setNotificationOpen(true);
+  };
+
+  const handleNotificationClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setNotificationOpen(false);
+  };
+
   return (
     <div>
-      <Button onClick={handleOpen} className={styles.hoverButton}>Verify</Button>
+      <Button disabled={!len} onClick={handleOpen} className={styles.hoverButton}>Verify</Button>
         <Modal
           open={open}
           onClose={handleClose}
@@ -34,9 +65,22 @@ const MobileVerification = () => {
           aria-describedby="modal-modal-description"
         >
         <Box sx={style}>
-          <MobileNumber />
+          <MobileNumber Verification={handleverify} mNumber={mobileNumber} />
         </Box>
       </Modal>
+
+      <Snackbar open={openNotification} autoHideDuration={4000} onClose={handleNotificationClose}>
+        <Alert
+          onClose={handleNotificationClose}
+          severity={success ? 'success' : 'error'}
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          {success ? 'Mobile verification success!' : 'Mobile verification failed, Please try again!'}
+          
+        </Alert>
+      </Snackbar>
+      
     </div>
   );
 }
