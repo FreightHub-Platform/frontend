@@ -102,7 +102,8 @@ const ItemForm = ({addItems}) => {
         "iTypeId": 1,
         "refrigerated": refrigirated,
         "hazardous": hazardous,
-        "perishable": perishable
+        "perishable": perishable,
+        "fragile": false
       }
       
       addItems(newItem)

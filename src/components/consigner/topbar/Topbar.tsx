@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useEffect, useState } from "react";
 import { Smooch_Sans } from "next/font/google";
 import { IconButton } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -12,6 +13,8 @@ import { Badge } from "@nextui-org/badge";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
+import Cookies from "js-cookie";
+import { getConsignerById } from "../../../utils/consigner";
 
 const displayFont = Smooch_Sans({
   weight: "700",
@@ -21,6 +24,29 @@ const displayFont = Smooch_Sans({
 });
 
 export function Topbar() {
+  const [businessName, setBusinessName] = useState('John Does');
+  const [logo, setLogo] = useState('https://i.pravatar.cc/150?u=a04258a2462d826712d');
+
+  useEffect(() => {
+    const fetchConsignerData = async () => {
+      const consigner = {"id": localStorage.getItem("id")};
+      console.log(consigner)
+      console.log(consigner.id)
+      console.log(Cookies.get('jwt'))
+      try {
+        const data = await getConsignerById(consigner, Cookies.get('jwt'));
+        if (data && data.businessName && data.logo) {
+          setBusinessName(data.businessName);
+          setLogo(data.logo);
+        }
+      } catch (error) {
+        console.error('Error fetching consigner data:', error);
+      }
+    };
+
+    fetchConsignerData();
+  }, []);
+
   return (
     <nav className="flex w-full justify-between px-5 py-2 bg-white items-center">
       <div className="flex flex-row text-4xl items-center ">
@@ -58,7 +84,7 @@ export function Topbar() {
                 <HelpOutlineIcon fontSize="large" className="text-gray-600" />
               </IconButton>
             </div>
-            <div className="flex flex-col  align-middle my-auto">
+            <div className="flex flex-col align-middle my-auto">
               <Badge
                 content=""
                 color="success"
@@ -69,14 +95,14 @@ export function Topbar() {
                   isBordered
                   color="warning"
                   radius="full"
-                  src="https://i.pravatar.cc/150?u=a04258a2462d826712d"
+                  src={logo}
                 />
               </Badge>
             </div>
           </div>
           <div className="flex flex-row gap-6">
-            <div className="flex flex-col  align-middle my-auto">
-              <p className="text-medium">John Doe</p>
+            <div className="flex flex-col align-middle my-auto">
+              <p className="text-medium">{businessName}</p>
               <p className="text-sm text-gray-500">Consigner</p>
             </div>
             <IconButton aria-label="delete">

@@ -138,8 +138,8 @@ const ViewPurchaseOrders = () => {
                 <p className='font-semibold mr-1 text-xs'>Pickup Time:</p>
                 <p className='text-xs'>
 
-                  {ordersDetails.from} - 
-                  {ordersDetails.to}
+                  {ordersDetails.fromTime} - 
+                  {ordersDetails.toTime}
 
                 </p>
               </div>
