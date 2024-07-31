@@ -156,7 +156,7 @@ const LoginBox = () => {
             router.push('/location_information');
             break;
           case 3:
-            router.push('consigner/dashboard');
+            router.push('consigner/orders');
             break;
         }
       } else if (role == "admin") {
