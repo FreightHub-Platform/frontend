@@ -120,3 +120,45 @@ export const updateLocation = async (locationInformation: any, jwt: any) => {
     throw new Error('An unexpected error occurred.');
   }
 };
+
+//MOBILE VERIFICATION
+export const sendMobileNumber = async (mobileNumber) => {
+  try {
+    const response = await fetch(`http://localhost:8080/api/otpv1/sendOtp?phoneNumber=${mobileNumber}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('An unexpected error occurred.');
+  }
+}
+
+//VERIFY MOBILE NUMBER
+export const verifyMobileNumber = async (mobileNumber, otp) => {
+  try {
+    const response = await fetch(`http://localhost:8080/api/otpv1/verifyOtp?phoneNumber=${mobileNumber}&otp=${otp}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('An unexpected error occurred.');
+  }
+}
