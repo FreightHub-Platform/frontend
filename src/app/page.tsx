@@ -10,12 +10,12 @@ const Home = () => {
       <div className="relative w-full h-screen">
         <img src="/images/homefleet.jpg" alt="Home Fleet" className="absolute inset-0 w-full h-full object-cover brightness-50" />
         <div className="relative flex flex-col items-center justify-center w-full h-full text-center text-white">
-        <h1 className="text-6xl font-bold tracking-tight sm:text-8xl">FreightHub</h1>
+        <h1 className="text-6xl font-bold tracking-tight sm:text-8xl mt-36 mb-5">FreightHub</h1>
         <br /><br /><br /><br /><br />
-          <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">Move Your Freight Quickly and Easily!</h1>
-          <p className="mt-6 text-lg leading-8 sm:text-4xl">The Best Freight Forwarding Solution For Your Enterprise...</p>
+          <h1 className="text-3xl font-bold tracking-tight sm:text-6xl">Move Your Freight Quickly and Easily!</h1>
+          <p className="mt-6 text-medium leading-8 sm:text-3xl">The Best Freight Forwarding Solution For Your Enterprise...</p>
           <br /><br /><br />
-          <button className="rounded-md bg-orange-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:text-2xl">
+          <button className="rounded-md mt-10 bg-orange-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:text-2xl">
             Sign Up Now!
           </button>
         </div>
@@ -73,7 +73,7 @@ const Home = () => {
           <div className="flex flex-wrap justify-center mt-10">
             <div className="w-full sm:w-1/2 md:w-1/3 p-4">
               <div className="testimonial-card p-6 bg-gray-100 rounded-lg shadow-md">
-                <p className="text-gray-700">"FreightHub has transformed our logistics operations, making them more efficient and cost-effective."</p>
+                <p className="text-gray-700">\"FreightHub has transformed our logistics operations, making them more efficient and cost-effective."</p>
                 <p className="mt-4 font-bold">- John Doe, CEO of Logistics Co.</p>
               </div>
             </div>
