@@ -245,7 +245,7 @@ const LoginBox = () => {
         <div className={styles.signup_button}>
           <Button variant="contained"
             sx={{width: '100%', backgroundColor: '#FB8C00', marginBottom: '10px'}}
-            className={styles.btn} onClick={handleSignIn}>Sign in</Button>
+            className='hover:bg-orange-500 duration-400' onClick={handleSignIn}>Sign in</Button>
         </div>
         <div className={styles.sign_in}>
           <div className={styles.desc}>Don't have an account?</div>

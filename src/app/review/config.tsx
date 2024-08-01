@@ -19,7 +19,7 @@ export const NavItems = () => {
       name: "Consigners",
       href: "",
       icon: <DashboardOutlined />,
-      active: pathname === "/consigner/dashboard",
+      active: pathname === "/review/",
       position: "top",
     },
     {
