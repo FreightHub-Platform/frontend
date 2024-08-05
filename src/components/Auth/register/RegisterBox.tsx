@@ -279,7 +279,7 @@ const RegisterBox = () => {
         <div className={styles.signup_button}>
           <Button variant="contained"
             sx={{width: '100%', backgroundColor: '#FB8C00', marginBottom: '10px'}}
-            className={styles.btn} onClick={handleSignupButton}>Sign up</Button>
+            className='hover:bg-orange-500 duration-400' onClick={handleSignupButton}>Sign up</Button>
         </div>
 
         <div className={styles.sign_in}>
