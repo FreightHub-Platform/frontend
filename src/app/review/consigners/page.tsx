@@ -1,11 +1,12 @@
+import Consigners from "../../../components/review/consigners/Consigners";
 
 
-const Consigners = () => {
+const ConsignerPage = () => {
   return (
-    <>
-      Consigners
-    </>
+    <div className="flex justify-center">
+      <Consigners />
+    </div>
   );
 };
 
-export default Consigners;
+export default ConsignerPage;

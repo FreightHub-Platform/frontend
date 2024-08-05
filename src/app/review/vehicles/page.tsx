@@ -1,9 +1,11 @@
-const Vehicles = () => {
+import Vehicles from "../../../components/review/vehicles/Vehicles"
+
+const VehiclePage = () => {
   return(
-    <>
-      Vehicles
-    </>
+    <div className="flex justify-center">
+      <Vehicles />
+    </div>
   )
 }
 
-export default Vehicles
+export default VehiclePage
