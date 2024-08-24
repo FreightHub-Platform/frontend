@@ -86,10 +86,10 @@ const ProcessBox = ({ step, completion }) => {
       <Box sx={{ width: '100%' }}>
         <Stepper activeStep={completion} alternativeLabel connector={<QontoConnector />}>
           {step.map((label, index) => (
-            <Step key={label.title}>
+            <Step key={label.semTitle}>
               <StepLabel StepIconComponent={(props) => <QontoStepIcon {...props} stepNumber={index + 1} />}>
-                {label.title}
-                <div className={styles.information} style={{ marginTop: '5px', marginBottom: '10px', fontSize: '15px', fontWeight: 500 }}>{label.semTitle}</div>
+                {label.title ? label.title : ""}
+                <div className={styles.information} style={{ marginTop: '5px', marginBottom: '10px', fontSize: '15px', fontWeight: 500 }}>{label.semTitle ? label.semTitle : ""}</div>
                 <div className={styles.status} style={{
                   border: `1px solid ${label.pathName === path ? 'orange' : label.status ? 'rgb(3, 189, 3)' : 'rgb(199, 199, 199)'}`,
                   padding: '5px',

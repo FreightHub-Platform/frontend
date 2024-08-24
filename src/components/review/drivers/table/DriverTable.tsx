@@ -34,15 +34,15 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
 };
 
 const INITIAL_VISIBLE_COLUMNS = [
-  "name",
-  "id",
-  "main",
-  "alter",
+  "first_name",
+  "last_name",
+  "nic",
+  "email",
   "add1",
   "add2",
-  "postal",
-  "city",
+  "zip_code",
   "province",
+  "vehicle",
   "status",
   "actions",
 ];
@@ -81,7 +81,7 @@ export default function DriverTable() {
 
     if (hasSearchFilter) {
       filteredconsigners = filteredconsigners.filter((user) =>
-        user.name.toLowerCase().includes(filterValue.toLowerCase())
+        user.nic.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     if (
@@ -107,13 +107,17 @@ export default function DriverTable() {
 
   const sortedItems = React.useMemo(() => {
     return [...items].sort((a: User, b: User) => {
-      const first = a[sortDescriptor.column as keyof User] as number;
-      const second = b[sortDescriptor.column as keyof User] as number;
+      const first = a[sortDescriptor.column as keyof User];
+      const second = b[sortDescriptor.column as keyof User];
       const cmp = first < second ? -1 : first > second ? 1 : 0;
 
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
     });
   }, [sortDescriptor, items]);
+
+  const handleViewMore = () => {
+    //View More Logic
+  }
 
   const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
     const cellValue = user[columnKey as keyof User];
@@ -150,6 +154,7 @@ export default function DriverTable() {
               </DropdownTrigger>
               <DropdownMenu>
                 <DropdownItem onClick={handleVerified}>{user.status === 'Verified' ? 'Un verified' : 'Verified'}</DropdownItem>
+                <DropdownItem onClick={handleViewMore}>View More</DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -200,7 +205,7 @@ export default function DriverTable() {
           <Input
             isClearable
             className="w-full sm:max-w-[44%]"
-            placeholder="Search by Business Registration Number"
+            placeholder="Search by NIC Number"
             startContent={<SearchIcon />}
             value={filterValue}
             onClear={() => onClear()}
@@ -353,7 +358,7 @@ export default function DriverTable() {
       </TableHeader>
       <TableBody emptyContent={"No vehicles found"} items={sortedItems}>
         {(item) => (
-          <TableRow key={item.id}>
+          <TableRow key={item.nic}>
             {(columnKey) => (
               <TableCell>{renderCell(item, columnKey)}</TableCell>
             )}
