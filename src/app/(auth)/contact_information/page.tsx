@@ -70,7 +70,7 @@ const Contact = () => {
       
       const consigner = {"id": localStorage.getItem("id")}
       try {
-        const data = await getConsignerById(consigner, Cookies.get('jwt'));
+        const data = await getConsignerById(consigner);
         if (data && data.mainNumber && data.altNumber) {
           setMobile(data.mainNumber);
           setAlternative(data.altNumber);
@@ -118,7 +118,7 @@ const Contact = () => {
         "altNumber": alternative
       }
 
-      const data = await updateContact(contactInformation, Cookies.get('jwt'));
+      const data = await updateContact(contactInformation);
 
       if(data) {
         router.push('/location_information')

@@ -57,7 +57,7 @@ const Business = () => {
     const fetchConsignerData = async () => {
       const consigner = {"id": localStorage.getItem("id")}
       try {
-        const data = await getConsignerById(consigner, Cookies.get('jwt'));
+        const data = await getConsignerById(consigner);
         if (data && data.businessName && data.brn) {
           setBusinessName(data.businessName);
           setRegistrationNo(data.brn);
@@ -130,7 +130,7 @@ const Business = () => {
         "logo": logo
       }
       try {
-        const data = await updateBusiness(businessInformation, Cookies.get('jwt'));
+        const data = await updateBusiness(businessInformation);
 
         if(data){
           router.push('/contact_information')

@@ -1,8 +1,10 @@
+import DriverTable from "./table/DriverTable"
+
 const Drivers = () => {
   return(
-    <>
-      Driver Table
-    </>
+    <div className="flex w-11/12">
+      <DriverTable />
+    </div>
   )
 }
 

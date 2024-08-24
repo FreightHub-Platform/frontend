@@ -19,6 +19,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import FormHelperText from '@mui/material/FormHelperText';
 import { handleSignup } from '../../../utils/regapi';
+import { UserRole } from '../../../utils/interfaces/signIn_signUp';
 
 const IOSSwitch = styled((props: SwitchProps) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />))
@@ -85,8 +86,7 @@ const RegisterBox = () => {
     event.preventDefault();
   };
 
-  // const [userName, setUserName] = useState("");
-  // const [userNameError, setuserNameError] = useState(false);
+ 
   const [email, setEmail] = useState("");
   const [emailError, setemailError] = useState(false);
   const [emailVerfication, setEmailVerfication] = useState(false);
@@ -101,7 +101,7 @@ const RegisterBox = () => {
     const userDetails = {
       "username": email,
       "password": password,
-      "role": "consigner"
+      "role": UserRole.Consigner
     }
     const data = await handleSignup(userDetails);
     if(data){
