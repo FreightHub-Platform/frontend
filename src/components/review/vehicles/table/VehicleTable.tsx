@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
+
 import {
   Table,
   TableHeader,
@@ -14,6 +15,7 @@ import {
   DropdownMenu,
   DropdownItem,
   Chip,
+  User,
   Pagination,
   Selection,
   ChipProps,
@@ -32,21 +34,22 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
 };
 
 const INITIAL_VISIBLE_COLUMNS = [
-  "name",
-  "id",
-  "main",
-  "add1",
-  "add2",
-  "postal",
-  "city",
-  "province",
+  "license_plate",
+  "reg_no",
+  "type",
+  "is_refid",
+  "crane",
+  "year_manufac",
+  "zip_code",
+  "color",
+  "owner",
   "status",
   "actions",
 ];
 
 type User = (typeof consigners)[0];
 
-export default function ConsignerTable() {
+export default function VehicleTable() {
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([])
@@ -78,7 +81,7 @@ export default function ConsignerTable() {
 
     if (hasSearchFilter) {
       filteredconsigners = filteredconsigners.filter((user) =>
-        user.id.toLowerCase().includes(filterValue.toLowerCase())
+        user.license_plate.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     if (
@@ -112,16 +115,22 @@ export default function ConsignerTable() {
     });
   }, [sortDescriptor, items]);
 
+  const handleViewMore = () => {
+    //View More Logic
+  }
+
   const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
     const cellValue = user[columnKey as keyof User];
 
     // Handle verified function
     const userStatus = user.status
     const handleVerified = () => {
-      // Implement your logic here
+      
     }
+    
 
     switch (columnKey) {
+     
       case "status":
         return (
           <Chip
@@ -144,9 +153,8 @@ export default function ConsignerTable() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem onClick={handleVerified}>
-                  {user.status === 'Verified' ? 'Unverified' : 'Verified'}
-                </DropdownItem>
+                <DropdownItem onClick={handleVerified}>{user.status === 'Verified' ? 'Un verified' : 'Verified'}</DropdownItem>
+                <DropdownItem onClick={handleViewMore}>View More</DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -197,7 +205,7 @@ export default function ConsignerTable() {
           <Input
             isClearable
             className="w-full sm:max-w-[44%]"
-            placeholder="Search by Business Registration Number"
+            placeholder="Search by License Plate Number"
             startContent={<SearchIcon />}
             value={filterValue}
             onClear={() => onClear()}
@@ -313,51 +321,50 @@ export default function ConsignerTable() {
             size="sm"
             variant="flat"
             onPress={onNextPage}
-            >
-              Next
-            </Button>
-          </div>
+          >
+            Next
+          </Button>
         </div>
-      );
-    }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
-  
-    return (
-      <Table
-        aria-label="Example table with custom cells, pagination and sorting"
-        isHeaderSticky
-        bottomContent={bottomContent}
-        bottomContentPlacement="outside"
-        classNames={{
-          wrapper: "",
-        }}
-        selectedKeys={selectedKeys}
-        sortDescriptor={sortDescriptor}
-        topContent={topContent}
-        topContentPlacement="outside"
-        onSelectionChange={setSelectedKeys}
-        onSortChange={setSortDescriptor}
-      >
-        <TableHeader columns={headerColumns}>
-          {(column) => (
-            <TableColumn
-              key={column.uid}
-              align={column.uid === "actions" ? "center" : "start"}
-              allowsSorting={column.sortable}
-            >
-              {column.name}
-            </TableColumn>
-          )}
-        </TableHeader>
-        <TableBody emptyContent={"No vehicles found"} items={sortedItems}>
-          {(item) => (
-            <TableRow key={item.id}>
-              {(columnKey) => (
-                <TableCell>{renderCell(item, columnKey)}</TableCell>
-              )}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+      </div>
     );
-  }
-  
+  }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
+
+  return (
+    <Table
+      aria-label="Example table with custom cells, pagination and sorting"
+      isHeaderSticky
+      bottomContent={bottomContent}
+      bottomContentPlacement="outside"
+      classNames={{
+        wrapper: "",
+      }}
+      selectedKeys={selectedKeys}
+      sortDescriptor={sortDescriptor}
+      topContent={topContent}
+      topContentPlacement="outside"
+      onSelectionChange={setSelectedKeys}
+      onSortChange={setSortDescriptor}
+    >
+      <TableHeader columns={headerColumns}>
+        {(column) => (
+          <TableColumn
+            key={column.uid}
+            align={column.uid === "actions" ? "center" : "start"}
+            allowsSorting={column.sortable}
+          >
+            {column.name}
+          </TableColumn>
+        )}
+      </TableHeader>
+      <TableBody emptyContent={"No vehicles found"} items={sortedItems}>
+        {(item) => (
+          <TableRow key={item.license_plate}>
+            {(columnKey) => (
+              <TableCell>{renderCell(item, columnKey)}</TableCell>
+            )}
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
+  );
+}

@@ -21,7 +21,7 @@ const statusOptions = [
 const consigners = [
   {
     name: "Advantis",
-    id: 23,
+    id: "bn123",
     main: "0775006920",
     alter: "0779996325",
     add1: "283/D/F",
@@ -33,7 +33,7 @@ const consigners = [
   },
   {
     name: "Hukaris",
-    id: 12,
+    id: "bn12",
     main: "0775006920",
     alter: "0779996325",
     add1: "283/D/F",
@@ -45,7 +45,7 @@ const consigners = [
   },
   {
     name: "Advantis",
-    id: 24,
+    id: "bn24",
     main: "0775006920",
     alter: "0779996325",
     add1: "283/D/F",
@@ -57,7 +57,7 @@ const consigners = [
   },
   {
     name: "Advantis",
-    id: 65,
+    id: "bn65",
     main: "0775006920",
     alter: "0779996325",
     add1: "283/D/F",
@@ -69,7 +69,7 @@ const consigners = [
   },
   {
     name: "Advantis",
-    id: 79,
+    id: "bn79",
     main: "0775006920",
     alter: "0779996325",
     add1: "283/D/F",
@@ -81,7 +81,7 @@ const consigners = [
   },
   {
     name: "Advantis",
-    id: 75,
+    id: "bn75",
     main: "0775006920",
     alter: "0779996325",
     add1: "283/D/F",

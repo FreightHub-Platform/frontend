@@ -18,13 +18,13 @@ const steps = [
   {
     title: "",
     semTitle: "Purchase Order",
-    pathName: "/purchase_order",
+    pathName: "/consigner/orders/new/purchase_order",
     status: false,
   },
   {
     title: "",
     semTitle: "Finalize",
-    pathName: "/finalize",
+    pathName: "/consigner/orders/new/finalize",
     status: false,
   },
 ];

@@ -1,8 +1,11 @@
+import VehicleTable from "./table/VehicleTable"
+
+
 const Vehicles = () => {
   return(
-    <>
-      Vehicles Table
-    </>
+    <div className="flex w-11/12">
+      <VehicleTable />
+    </div> 
   )
 }
 
