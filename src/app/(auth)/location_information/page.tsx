@@ -65,7 +65,7 @@ const Location = () => {
       
       const consigner = {"id": localStorage.getItem("id")}
       try {
-        const data = await getConsignerById(consigner, Cookies.get('jwt'));
+        const data = await getConsignerById(consigner);
         if (data && data.addressLine1 && data.addressLine2 && data.city && data.province && data.postalCode) {
           setAddress1(data.addressLine1);
           setAddress2(data.addressLine2);
@@ -131,7 +131,7 @@ const Location = () => {
         "postalCode": postalCode
       }
 
-      const data = await updateLocation(locationInformation, Cookies.get('jwt'));
+      const data = await updateLocation(locationInformation);
 
       if (data) {
         router.push('/consigner/dashboard')

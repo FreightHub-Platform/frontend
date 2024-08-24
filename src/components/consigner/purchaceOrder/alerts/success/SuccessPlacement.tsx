@@ -26,7 +26,7 @@ const SucessPlacement = () => {
     const orderDetailsJson = JSON.stringify(orderDetails);
     console.log(orderDetailsJson);
 
-    const success = await saveOrder(orderDetailsJson, Cookies.get('jwt'));
+    const success = await saveOrder(orderDetailsJson);
     console.log(Cookies.get('jwt'))
     console.log(success)
     
