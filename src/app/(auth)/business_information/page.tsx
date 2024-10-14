@@ -17,6 +17,7 @@ import Footer from '../../../components/footer/Footer'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { updateBusiness } from '../../../utils/loginapi'
 import { getConsignerById } from '../../../utils/consigner'
+import { divider } from '@nextui-org/theme';
 
   const steps = [
     {
@@ -49,6 +50,9 @@ const Business = () => {
   const [registrationError, setregistrationError] = useState(false);
   const [logo, setLogo] = useState(null);
   const [logoError, setLogoError] = useState(false);
+  const [regDocument, setRegDocument] = useState('');
+  const [regDocumentError, setRegDocumentError] = useState(false);
+  const [fileUrl, setFileUrl] = useState('')
   const fileInputRef = useRef(null);
 
   const router = useRouter();
@@ -94,6 +98,12 @@ const Business = () => {
     }
   };
 
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setRegDocument(file);
+    setFileUrl(URL.createObjectURL(file))
+  }
+
   const handleNext = async () => {
 
     let hasError = false;
@@ -110,6 +120,13 @@ const Business = () => {
       hasError = true
     } else {
       setregistrationError(false);
+    }
+
+    if(!regDocument){
+      setRegDocumentError(true);
+      hasError = true
+    } else {
+      setRegDocumentError(false);
     }
 
     if(!logo){
@@ -143,6 +160,7 @@ const Business = () => {
       
     }
   }
+
 
 
   return (
@@ -200,28 +218,41 @@ const Business = () => {
               noValidate
               autoComplete="off"
             >
-            <div>
-              <TextField
-                error={businessError}
-                id="outlined-required"
-                label="Enter Your Business name:"
-                color='warning'
-                value={businessName}
-                onChange={(e) => setBusinessName(e.target.value)}
-                helperText={businessError ? "Please enter your business name" : ""}
-             />
-            </div>
-            <div>
-              <TextField
-                error={registrationError}
-                id="outlined-required"
-                label="Your Business Registration No:"
-                color='warning'
-                value={registrationNo}
-                onChange={(e) => setRegistrationNo(e.target.value)}
-                helperText={registrationError ? "Please enter your business ragistration number" : ""}
-             />
-            </div>
+              <div>
+                <TextField
+                  error={businessError}
+                  id="outlined-required"
+                  label="Enter Your Business name:"
+                  color='warning'
+                  value={businessName}
+                  onChange={(e) => setBusinessName(e.target.value)}
+                  helperText={businessError ? "Please enter your business name" : ""}
+              />
+              </div>
+              <div>
+                <TextField
+                  error={registrationError}
+                  id="outlined-required"
+                  label="Your Business Registration No:"
+                  color='warning'
+                  value={registrationNo}
+                  onChange={(e) => setRegistrationNo(e.target.value)}
+                  helperText={registrationError ? "Please enter your business ragistration number" : ""}
+              />
+              </div>
+
+              <div className='flex gap-4 mt-3 text-gray-600'>
+                <div className='ms-6'>Registration Document</div>
+                <input type="file" accept="application/pdf" className='text-sm' onChange={handleFileChange}/>
+                <div>
+                  <a href={fileUrl} target="_blank" rel="noopener noreferrer" className='flex text-sm items-center'>
+                    <div>{regDocument ? <Image src="/images/pdf.svg" width={30} height={30} alt=''/> : null}</div>
+                  </a>
+                </div>
+                <div className='text-sm text-red-600'>
+                  {regDocumentError ? "Please select the registration document" : ""}
+                </div> 
+              </div>
             </Box>
           </div>
           <div className={styles.upload}>
@@ -249,10 +280,6 @@ const Business = () => {
         </div>
 
         <div className={styles.options}>
-          <button className={styles.btn}>
-            <UploadFileIcon />
-            Draft
-          </button>
           <button className={styles.btn} onClick={handleNext}>
             Next
             <ArrowForwardIcon  />

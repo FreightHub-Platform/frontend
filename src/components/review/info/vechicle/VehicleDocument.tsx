@@ -19,7 +19,7 @@ const VehicleDocument = () => {
   return(
     <>
       <div className="py-1 flex justify-center rounded-xl bg-orange-200 mb-1 mt-3 w-1/3">Vehicle revenue license</div>
-      <table className="table-fixed w-full">
+      <table className="table-fixed w-full text-sm">
         <tbody>
           <tr className="flex mb-1">
             <td className="bg-orange-400 w-32 p-1">Expire date</td>
@@ -42,7 +42,7 @@ const VehicleDocument = () => {
       </table>
 
       <div className="py-1 flex justify-center rounded-xl bg-orange-200 mb-1 mt-3 w-1/3">Vehicle insurance</div>
-      <table className="table-fixed w-full">
+      <table className="table-fixed w-full text-sm">
         <tbody>
           <tr className="flex mb-1">
             <td className="bg-orange-400 w-32 p-1">Expire date</td>

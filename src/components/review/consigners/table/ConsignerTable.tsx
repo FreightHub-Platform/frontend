@@ -25,6 +25,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { columns, consigners, statusOptions } from "./Data";
 import { capitalize } from "./Utils";
+import { usePathname, useRouter } from "next/navigation";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   "Verified": "success",
@@ -115,6 +116,12 @@ export default function ConsignerTable() {
   const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
     const cellValue = user[columnKey as keyof User];
 
+    const path = usePathname()
+    const router = useRouter()
+    const handleViewMore = (id) => {
+      router.push(`${path}/${id}`)
+    }
+
     // Handle verified function
     const userStatus = user.status
     const handleVerified = () => {
@@ -144,9 +151,7 @@ export default function ConsignerTable() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem onClick={handleVerified}>
-                  {user.status === 'Verified' ? 'Unverified' : 'Verified'}
-                </DropdownItem>
+              <DropdownItem onClick={() => handleViewMore(user.id)}>View More</DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
