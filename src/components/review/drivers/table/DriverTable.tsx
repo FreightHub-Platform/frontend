@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { useRouter, usePathname  } from 'next/navigation'
 
 import {
   Table,
@@ -115,8 +116,11 @@ export default function DriverTable() {
     });
   }, [sortDescriptor, items]);
 
-  const handleViewMore = () => {
-    //View More Logic
+  const router = useRouter()
+  const pathName = usePathname()
+
+  const handleViewMore = (id) => {
+    router.push(`${pathName}/${id}`)
   }
 
   const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
@@ -153,8 +157,7 @@ export default function DriverTable() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem onClick={handleVerified}>{user.status === 'Verified' ? 'Un verified' : 'Verified'}</DropdownItem>
-                <DropdownItem onClick={handleViewMore}>View More</DropdownItem>
+                <DropdownItem onClick={() => handleViewMore(user.nic)}>View More</DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>

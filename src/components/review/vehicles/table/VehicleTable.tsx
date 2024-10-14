@@ -27,6 +27,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { columns, consigners, statusOptions } from "./Data";
 import { capitalize } from "./Utils";
+import { usePathname, useRouter } from "next/navigation";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   "Verified": "success",
@@ -115,8 +116,11 @@ export default function VehicleTable() {
     });
   }, [sortDescriptor, items]);
 
-  const handleViewMore = () => {
-    //View More Logic
+  const path = usePathname()
+  const router = useRouter()
+
+  const handleViewMore = (id) => {
+    router.push(`${path}/${id}`)
   }
 
   const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
@@ -153,8 +157,7 @@ export default function VehicleTable() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem onClick={handleVerified}>{user.status === 'Verified' ? 'Un verified' : 'Verified'}</DropdownItem>
-                <DropdownItem onClick={handleViewMore}>View More</DropdownItem>
+                <DropdownItem onClick={() => handleViewMore(user.license_plate)}>View More</DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
