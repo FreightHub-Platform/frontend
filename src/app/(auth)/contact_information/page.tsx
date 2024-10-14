@@ -278,10 +278,6 @@ const Contact = () => {
         </div>
 
         <div className={styles.options}>
-          <button className={styles.btn}>
-            <UploadFileIcon />
-            Draft
-          </button>
           <Link href='/business_information'>
             <button className={styles.btn}>
               <ArrowBackIcon  />
