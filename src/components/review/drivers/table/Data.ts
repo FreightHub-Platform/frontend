@@ -29,7 +29,7 @@ const consigners = [
     zip_code: "11500",
     vehicle: "Negombo",
     province: "Gampaha",
-    status: 'Verified',
+    status: 'Not Verified',
   },
   {
     first_name: "Geethika",

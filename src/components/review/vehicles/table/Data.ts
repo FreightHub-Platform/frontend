@@ -1,4 +1,4 @@
-import React from "react";
+
 const columns = [
   {name: "LICENSE PLATE NO", uid: "license_plate", sortable: true},
   {name: "VEHICLE REGISTRATION", uid: "reg_no", sortable: true},
