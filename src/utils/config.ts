@@ -1,3 +1,4 @@
+"use client"
 import axios from "axios"
 import Cookies from "js-cookie";
 
@@ -13,13 +14,15 @@ export const consignerApi = axios.create({
 
 consignerApi.interceptors.request.use(
   (config) => {
-    const token = Cookies.get('jwt');  
+    console.log("fuck")
+    const token = Cookies.get('jwt');
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;  
     }
     return config;
   },
   (error) => {
+    console.log("fuck2")
     return Promise.reject(error);
   }
 );

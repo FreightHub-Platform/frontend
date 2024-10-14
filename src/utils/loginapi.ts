@@ -1,4 +1,5 @@
 "use server"
+import axios from "axios"
 
 import { UserLogin, businessInfo, contactInfo, locationInfo } from './interfaces/signIn_signUp'
 import { api, consignerApi } from './config'
@@ -51,7 +52,7 @@ import { api, consignerApi } from './config'
 export const handleSignin = async (userDetails: UserLogin) => {
   try {
     const response = await api.post('/auth/login', userDetails);
-    return response.data;
+    return response.data.data;
 
   } catch (error: any) {
     if (error.response && error.response.data) {
@@ -90,10 +91,14 @@ export const handleSignin = async (userDetails: UserLogin) => {
 // };
 
 //upadte with axios
-export const updateBusiness = async (businessInformation: businessInfo) => {
-  try {
-    const response = await consignerApi.post('/register/0', businessInformation);
-
+export const updateBusiness = async (businessInformation: businessInfo, token: String) => {
+    // const response = await consignerApi.post('/register/0', businessInformation);
+    try {
+      const response = await axios.post('http://localhost:8080/api/consigner/register/0', businessInformation, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
     return response.status === 200;
 
   } catch (error) {

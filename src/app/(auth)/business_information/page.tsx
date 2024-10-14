@@ -130,7 +130,7 @@ const Business = () => {
         "logo": logo
       }
       try {
-        const data = await updateBusiness(businessInformation);
+        const data = await updateBusiness(businessInformation, Cookies.get('jwt'));
 
         if(data){
           router.push('/contact_information')
