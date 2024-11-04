@@ -1,17 +1,34 @@
-import React from 'react';
+"use client"
+
+import React, { useState } from 'react';
 import Footer from "../components/footer/Footer";
 import Navbar from "../components/navbar/Navbar";
+import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
 
 const Home = () => {
+
+  const [loading, setLoading] = useState(false)
+
   return (
     <div className="home">
-      <Navbar />
+
+      {
+        loading ? 
+        <Box sx={{ width: '100%', position: 'fixed', top: 0, left: 0, zIndex: 1000 }}>
+          <LinearProgress color='warning'/>
+        </Box>
+        : null
+      }
+      
+
+      <Navbar onLinkClick={() => setLoading(true)}/>
 
       <div className="relative w-full h-screen">
         <img src="/images/homefleet.jpg" alt="Home Fleet" className="absolute inset-0 w-full h-full object-cover brightness-50" />
         <div className="relative flex flex-col items-center justify-center w-full h-full text-center text-white">
-        <h1 className="text-6xl font-bold tracking-tight sm:text-8xl mt-36 mb-5">FreightHub</h1>
-        <br /><br /><br /><br /><br />
+          <h1 className="text-6xl font-bold tracking-tight sm:text-8xl mt-36 mb-5">FreightHub</h1>
+          <br /><br /><br /><br /><br />
           <h1 className="text-3xl font-bold tracking-tight sm:text-6xl">Move Your Freight Quickly and Easily!</h1>
           <p className="mt-6 text-medium leading-8 sm:text-3xl">The Best Freight Forwarding Solution For Your Enterprise...</p>
           <br /><br /><br />
@@ -113,7 +130,9 @@ const Home = () => {
           </div>
         </div>
       </section>
-    <Footer />
+
+      <Footer />
+
     </div>
   )
 }

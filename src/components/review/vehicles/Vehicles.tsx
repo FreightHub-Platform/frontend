@@ -1,10 +1,10 @@
 import VehicleTable from "./table/VehicleTable"
 
 
-const Vehicles = () => {
+const Vehicles = ({onViewMore}) => {
   return(
     <div className="flex w-11/12">
-      <VehicleTable />
+      <VehicleTable onViewMore={onViewMore}/>
     </div> 
   )
 }

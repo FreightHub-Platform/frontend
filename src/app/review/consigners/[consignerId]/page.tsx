@@ -1,21 +1,113 @@
+"use client"
+
 import Details from "../../../../components/review/consigners/info/Details"
 import Logo from "../../../../components/review/consigners/info/Logo"
 import MapView from "../../../../components/review/consigners/info/Map"
+import ForwardToInboxIcon from '@mui/icons-material/ForwardToInbox';
+import * as React from 'react';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import { useState } from "react"
+
 
 
 const ConsignerDetails = () => {
+
+  const consignerStatus = false
+
+  const [submitting, setSubmitting] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [sentMail, setSentMail] = useState(false);
+
+  const handleEmailSent = async(e, type) => {
+    e.preventDefault();
+    setSubmitting(true)
+
+    const response = await fetch('api/send-mail',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        'name': "Nuwan Fernando",
+        'to': "fnimal402@gmail.com",
+        'mailType': type
+      })
+    })
+
+    const { success, error } = await response.json()
+    if (success) {
+      setSentMail(true)
+      setOpen(true)
+    } else if (error){
+      setOpen(true)
+    }
+
+    setSubmitting(false)
+  }
+
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: SnackbarCloseReason,
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
   return(
     <div className="w-11/12 mb-3">
       <div className="bg-white p-3">
-        <div className="p-1 bg-orange-300 w-full flex justify-center mb-3">Vehicle Details</div>
+        <div className="p-1 bg-orange-300 w-full flex justify-between mb-3">
+          <div className="flex w-full justify-center">Consigner Details</div>
+          { 
+            !consignerStatus ?
+              <form onSubmit={(e) => handleEmailSent(e,"businessMissMatch")}>
+                <button type="submit" className="me-4 hover:text-red-600 cursor-pointer"><ForwardToInboxIcon /></button>
+              </form> 
+            : null
+          }
+        </div>
         <div className="flex justify-center items-center"><Logo /></div>
         <div className="grid grid-cols-[400px_1fr] gap-2 mt-3">
           <div><Details /></div>
           <div className="flex justify-center items-center"><MapView /></div>
         </div>
         <div className="flex justify-center">
-            <button className="bg-green-500 py-2 px-5 rounded-lg hover:bg-green-600 duration-300 hover:text-white mt-2">Verify Consigner</button>
-          </div>
+          {
+            !consignerStatus ?
+              <form onSubmit={(e) => handleEmailSent(e,"businessVerified")}>
+                <button type="submit" className="bg-green-500 py-2 px-5 rounded-lg hover:bg-green-600 duration-300 hover:text-white mt-2">Verify Consigner</button>
+              </form> 
+            : null
+          }
+          
+        </div>
+      </div>
+      <div>
+        <Backdrop
+          sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
+          open={submitting}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      </div>
+      <div>
+        <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+          <Alert
+            onClose={handleClose}
+            severity={sentMail ? "success" : "error"}
+            variant="filled"
+            sx={{ width: '100%' }}
+          >
+            {sentMail ? "Email sent success!" : "Email sent fail!"}
+          </Alert>
+        </Snackbar>
       </div>
     </div>
   )

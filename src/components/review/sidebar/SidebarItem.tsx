@@ -5,21 +5,19 @@ import { cn } from "@nextui-org/theme";
 import { Icon } from "@mui/material";
 import { Button } from "@nextui-org/button";
 
-const SidebarItem = ({ item, isExpanded, pathname }) => {
+const SidebarItem = ({ item, isExpanded, pathname, onIconClick }) => {
 
   const getPathSegment = (pathname: string) => {
     const segments = pathname.split('/');
     return `/${segments[1]}/${segments[2]}`;
   };
 
-
-
   const isActive = getPathSegment(pathname) === item.href;
 
   return (
     <div className="flex flex-row mb-2 ">
       {!isExpanded ? (
-        <Link href={item.href || "#"} legacyBehavior>
+        <Link href={item.href || "#"} legacyBehavior >
           <a className="w-full">
             <Button
               size="sm"
@@ -28,13 +26,14 @@ const SidebarItem = ({ item, isExpanded, pathname }) => {
                 "flex items-center justify-center w-full h-12 mx-0",
                 isActive ? "bg-primary text-white" : ""
               )}
+              onClick={onIconClick}
             >
               {isExpanded && <span className="ml-4">{item.name}</span>}
             </Button>
           </a>
         </Link>
       ) : (
-        <Link href={item.href || "#"} legacyBehavior>
+        <Link href={item.href || "#"} legacyBehavior >
           <a className="w-full">
             <Button
               startContent={<Icon>{item.icon}</Icon>}
@@ -42,6 +41,7 @@ const SidebarItem = ({ item, isExpanded, pathname }) => {
                 "flex items-center justify-center w-full h-12 mx-0",
                 isActive ? "bg-primary text-white" : ""
               )}
+              onClick={onIconClick}
             >
               {isExpanded && <span className="ml-4">{item.name}</span>}
             </Button>

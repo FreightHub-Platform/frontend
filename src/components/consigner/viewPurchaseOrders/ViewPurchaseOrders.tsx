@@ -10,7 +10,12 @@ import { useRouter } from 'next/navigation';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
+import * as React from 'react';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+
 import './styles.css';
+import { Height } from '@mui/icons-material';
 
 const steps = [
   { title: '', semTitle: 'Pickup Information', pathName: '/consigner/orders/new/pickup_information', status: true },
@@ -29,6 +34,8 @@ const style = {
 
 const ViewPurchaseOrders = () => {
   const router = useRouter();
+
+  const [loading, setLoading] = React.useState(false);
 
   const [ordersDetails, setOrdersDetails] = useState({
     pickupDate: '',
@@ -87,6 +94,7 @@ const ViewPurchaseOrders = () => {
     if(!ordersDetails.purchaseOrders.length){
       handleNotificationClick()
     } else {
+      setLoading(true);
       ordersDetails.purchaseOrders.forEach(item => {
         if(!item.items || !item.items.length){
           handleItemNotificationClick()
@@ -140,7 +148,7 @@ const ViewPurchaseOrders = () => {
           <ProcessBox step={steps} completion={1} />
         </Box>
 
-        <Box component="section" className='my-3 bg-slate-100 mx-10 px-5 py-3 shadow-lg  rounded-lg'>
+        <Box component="section" className='my-3 bg-slate-100 mx-10 px-5 py-3 shadow-lg rounded-lg'>
           <div className='font-semibold text-sm'>
             <span className='bg-rose-200 px-4 py-1 rounded-3xl'>Pickup</span>  
           </div>
@@ -157,10 +165,7 @@ const ViewPurchaseOrders = () => {
               <div className='flex items-center'>
                 <p className='font-semibold mr-1 text-xs'>Pickup Time:</p>
                 <p className='text-xs'>
-
-                  {ordersDetails.fromTime} - 
-                  {ordersDetails.toTime}
-
+                  {ordersDetails.fromTime} - {ordersDetails.toTime}
                 </p>
               </div>
             </div>
@@ -183,7 +188,7 @@ const ViewPurchaseOrders = () => {
             <AddItem 
               order={detail} 
               key={index} 
-              orderIndex={index} // Pass the index of the order
+              orderIndex={index} 
               updateOrderItems={handleUpdateOrderItems}
               cancelOrder={() => handleCancelPurchaseOrder(index)} 
             />
@@ -219,6 +224,14 @@ const ViewPurchaseOrders = () => {
             Please add Items for Purchase Order
           </Alert>
         </Snackbar>
+      </div>
+      <div>
+        <Backdrop
+          sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
+          open={loading}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
       </div>
     </Box>
   );

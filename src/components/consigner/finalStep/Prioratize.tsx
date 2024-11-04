@@ -9,6 +9,7 @@ import CanceledPlacement from '../purchaceOrder/alerts/canceled/CanceledPlacemen
 import SucessPlacement from '../purchaceOrder/alerts/success/SuccessPlacement';
 import { useRouter } from 'next/navigation';
 
+
 const steps = [
   {
     title: '',
@@ -32,12 +33,14 @@ const steps = [
 
 
 const style = {
-  position: 'absolute' as 'absolute',
+  position: 'absolute',
   top: '50%',
-  left: '65%',
+  left: '50%',
   transform: 'translate(-50%, -50%)',
-  borderRadius: '16px',
-  width: 1100,
+  width: 700,
+  bgcolor: 'background.paper',
+  borderRadius: '8px',
+  p: 4,
 };
 
 
@@ -95,7 +98,7 @@ const Prioratize = () => {
           <div className='flex flex-row justify-center gap-5'>
             <div className='border-2 flex-1 py-3 px-3 rounded-lg shadow-lg'>
               <div className='text-sm font-semibold mb-2'>
-                <span className='bg-red-300 px-2 px-5 py-1 rounded-xl'>Pickup</span>
+                <span className='bg-red-300 px-5 py-1 rounded-xl'>Pickup</span>
               </div>
               <div className='flex flex-row items-center'>
                 <p className='text-sm font-semibold mr-1'>Pickup Location:</p>
@@ -115,7 +118,7 @@ const Prioratize = () => {
             </div>
             <div className='border-2 flex-1 py-3 px-3 rounded-lg shadow-lg'>
               <div className='text-sm font-semibold mb-2'>
-                <span className='bg-red-300 px-2 px-5 py-1 rounded-xl'>Total</span>
+                <span className='bg-red-300 px-5 py-1 rounded-xl'>Total</span>
               </div>
               <div className='flex flex-row items-center'>
                 <p className='text-sm font-semibold mr-1'>Estimated Cost:</p>
@@ -146,16 +149,18 @@ const Prioratize = () => {
               <button className='bg-red-700 py-3 px-12 rounded-lg text-white hover:bg-red-800 text-sm duration-500' onClick={handleDeclineOpen}>
                 Decline
               </button>
-              <Modal
-                open={openDecline}
-                onClose={handleDeclineClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-              >
-                <Box sx={style}>
-                  <CanceledPlacement />
-                </Box>
-              </Modal>
+               <div>
+                <Modal
+                  open={openDecline}
+                  onClose={handleDeclineClose}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box sx={style}>
+                    <CanceledPlacement />
+                  </Box>
+                </Modal>
+              </div>
               <button className='bg-success py-1 px-12 rounded-lg text-white hover:bg-green-500 text-sm duration-500' onClick={handleSuccessOpen}>
                 Submit
               </button>

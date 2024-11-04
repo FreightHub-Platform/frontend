@@ -2,7 +2,7 @@
 import React from "react";
 import SidebarItem from "./SidebarItem";
 
-const SidebarMenu = ({ isExpanded, items , pathname }) => {
+const SidebarMenu = ({ isExpanded, items , pathname, onIconClick }) => {
   return (
     <div className="flex flex-col space-y-2">
       {items.length > 0 && (
@@ -10,7 +10,7 @@ const SidebarMenu = ({ isExpanded, items , pathname }) => {
           {items[0].group && <p className="text-gray-600 text-xs">{items[0].group}</p>}
           <div className="px-3 pt-2" >
             {items.map((item) => (
-              <SidebarItem key={item.name} item={item} isExpanded={isExpanded} pathname={pathname} />
+              <SidebarItem key={item.name} item={item} isExpanded={isExpanded} pathname={pathname} onIconClick={onIconClick} />
             ))}
           </div>
         </>
