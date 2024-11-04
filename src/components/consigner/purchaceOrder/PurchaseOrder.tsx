@@ -9,7 +9,9 @@ import Checkbox from '@mui/material/Checkbox';
 import { useState } from 'react';
 import MapWithSearch from '../../maps/MapWithSearch';
 
-
+import * as React from 'react';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const steps = [
   {
@@ -124,7 +126,6 @@ const PurchaseOrder = ({closeFunction}) => {
     }
 
     if(!hasError){
-      
       const newDetail = {
         "poNumber": orderNo,
         "contactNumber": storeContact,
@@ -150,10 +151,10 @@ const PurchaseOrder = ({closeFunction}) => {
   return ( 
     <Box component="section">
       <Box component="section" className='rounded-2xl my-3 bg-white p-3'>
-        <Box component="section" sx={{ p: 2, border: '2px solid #FB8C00', borderRadius: '20px' }} className='w-3/5 mx-auto mb-8'>
+        <Box component="section" sx={{ p: 1, border: '2px solid #FB8C00', borderRadius: '20px' }} className='w-3/5 mx-auto mb-2'>
           <ProcessBox step={steps} completion={1}/>
         </Box>
-        <Box component="section" className='mt-2 mb-1 flex justify-between content-center flex-row gap-5'>
+        <Box component="section" className='mb-1 flex justify-between content-center flex-row gap-5'>
           <Box component="section" className='basis-1/2 content-center pl-10'>
             <Box component="section" sx={{ marginBottom: '20px'}} className='flex flex-col gap-4'>
               <h1 className='text-base font-semibold mb-2' style={{ textAlign: 'center' }}>Purchase Order Details:</h1>  

@@ -18,6 +18,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { updateBusiness } from '../../../utils/loginapi'
 import { getConsignerById } from '../../../utils/consigner'
 import { divider } from '@nextui-org/theme';
+import LinearProgress from '@mui/material/LinearProgress';
 
   const steps = [
     {
@@ -54,6 +55,7 @@ const Business = () => {
   const [regDocumentError, setRegDocumentError] = useState(false);
   const [fileUrl, setFileUrl] = useState('')
   const fileInputRef = useRef(null);
+  const [loading, setLoading] = useState(false)
 
   const router = useRouter();
 
@@ -137,7 +139,7 @@ const Business = () => {
     }
 
     if(!hasError){
-
+      setLoading(true)
       console.log(logo)
       
       const businessInformation = {
@@ -161,12 +163,21 @@ const Business = () => {
     }
   }
 
+  
 
 
   return (
     <div className={styles.container}>
+      {
+        loading ? 
+          <Box sx={{ width: '100%', position: 'fixed', top: 0, left: 0, zIndex: 1000 }}>
+            <LinearProgress color='warning'/>
+          </Box>
+        : null
+      }
+      
       <div className={styles.top}>
-        <Navbar />
+        <Navbar onLinkClick={() => setLoading(true)}/>
         <div className={styles.imageContainer}>
           <Image src='/images/image.png' alt='' fill className={styles.img}/>
         </div>
@@ -241,10 +252,10 @@ const Business = () => {
               />
               </div>
 
-              <div className='flex gap-4 mt-3 text-gray-600'>
+              <div className='flex gap-4 mt-2 text-gray-600 items-center'>
                 <div className='ms-6'>Registration Document</div>
-                <input type="file" accept="application/pdf" className='text-sm' onChange={handleFileChange}/>
-                <div>
+                <input type="file" accept="application/pdf" className='text-sm' onChange={handleFileChange}/> 
+                <div className={fileUrl ? 'border-1 p-2 border-black hover:border-2' : null}>
                   <a href={fileUrl} target="_blank" rel="noopener noreferrer" className='flex text-sm items-center'>
                     <div>{regDocument ? <Image src="/images/pdf.svg" width={30} height={30} alt=''/> : null}</div>
                   </a>

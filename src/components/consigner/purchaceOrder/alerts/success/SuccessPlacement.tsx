@@ -1,16 +1,22 @@
+"use client"
+
 import Box from '@mui/material/Box'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { useRouter } from 'next/navigation';
 import { saveOrder } from '../../../../../utils/order';
 import Cookies from 'js-cookie';
 
+import * as React from 'react';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const SucessPlacement = () => {
 
   const router = useRouter()
-
+  const [open, setOpen] = React.useState(false);
 
   const handleSubmit = async () => {
+    setOpen(true);
     const orderDetailsString = localStorage.getItem('ordersDetails')
     let orderDetails = orderDetailsString ? JSON.parse(orderDetailsString) : null;
     const id = localStorage.getItem('id');
@@ -19,7 +25,7 @@ const SucessPlacement = () => {
     }
 
     orderDetails.purchaseOrders.forEach(item => {
-      item.items.forEach(ele => ele.iTypeId = 1)
+      item.items.forEach(ele => ele.iTypeId = Number(ele.iTypeId.split(',')[0]))
     })
     console.log(orderDetails)    
 
@@ -38,7 +44,7 @@ const SucessPlacement = () => {
   }
 
   return (
-    <Box component="section" sx={{ p: 2 }} className='w-2/3 bg-white py-8 rounded-lg'>
+    <div>
       <p className='text-4xl font-bold text-center mb-5'>Order Placement Successful!</p>
       <div className='flex flex-row justify-center my-5'>
         <CheckCircleOutlineIcon className='text-9xl text-green-500'/>
@@ -51,7 +57,15 @@ const SucessPlacement = () => {
       <div className='flex justify-center mt-10'>
         <button className='bg-primary py-2 px-8 rounded-lg text-white hover:bg-orange-500' onClick={handleSubmit}>Back to Orders</button>
       </div>
-    </Box>
+      <div>
+        <Backdrop
+          sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
+          open={open}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      </div>
+    </div>
   )
 }
 

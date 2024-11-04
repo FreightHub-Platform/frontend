@@ -60,6 +60,7 @@ const ItemForm = ({addItems}) => {
   const [refrigirated, setRefrigirated] = useState(false)
   const [hazardous, setHazardous] = useState(false)
   const [perishable, setPerishable] = useState(false)
+  const [fragile, setFragile] = useState(false)
 
   const handleSubmit = () => {
 
@@ -103,7 +104,7 @@ const ItemForm = ({addItems}) => {
         "refrigerated": refrigirated,
         "hazardous": hazardous,
         "perishable": perishable,
-        "fragile": false
+        "fragile": fragile
       }
       
       addItems(newItem)
@@ -193,7 +194,7 @@ const ItemForm = ({addItems}) => {
                   onChange={handleChange}
                 >
                   {types.map((ele, index) => (
-                    <MenuItem value={ele} key={index}>{ele}</MenuItem>
+                    <MenuItem value={`${index},${ele}`} key={index}>{ele}</MenuItem>
                   ))}
                 </Select>
                 {tpyeError && (
@@ -209,6 +210,7 @@ const ItemForm = ({addItems}) => {
             <FormControlLabel control={<Checkbox />} label="Refrigirated" onChange={(e) => setRefrigirated(true)}/>
             <FormControlLabel control={<Checkbox />} label="Hazardous" onChange={(e) => setHazardous(true)}/>
             <FormControlLabel control={<Checkbox />} label="Perishable" onChange={(e) => setPerishable(true)}/>
+            <FormControlLabel control={<Checkbox />} label="Fragile" onChange={(e) => setFragile(true)}/>
           </div>
         </Box>
       </Box>

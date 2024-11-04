@@ -1,5 +1,7 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
+import { useRouter, usePathname  } from 'next/navigation'
+
 import {
   Table,
   TableHeader,
@@ -14,6 +16,7 @@ import {
   DropdownMenu,
   DropdownItem,
   Chip,
+  User,
   Pagination,
   Selection,
   ChipProps,
@@ -25,7 +28,6 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { columns, consigners, statusOptions } from "./Data";
 import { capitalize } from "./Utils";
-import { usePathname, useRouter } from "next/navigation";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   "Verified": "success",
@@ -47,7 +49,7 @@ const INITIAL_VISIBLE_COLUMNS = [
 
 type User = (typeof consigners)[0];
 
-export default function ConsignerTable() {
+export default function ConsignerTable({onViewMore}) {
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([])
@@ -113,22 +115,26 @@ export default function ConsignerTable() {
     });
   }, [sortDescriptor, items]);
 
+  const router = useRouter()
+  const pathName = usePathname()
+
+  const handleViewMore = (id) => {
+    onViewMore();
+    router.push(`${pathName}/${id}`)
+  }
+
   const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
     const cellValue = user[columnKey as keyof User];
-
-    const path = usePathname()
-    const router = useRouter()
-    const handleViewMore = (id) => {
-      router.push(`${path}/${id}`)
-    }
 
     // Handle verified function
     const userStatus = user.status
     const handleVerified = () => {
-      // Implement your logic here
+      
     }
+    
 
     switch (columnKey) {
+     
       case "status":
         return (
           <Chip
@@ -151,7 +157,7 @@ export default function ConsignerTable() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-              <DropdownItem onClick={() => handleViewMore(user.id)}>View More</DropdownItem>
+                <DropdownItem onClick={() => handleViewMore(user.id)}>View More</DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -318,51 +324,50 @@ export default function ConsignerTable() {
             size="sm"
             variant="flat"
             onPress={onNextPage}
-            >
-              Next
-            </Button>
-          </div>
+          >
+            Next
+          </Button>
         </div>
-      );
-    }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
-  
-    return (
-      <Table
-        aria-label="Example table with custom cells, pagination and sorting"
-        isHeaderSticky
-        bottomContent={bottomContent}
-        bottomContentPlacement="outside"
-        classNames={{
-          wrapper: "",
-        }}
-        selectedKeys={selectedKeys}
-        sortDescriptor={sortDescriptor}
-        topContent={topContent}
-        topContentPlacement="outside"
-        onSelectionChange={setSelectedKeys}
-        onSortChange={setSortDescriptor}
-      >
-        <TableHeader columns={headerColumns}>
-          {(column) => (
-            <TableColumn
-              key={column.uid}
-              align={column.uid === "actions" ? "center" : "start"}
-              allowsSorting={column.sortable}
-            >
-              {column.name}
-            </TableColumn>
-          )}
-        </TableHeader>
-        <TableBody emptyContent={"No vehicles found"} items={sortedItems}>
-          {(item) => (
-            <TableRow key={item.id}>
-              {(columnKey) => (
-                <TableCell>{renderCell(item, columnKey)}</TableCell>
-              )}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+      </div>
     );
-  }
-  
+  }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
+
+  return (
+    <Table
+      aria-label="Example table with custom cells, pagination and sorting"
+      isHeaderSticky
+      bottomContent={bottomContent}
+      bottomContentPlacement="outside"
+      classNames={{
+        wrapper: "",
+      }}
+      selectedKeys={selectedKeys}
+      sortDescriptor={sortDescriptor}
+      topContent={topContent}
+      topContentPlacement="outside"
+      onSelectionChange={setSelectedKeys}
+      onSortChange={setSortDescriptor}
+    >
+      <TableHeader columns={headerColumns}>
+        {(column) => (
+          <TableColumn
+            key={column.uid}
+            align={column.uid === "actions" ? "center" : "start"}
+            allowsSorting={column.sortable}
+          >
+            {column.name}
+          </TableColumn>
+        )}
+      </TableHeader>
+      <TableBody emptyContent={"No vehicles found"} items={sortedItems}>
+        {(item) => (
+          <TableRow key={item.id}>
+            {(columnKey) => (
+              <TableCell>{renderCell(item, columnKey)}</TableCell>
+            )}
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
+  );
+}

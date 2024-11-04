@@ -73,7 +73,7 @@ const IOSSwitch = styled((props: SwitchProps) => (
     },
 }));
 
-const LoginBox = () => {
+const LoginBox = ({onLinkClick}) => {
   const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -128,6 +128,7 @@ const LoginBox = () => {
     }
 
     if(!hasError){
+      onLinkClick();
       handleNavigation()
       // router.push("/business_information")
     }
@@ -181,11 +182,11 @@ const LoginBox = () => {
   };
 
   return (
-    <Box sx={{ minWidth: 275 }}>
-      <div className={styles.container}>
-        <div className={styles.title}>Sign in to Your account</div>
-        <p>Enter your email and password to sign in</p>
-        <div className={styles.input_feilds}>
+    <div className='flex flex-col'>
+      <div className='border-2 border-orange-500 w-[400px] p-5 rounded-lg shadow-xl'>
+        <p className='text-orange-500 font-bold text-2xl mb-2 text-center'>Sign in to Your account</p>
+        <p className='mb-10 text-slate-500 text-lg text-center'>Enter your email and password to sign in</p>
+        <div className='flex flex-col gap-6'>
           <TextField
             value={email}
             error={emailError}
@@ -200,7 +201,7 @@ const LoginBox = () => {
               sx: { borderRadius: '60px' }
             }}
           />
-          <FormControl sx={{ m: 0, width: '30ch' }} variant="outlined" size="small">
+          <FormControl sx={{ m: 0 }} variant="outlined" size="small">
             <InputLabel htmlFor="outlined-adornment-password" required color='warning'>Password</InputLabel>
             <OutlinedInput 
               color='warning'
@@ -236,20 +237,19 @@ const LoginBox = () => {
             )}
           </FormControl>
         </div>
-        <div className={styles.remember_me}>
+        <div>
           <FormControlLabel
             control={<IOSSwitch sx={{ m: 2 }} />}
             label="Remember me"
           />
         </div>
-        <div className={styles.signup_button}>
-          <Button variant="contained"
-            sx={{width: '100%', backgroundColor: '#FB8C00', marginBottom: '10px'}}
-            className='hover:bg-orange-500 duration-400' onClick={handleSignIn}>Sign in</Button>
+        <div className='flex justify-center mb-3'>
+          <button 
+            className='hover:bg-orange-500 duration-400 hover:shadow-md bg-orange-400 px-6 py-2 rounded-md w-full text-white' onClick={handleSignIn}>SIGN IN</button>
         </div>
-        <div className={styles.sign_in}>
+        <div className='flex gap-1 justify-center'>
           <div className={styles.desc}>Don't have an account?</div>
-          <Link href="/register" className={styles.sign}>Sign up</Link>
+          <Link href="/register" className={styles.sign} onClick={onLinkClick}>Sign up</Link>
         </div>
       </div>
       <div>
@@ -269,7 +269,7 @@ const LoginBox = () => {
         </Snackbar>
         
       </div>
-    </Box>
+    </div>
   );
 }
 

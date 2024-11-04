@@ -11,6 +11,10 @@ import { Button } from "@mui/material";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
+
+import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
+
 const Sidebar = () => {
   const [isSidebarExpanded, setSidebarExpanded] = useState(true);
   const navItems = NavItems();
@@ -33,6 +37,8 @@ const Sidebar = () => {
     setSidebarExpanded(!isSidebarExpanded);
   };
 
+  const [loading, setLoading] = useState(false);
+
   return (
     <div
       className={cn(
@@ -40,6 +46,14 @@ const Sidebar = () => {
         "border-r transition-all duration-300 ease-in-out transform hidden flex-col sm:flex h-fill"
       )}
     >
+      {
+        loading ?
+          <Box sx={{ width: '100%' }}>
+            <LinearProgress color="warning"/>
+          </Box>
+        : null
+      }
+      
       <div className="flex flex-col px-3 pt-4 w-full h-full ">
         {Object.keys(categorizedNavItems.groupedNavItems).map(
           (group, index) => (
@@ -48,6 +62,7 @@ const Sidebar = () => {
               isExpanded={isSidebarExpanded}
               items={categorizedNavItems.groupedNavItems[group]}
               pathname={pathname}
+              onIconClick={() => setLoading(true)}
             />
           )
         )}
@@ -59,6 +74,7 @@ const Sidebar = () => {
             item={item}
             isExpanded={isSidebarExpanded}
             pathname={pathname}
+            onIconClick={() => setLoading(true)}
           />
         ))}
       </div>

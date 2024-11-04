@@ -12,6 +12,7 @@ import Footer from '../../../components/footer/Footer'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
+import LinearProgress from '@mui/material/LinearProgress';
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
@@ -64,24 +65,25 @@ const Contact = () => {
   const [mobileError, setMobileError] = useState(false)
   const [alternative, setAlternative] = useState('')
   const [alternativeError, setAlternativeError] = useState(false)
+  const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
-    const fetchConsignerData = async () => {
+  // useEffect(() => {
+  //   const fetchConsignerData = async () => {
       
-      const consigner = {"id": localStorage.getItem("id")}
-      try {
-        const data = await getConsignerById(consigner);
-        if (data && data.mainNumber && data.altNumber) {
-          setMobile(data.mainNumber);
-          setAlternative(data.altNumber);
-        }
-      } catch (error) {
-        console.error('Error fetching consigner data:', error);
-      }
-    };
+  //     const consigner = {"id": localStorage.getItem("id")}
+  //     try {
+  //       const data = await getConsignerById(consigner);
+  //       if (data && data.mainNumber && data.altNumber) {
+  //         setMobile(data.mainNumber);
+  //         setAlternative(data.altNumber);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching consigner data:', error);
+  //     }
+  //   };
 
-    fetchConsignerData();
-  }, []);
+  //   fetchConsignerData();
+  // }, []);
 
   const handleVerificationSuccess = () => {
     setVerification(true)
@@ -111,6 +113,8 @@ const Contact = () => {
     }
 
     if(!hasError){
+
+      setLoading(true)
 
       const contactInformation = {
         "id": localStorage.getItem("id"),
@@ -151,8 +155,16 @@ const Contact = () => {
 
   return (
     <div className={styles.container}>
+      {
+        loading ?
+          <Box sx={{ width: '100%', position: 'fixed', top: 0, left: 0, zIndex: 1000 }}>
+            <LinearProgress color='warning'/>
+          </Box>
+        : null
+      }
+      
       <div className={styles.top}>
-        <Navbar />
+        <Navbar onLinkClick={() => setLoading(true)}/>
         <div className={styles.imageContainer}>
           <Image src='/images/image.png' alt='' fill className={styles.img}/>
         </div>

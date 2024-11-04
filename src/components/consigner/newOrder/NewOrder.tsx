@@ -6,6 +6,11 @@ import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+import * as React from 'react';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+import Button from '@mui/material/Button';
+
 import MapWithSearch from "../../maps/MapWithSearch";
 
 const steps = [
@@ -39,6 +44,7 @@ const NewOrder = () => {
   const [to, setTo] = useState("");
   const [toError, setToError] = useState(false);
   const [timeMissMatch, setTimeMissMatch] = useState(false);
+  const [open, setOpen] = React.useState(false);
 
   const handleSubmit = () => {
     let hasError = false;
@@ -70,14 +76,19 @@ const NewOrder = () => {
     }
 
     if (!hasError) {
+      setOpen(true);
       if (localStorage.getItem("ordersDetails") !== null) {
         localStorage.removeItem("ordersDetails");
       }
 
+      const currentTime = new Date()
+
       const order = {
+        userId: '',
         pickupDate: pickupdate,
         fromTime: from,
         toTime: to,
+        orderTime: currentTime.toLocaleTimeString(),
         // location,
       };
       localStorage.setItem("ordersDetails", JSON.stringify(order));
@@ -91,8 +102,9 @@ const NewOrder = () => {
 
   const handleLocationSelected = (location: { lat: number; lng: number }) => {
     setLocation(location);
-    console.log(location);
   };
+
+  
 
   return (
     <Box component="section" className="w-3/4">
@@ -226,6 +238,14 @@ const NewOrder = () => {
           </button>
         </Box>
       </Box>
+      <div>
+        <Backdrop
+          sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
+          open={open}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      </div>
     </Box>
   );
 };

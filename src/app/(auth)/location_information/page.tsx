@@ -20,6 +20,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useRouter } from 'next/navigation'
 import { updateLocation } from '../../../utils/loginapi'
 import { getConsignerById } from '../../../utils/consigner'
+import LinearProgress from '@mui/material/LinearProgress';
 
 
 const steps = [
@@ -59,6 +60,7 @@ const Location = () => {
   const [postalCodeError, setPostalCodeError] = useState(false)
   const [cityError, setCityError] = useState(false)
   const [provinceError, setProvinceError] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const fetchConsignerData = async () => {
@@ -122,6 +124,8 @@ const Location = () => {
 
     if(!hasError){
 
+      setLoading(true)
+
       const locationInformation = {
         "id": localStorage.getItem("id"),
         "addressLine1": address1,
@@ -138,13 +142,22 @@ const Location = () => {
       } else {
         alert("Something is wrong");
       }
+
     }
   }
 
   return (
     <div className={styles.container}>
+      {
+        loading ? 
+          <Box sx={{ width: '100%', position: 'fixed', top: 0, left: 0, zIndex: 1000 }}>
+            <LinearProgress  color='warning'/>
+          </Box>
+        : null
+      }
+      
       <div className={styles.top}>
-        <Navbar />
+        <Navbar onLinkClick={() => setLoading(true)}/>
         <div className={styles.imageContainer}>
           <Image src='/images/image.png' alt='' fill className={styles.img}/>
         </div>

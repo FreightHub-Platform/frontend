@@ -50,7 +50,7 @@ const INITIAL_VISIBLE_COLUMNS = [
 
 type User = (typeof consigners)[0];
 
-export default function VehicleTable() {
+export default function VehicleTable({onViewMore}) {
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([])
@@ -120,6 +120,7 @@ export default function VehicleTable() {
   const router = useRouter()
 
   const handleViewMore = (id) => {
+    onViewMore();
     router.push(`${path}/${id}`)
   }
 

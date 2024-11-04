@@ -72,7 +72,7 @@ const IOSSwitch = styled((props: SwitchProps) => (
     },
 }));
 
-const RegisterBox = () => {
+const RegisterBox = ({onLinkClick}) => {
 
   const router = useRouter()
 
@@ -158,16 +158,17 @@ const RegisterBox = () => {
     }
 
     if(!hasError){
+      onLinkClick();
       handleNavigation()
     }
   }
 
   return (
-    <Box sx={{ minWidth: 275 }}>
-      <div className={styles.container}>
-        <div className={styles.title}>Register</div>
+    <div className='flex flex-col'>
+      <div className='border-2 border-orange-500 w-[400px] p-5 rounded-lg shadow-xl'>
+        <p className='text-orange-500 font-bold text-2xl mb-10 text-center'>Register</p>
 
-        <div className={styles.input_feilds}>
+        <div className='flex flex-col gap-6'>
           {/* <TextField
             color='warning'
             error={userNameError}
@@ -197,7 +198,7 @@ const RegisterBox = () => {
               sx: { borderRadius: '60px'}
             }}
           />
-          <FormControl sx={{ m: 0, width: '30ch' }} variant="outlined" size="small">
+          <FormControl sx={{ m: 0 }} variant="outlined" size="small">
             <InputLabel htmlFor="outlined-adornment-password" required color='warning'>Password</InputLabel>
             <OutlinedInput 
               color='warning'
@@ -232,7 +233,7 @@ const RegisterBox = () => {
               </FormHelperText>
             )}
           </FormControl>
-          <FormControl sx={{ m: 0, width: '30ch' }} variant="outlined" size="small">
+          <FormControl sx={{ m: 0 }} variant="outlined" size="small">
             <InputLabel htmlFor="outlined-adornment-confirm-password" required color='warning'>Confirm Password</InputLabel>
             <OutlinedInput
               color='warning'
@@ -269,25 +270,24 @@ const RegisterBox = () => {
           </FormControl>
         </div>
 
-        <div className={styles.remember_me}>
+        <div>
           <FormControlLabel
             control={<IOSSwitch sx={{ m: 2 }} />}
             label="Remember me"
           />
         </div>
 
-        <div className={styles.signup_button}>
-          <Button variant="contained"
-            sx={{width: '100%', backgroundColor: '#FB8C00', marginBottom: '10px'}}
-            className='hover:bg-orange-500 duration-400' onClick={handleSignupButton}>Sign up</Button>
+        <div className='flex justify-center mb-3'>
+          <button
+             className='hover:bg-orange-500 duration-400 hover:shadow-md bg-orange-400 px-6 py-2 rounded-md w-full text-white' onClick={handleSignupButton}>SIGN UP</button>
         </div>
 
-        <div className={styles.sign_in}>
+        <div className='flex gap-1 justify-center'>
           <div className={styles.desc}>Already have an account?</div>
-          <Link href="/login" className={styles.sign}>Sign In</Link>
+          <Link href="/login" className={styles.sign} onClick={onLinkClick}>Sign In</Link>
         </div>
       </div>
-    </Box>
+    </div>
   )
 }
 

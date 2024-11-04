@@ -14,11 +14,11 @@ const links = [
   
 ];
 
-const Links = () => {
+const Links = ({ onLinkClick }) => {
   return (
     <div className={styles.container}>
       {links.map(link => (
-        <NavLinks item={link} key={link.title} />
+        <NavLinks item={link} key={link.title} onLinkClick={onLinkClick}/>
       ))}
     </div>  
   )
