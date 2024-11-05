@@ -67,23 +67,23 @@ const Contact = () => {
   const [alternativeError, setAlternativeError] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  // useEffect(() => {
-  //   const fetchConsignerData = async () => {
+  useEffect(() => {
+    const fetchConsignerData = async () => {
       
-  //     const consigner = {"id": localStorage.getItem("id")}
-  //     try {
-  //       const data = await getConsignerById(consigner);
-  //       if (data && data.mainNumber && data.altNumber) {
-  //         setMobile(data.mainNumber);
-  //         setAlternative(data.altNumber);
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching consigner data:', error);
-  //     }
-  //   };
+      const consigner = {"id": localStorage.getItem("id")}
+      try {
+        const data = await getConsignerById(consigner, localStorage.getItem('jwt'));
+        if (data && data.mainNumber && data.altNumber) {
+          setMobile(data.mainNumber);
+          setAlternative(data.altNumber);
+        }
+      } catch (error) {
+        console.error('Error fetching consigner data:', error);
+      }
+    };
 
-  //   fetchConsignerData();
-  // }, []);
+    fetchConsignerData();
+  }, []);
 
   const handleVerificationSuccess = () => {
     setVerification(true)
@@ -122,7 +122,7 @@ const Contact = () => {
         "altNumber": alternative
       }
 
-      const data = await updateContact(contactInformation);
+      const data = await updateContact(contactInformation, localStorage.getItem('jwt'));
 
       if(data) {
         router.push('/location_information')
