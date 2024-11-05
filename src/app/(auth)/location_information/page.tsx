@@ -67,7 +67,7 @@ const Location = () => {
       
       const consigner = {"id": localStorage.getItem("id")}
       try {
-        const data = await getConsignerById(consigner);
+        const data = await getConsignerById(consigner, localStorage.getItem('jwt'));
         if (data && data.addressLine1 && data.addressLine2 && data.city && data.province && data.postalCode) {
           setAddress1(data.addressLine1);
           setAddress2(data.addressLine2);
@@ -135,10 +135,10 @@ const Location = () => {
         "postalCode": postalCode
       }
 
-      const data = await updateLocation(locationInformation);
+      const data = await updateLocation(locationInformation, localStorage.getItem('jwt'));
 
       if (data) {
-        router.push('/consigner/dashboard')
+        router.push('/consigner/regcomplete') // have to create this page
       } else {
         alert("Something is wrong");
       }
@@ -218,7 +218,7 @@ const Location = () => {
             </div> */}
             <div className={styles.line}>
               <div className={styles.lft}>
-                <label htmlFor="">Address 1</label>
+                <label htmlFor="">Address Line 1</label>
                 <TextField 
                   sx={{
                     "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
@@ -239,7 +239,7 @@ const Location = () => {
                   />
               </div>
               <div className={styles.rgt}>
-                <label htmlFor="">Address 2</label>
+                <label htmlFor="">Address Line 2</label>
                 <TextField 
                   error={address2Error}
                   id="outlined-basic" 

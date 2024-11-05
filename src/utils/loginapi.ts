@@ -131,9 +131,13 @@ export const updateBusiness = async (businessInformation: businessInfo, token: S
 // };
 
 //Update contact with axios
-export const updateContact = async (contactInformation: contactInfo) => {
+export const updateContact = async (contactInformation: contactInfo, token: String) => {
   try {
-    const response = await consignerApi.post('/register/1', contactInformation);
+    const response = await consignerApi.post('/register/1', contactInformation, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
 
     return response.status === 200;
 
@@ -167,9 +171,13 @@ export const updateContact = async (contactInformation: contactInfo) => {
 // };
 
 //update location with axios
-export const updateLocation = async (locationInformation: locationInfo) => {
+export const updateLocation = async (locationInformation: locationInfo, token: String) => {
   try {
-    const response = await consignerApi.post('/register/2', locationInformation);
+    const response = await consignerApi.post('/register/2', locationInformation, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
 
     return response.status === 200;
     

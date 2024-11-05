@@ -141,8 +141,9 @@ const LoginBox = ({onLinkClick}) => {
       const data = await handleSignin(userDetails);
 
       // Dissect the data
-      const { completion, role } = data;
+      const { completion, role, verifyStatus } = data;
       localStorage.setItem('id', data.id);
+      localStorage.setItem('jwt', data.token);
       Cookies.set('jwt', data.token, { expires: 1 });
 
       if (role == "consigner") {
@@ -157,7 +158,14 @@ const LoginBox = ({onLinkClick}) => {
             router.push('/location_information');
             break;
           case 3:
-            router.push('consigner/orders');
+            if (verifyStatus == "pending") {
+              router.push('/regcomplete'); //meka hariyata hadannone
+            } else if (verifyStatus == "verified") {
+              router.push('consigner/orders');
+            // router.push('/consigner/dashboard');
+            } else {
+              router.push('/rejected');
+            }
             break;
         }
       } else if (role == "admin") {
