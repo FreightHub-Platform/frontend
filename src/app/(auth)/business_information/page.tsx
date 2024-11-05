@@ -62,8 +62,10 @@ const Business = () => {
   useEffect(() => {
     const fetchConsignerData = async () => {
       const consigner = {"id": localStorage.getItem("id")}
+      console.log(consigner)
       try {
-        const data = await getConsignerById(consigner);
+        const data = await getConsignerById(consigner, localStorage.getItem('jwt'));
+        console.log(data.businessName)
         if (data && data.businessName && data.brn) {
           setBusinessName(data.businessName);
           setRegistrationNo(data.brn);
@@ -100,11 +102,27 @@ const Business = () => {
     }
   };
 
+  // const handleFileChange = (event) => {
+  //   const file = event.target.files[0];
+  //   setRegDocument(file);
+  //   setFileUrl(URL.createObjectURL(file))
+  // }
+
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setRegDocument(file);
-    setFileUrl(URL.createObjectURL(file))
-  }
+    setFileUrl(URL.createObjectURL(file));
+  
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      if (typeof reader.result === 'string') {
+        const base64String = reader.result.split(',')[1]; // Extract base64 part
+        setRegDocument(base64String); // Save the base64 string in state
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+  
 
   const handleNext = async () => {
 
@@ -146,8 +164,9 @@ const Business = () => {
         "id": localStorage.getItem("id"),
         "businessName": businessName,
         "brn": registrationNo,
-        "logo": logo
-      }
+        "logo": logo,
+        "regDoc": regDocument  // base64 string from file
+      };
       try {
         const data = await updateBusiness(businessInformation, Cookies.get('jwt'));
 

@@ -143,6 +143,7 @@ const LoginBox = ({onLinkClick}) => {
       // Dissect the data
       const { completion, role } = data;
       localStorage.setItem('id', data.id);
+      localStorage.setItem('jwt', data.token);
       Cookies.set('jwt', data.token, { expires: 1 });
 
       if (role == "consigner") {

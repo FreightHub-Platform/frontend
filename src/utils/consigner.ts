@@ -2,6 +2,26 @@
 
 import { consignerApi } from "./config";
 
+
+  //GET CONSIGNER DETAILS BY ID with axios
+export const getConsignerById = async (consigner: any, token: String) => {
+  try {
+    const response = await consignerApi.post('/single', consigner, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+
+    return response.data.data;
+    
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('An unexpected error occurred.');
+  }
+};
+
+
 //GET CONSIGNER DETAILS BY ID
 // export const getConsignerById = async (consigner: any, jwt: any) => {
 //     try {
@@ -25,16 +45,3 @@ import { consignerApi } from "./config";
 //       throw new Error('An unexpected error occurred.');
 //     }
 //   };
-
-  //GET CONSIGNER DETAILS BY ID with axios
-export const getConsignerById = async (consigner: any) => {
-  try {
-    const response = await consignerApi.post('/single', consigner);
-
-    return response.data;
-    
-  } catch (error) {
-    console.error('Error:', error);
-    throw new Error('An unexpected error occurred.');
-  }
-};
