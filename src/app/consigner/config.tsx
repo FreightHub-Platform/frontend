@@ -4,6 +4,7 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import ChecklistOutlinedIcon from '@mui/icons-material/ChecklistOutlined';
 import QuestionAnswerOutlinedIcon from '@mui/icons-material/QuestionAnswerOutlined';
+import PersonIcon from '@mui/icons-material/Person';
 
 import { usePathname } from "next/navigation";
 
@@ -31,20 +32,20 @@ export const NavItems = () => {
       active: isNavItemActive(pathname, "/consigner/orders"),
       position: "top",
     },
-    {
-      group: "ACTIONS",
-      name: "Inbox",
-      href: "/consigner/inbox",
-      icon: <QuestionAnswerOutlinedIcon />,
-      active: isNavItemActive(pathname, "/consigner/inbox"),
-      position: "top",
-    },
+    // {
+    //   group: "ACTIONS",
+    //   name: "Inbox",
+    //   href: "/consigner/inbox",
+    //   icon: <QuestionAnswerOutlinedIcon />,
+    //   active: isNavItemActive(pathname, "/consigner/inbox"),
+    //   position: "top",
+    // },
     {
       group: "",
-      name: "Settings",
-      href: "/consigner/settings",
-      icon: <SettingsOutlinedIcon />,
-      active: isNavItemActive(pathname, "/consigner/settings"),
+      name: "Profile",
+      href: "/consigner/profile",
+      icon: <PersonIcon />,
+      active: isNavItemActive(pathname, "/consigner/profile"),
       position: "bottom",
     },
     {

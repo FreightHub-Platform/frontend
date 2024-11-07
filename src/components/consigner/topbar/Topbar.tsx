@@ -47,6 +47,8 @@ export function Topbar() {
     fetchConsignerData();
   }, []);
 
+  const [notification, setNotification] = useState(false)
+
   return (
     <nav className="flex w-full justify-between px-5 py-2 bg-white items-center">
       <div className="flex flex-row text-4xl items-center ">
@@ -61,8 +63,8 @@ export function Topbar() {
       <div>
         <div className="flex flex-row gap-x-6">
           <div className="flex flex-row gap-3">
-            <div>
-              <IconButton aria-label="delete">
+            <div className="relative">
+              <IconButton aria-label="delete" onClick={() => {setNotification(notification ? false : true)}}>
                 <Badge content="99+" size="sm" shape="circle" color="danger">
                   <NotificationsNoneOutlinedIcon
                     fontSize="large"
@@ -70,19 +72,13 @@ export function Topbar() {
                   />
                 </Badge>
               </IconButton>
-            </div>
-            <div>
-              <IconButton aria-label="delete">
-                <SettingsOutlinedIcon
-                  fontSize="large"
-                  className="text-gray-600"
-                />
-              </IconButton>
-            </div>
-            <div>
-              <IconButton aria-label="delete">
-                <HelpOutlineIcon fontSize="large" className="text-gray-600" />
-              </IconButton>
+              {
+                notification ? 
+                  <div className="h-[490px] w-[400px] bg-slate-200 absolute z-50 right-7 top-16 p-1" >
+                    <div className="hover:bg-slate-100 bg-white">hello</div>
+                  </div>
+                : null
+              }
             </div>
             <div className="flex flex-col align-middle my-auto">
               <Badge
@@ -105,9 +101,6 @@ export function Topbar() {
               <p className="text-medium">{businessName}</p>
               <p className="text-sm text-gray-500">Consigner</p>
             </div>
-            <IconButton aria-label="delete">
-              <ExpandMoreIcon />
-            </IconButton>
           </div>
         </div>
       </div>

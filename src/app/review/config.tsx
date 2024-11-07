@@ -3,6 +3,7 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import ChecklistOutlinedIcon from '@mui/icons-material/ChecklistOutlined';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import PersonIcon from '@mui/icons-material/Person';
 
 import { usePathname } from "next/navigation";
 
@@ -37,14 +38,6 @@ export const NavItems = () => {
       icon: <LocalShippingIcon />,
       active: isNavItemActive(pathname, "/review/vehicles"),
       position: "top",
-    },
-    {
-      group: "",
-      name: "Settings",
-      href: "/review/settings",
-      icon: <SettingsOutlinedIcon />,
-      active: isNavItemActive(pathname, "/review/settings"),
-      position: "bottom",
     },
     {
       group: null,

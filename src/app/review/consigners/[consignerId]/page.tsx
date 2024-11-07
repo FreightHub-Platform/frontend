@@ -1,8 +1,6 @@
 "use client"
 
-import Details from "../../../../components/review/consigners/info/Details"
 import Logo from "../../../../components/review/consigners/info/Logo"
-import MapView from "../../../../components/review/consigners/info/Map"
 import ForwardToInboxIcon from '@mui/icons-material/ForwardToInbox';
 import * as React from 'react';
 import Backdrop from '@mui/material/Backdrop';
@@ -10,6 +8,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { useState } from "react"
+import Image from "next/image";
 
 
 
@@ -74,9 +73,73 @@ const ConsignerDetails = () => {
           }
         </div>
         <div className="flex justify-center items-center"><Logo /></div>
-        <div className="grid grid-cols-[400px_1fr] gap-2 mt-3">
-          <div><Details /></div>
-          <div className="flex justify-center items-center"><MapView /></div>
+        <div className="grid grid-cols-2 gap-2 mt-3">
+          <div>
+            <table className="table-fixed w-full">
+              <tbody className="text-sm flex flex-col justify-between h-56">
+                <tr className="flex mb-1">
+                  <td className="bg-orange-400 w-40 p-1">Business Name</td>
+                  <td className="p-1 border-2 flex-grow">Pambaya</td> 
+                </tr>
+                <tr className="flex mb-1">
+                  <td className="bg-orange-400 w-40 p-1">Business Registration Number</td>
+                  <td className="p-1 border-2 flex-grow flex items-center">Pambaya</td> 
+                </tr>
+                <tr className="flex mb-1">
+                  <td className="bg-orange-400 w-40 p-1">Email</td>
+                  <td className="p-1 border-2 flex-grow">Pambaya</td> 
+                </tr>
+                <tr className="flex mb-1">
+                  <td className="bg-orange-400 w-40 p-1">Main Contact Number</td>
+                  <td className="p-1 border-2 flex-grow">Pambaya</td> 
+                </tr>
+                <tr className="flex mb-1">
+                  <td className="bg-orange-400 w-40 p-1">Alternative Contact Number</td>
+                  <td className="p-1 border-2 flex-grow flex items-center">Pambaya</td> 
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <table className="table-fixed w-full">
+              <tbody className="text-sm flex flex-col justify-between h-56">
+                <tr className="flex mb-1">
+                  <td className="bg-orange-400 w-40 p-1">Address Line 1</td>
+                  <td className="p-1 border-2 flex-grow">Pambaya</td> 
+                </tr>
+                <tr className="flex mb-1">
+                  <td className="bg-orange-400 w-40 p-1">Address Line 2</td>
+                  <td className="p-1 border-2 flex-grow flex items-center">Pambaya</td> 
+                </tr>
+                <tr className="flex mb-1">
+                  <td className="bg-orange-400 w-40 p-1">City</td>
+                  <td className="p-1 border-2 flex-grow flex items-center">Pambaya</td> 
+                </tr>
+                <tr className="flex mb-1">
+                  <td className="bg-orange-400 w-40 p-1">Province</td>
+                  <td className="p-1 border-2 flex-grow">Pambaya</td> 
+                </tr>
+                <tr className="flex mb-1">
+                  <td className="bg-orange-400 w-40 p-1">Postal Code</td>
+                  <td className="p-1 border-2 flex-grow">Pambaya</td> 
+                </tr>
+                <tr className="flex mb-1">
+                  <td className="bg-orange-400 w-40 p-1 flex items-center">Document</td>
+                  <td className="p-1 border-2 flex-grow">
+                    <a href={'/pdf/1.pdf'} target="_blank" rel="noopener noreferrer" className="flex items-center">
+                      <Image
+                        src="/images/pdf.svg" 
+                        alt="Description of the SVG"
+                        width={30} 
+                        height={30}
+                      />
+                      1.pdf
+                    </a> 
+                  </td> 
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
         <div className="flex justify-center">
           {

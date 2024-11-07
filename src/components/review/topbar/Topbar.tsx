@@ -45,19 +45,19 @@ export function Topbar() {
                 </Badge>
               </IconButton>
             </div>
-            <div>
+            {/* <div>
               <IconButton aria-label="delete">
                 <SettingsOutlinedIcon
                   fontSize="large"
                   className="text-gray-600"
                 />
               </IconButton>
-            </div>
-            <div>
+            </div> */}
+            {/* <div>
               <IconButton aria-label="delete">
                 <HelpOutlineIcon fontSize="large" className="text-gray-600" />
               </IconButton>
-            </div>
+            </div> */}
             <div className="flex flex-col  align-middle my-auto">
               <Badge
                 content=""
@@ -79,9 +79,9 @@ export function Topbar() {
               <p className="text-medium">John Doe</p>
               <p className="text-sm text-gray-500">Consigner</p>
             </div>
-            <IconButton aria-label="delete">
+            {/* <IconButton aria-label="delete">
               <ExpandMoreIcon />
-            </IconButton>
+            </IconButton> */}
           </div>
         </div>
       </div>
