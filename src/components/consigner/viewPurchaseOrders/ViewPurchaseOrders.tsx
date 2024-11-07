@@ -94,11 +94,12 @@ const ViewPurchaseOrders = () => {
     if(!ordersDetails.purchaseOrders.length){
       handleNotificationClick()
     } else {
-      setLoading(true);
+      // setLoading(true);
       ordersDetails.purchaseOrders.forEach(item => {
         if(!item.items || !item.items.length){
           handleItemNotificationClick()
         } else {
+          setLoading(true);
           router.push('/consigner/orders/new/finalize');
         }
       })

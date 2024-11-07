@@ -32,12 +32,12 @@ const SucessPlacement = () => {
     const orderDetailsJson = JSON.stringify(orderDetails);
     console.log(orderDetailsJson);
 
-    const success = await saveOrder(orderDetailsJson);
+    const success = await saveOrder(orderDetailsJson, localStorage.getItem('jwt'));
     console.log(Cookies.get('jwt'))
     console.log(success)
     
     if (success) {
-      localStorage.clear();
+      localStorage.removeItem('ordersDetails');
       router.replace("/consigner/orders")
     }
 
