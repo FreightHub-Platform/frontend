@@ -66,9 +66,9 @@ const ProfileDetails = () => {
   return(
     <div className="flex justify-center w-11/12 mb-3">
       <div className="grid grid-cols-[400px_1fr] gap-3">
-        <div className="gap-2 bg-white p-3 ">
+        <div className="gap-2 bg-white p-5 rounded-2xl">
           <div>
-            <div className="p-1 bg-orange-300 w-full flex justify-between mb-3">
+            <div className="p-1 bg-orange-300 w-full flex justify-between mb-3 rounded-lg">
               <div className="flex w-full justify-center">Driver Details</div>
               { 
                 !verifiedDriver ? 
@@ -96,8 +96,8 @@ const ProfileDetails = () => {
             : null
           }
         </div>
-        <div className="bg-white p-3">
-          <div className="p-1 bg-orange-300 w-full flex justify-between mb-2">
+        <div className="bg-white p-5 rounded-2xl">
+          <div className="p-1 bg-orange-300 w-full flex justify-between mb-2 rounded-lg">
             <div className="flex w-full justify-center">Vehicle Details</div>
             {
               !verifiedVehicle ? 
@@ -109,9 +109,9 @@ const ProfileDetails = () => {
             
           </div>
           <div><VehicleDetails /></div>
-          <div className="p-1 bg-orange-300 w-full flex justify-center mb-2 mt-4">Vehicle Images</div>
+          <div className="p-1 bg-orange-300 w-full flex justify-center mb-2 mt-4 rounded-lg">Vehicle Images</div>
           <div><VehicleImages /></div>  
-          <div className="p-1 bg-orange-300 w-full flex justify-center mb-2 mt-4">Vehicle Documents</div>
+          <div className="p-1 bg-orange-300 w-full flex justify-center mb-2 mt-4 rounded-lg">Vehicle Documents</div>
           <div><VehicleDocument /></div> 
 
           {!verifiedVehicle ? 

@@ -5,6 +5,7 @@ import Footer from "../components/footer/Footer";
 import Navbar from "../components/navbar/Navbar";
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
+import Link from 'next/link';
 
 const Home = () => {
 
@@ -32,9 +33,9 @@ const Home = () => {
           <h1 className="text-3xl font-bold tracking-tight sm:text-6xl">Move Your Freight Quickly and Easily!</h1>
           <p className="mt-6 text-medium leading-8 sm:text-3xl">The Best Freight Forwarding Solution For Your Enterprise...</p>
           <br /><br /><br />
-          <button className="rounded-md mt-10 bg-orange-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:text-2xl">
+          <Link href="/register"><button className="rounded-md mt-10 bg-orange-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:text-2xl">
             Sign Up Now!
-          </button>
+          </button></Link>
         </div>
       </div>
       

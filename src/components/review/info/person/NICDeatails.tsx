@@ -17,7 +17,7 @@ const NICDetails = () => {
 
   return(
     <div className="flex flex-col w-full items-center gap-1 mt-3">
-        <div className="p-1 bg-orange-300 w-full flex justify-center">NIC Front and Back</div>
+        <div className="p-1 bg-orange-300 w-full flex justify-center rounded-lg">NIC Front and Back</div>
         <div>
           <Image 
             src="/images/homefleet.jpg"
