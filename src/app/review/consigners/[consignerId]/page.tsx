@@ -62,12 +62,12 @@ const ConsignerDetails = () => {
   return(
     <div className="w-11/12 mb-3">
       <div className="bg-white p-5 rounded-2xl">
-        <div className="p-1 bg-orange-300 w-full flex justify-between mb-3 rounded-lg">
-          <div className="flex w-full justify-center">Consigner Details</div>
+        <div className="p-1 w-full flex justify-between mb-3 rounded-lg"  style={{ backgroundColor: '#FF9800'}}>
+          <div className="flex w-full text-white font-bold justify-center">Consigner Details</div>
           { 
             !consignerStatus ?
               <form onSubmit={(e) => handleEmailSent(e,"businessMissMatch")}>
-                <button type="submit" className="me-4 hover:text-red-600 cursor-pointer"><ForwardToInboxIcon /></button>
+                <button type="submit" className="me-4 hover:text-white cursor-pointer"><ForwardToInboxIcon /></button>
               </form> 
             : null
           }
@@ -78,23 +78,23 @@ const ConsignerDetails = () => {
             <table className="table-fixed w-full">
               <tbody className="text-sm flex flex-col justify-between h-56">
                 <tr className="flex mb-1">
-                  <td className="bg-orange-400 w-40 p-1 rounded-l-lg flex items-center ps-4">Business Name</td>
+                  <td className=" border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Business Name</td>
                   <td className="p-1 border-2 flex-grow ps-3 rounded-r-lg">Pambaya</td> 
                 </tr>
                 <tr className="flex mb-1">
-                  <td className="bg-orange-400 w-40 p-1 rounded-l-lg flex items-center ps-4">Business Registration Number</td>
+                  <td className=" border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Business Registration Number</td>
                   <td className="p-1 border-2 flex-grow flex items-center ps-3 rounded-r-lg">Pambaya</td> 
                 </tr>
                 <tr className="flex mb-1">
-                  <td className="bg-orange-400 w-40 p-1 rounded-l-lg flex items-center ps-4">Email</td>
+                  <td className=" border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Email</td>
                   <td className="p-1 border-2 flex-grow ps-3 rounded-r-lg">Pambaya</td> 
                 </tr>
                 <tr className="flex mb-1">
-                  <td className="bg-orange-400 w-40 p-1 rounded-l-lg flex items-center ps-4">Main Contact Number</td>
+                  <td className=" border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Main Contact Number</td>
                   <td className="p-1 border-2 flex-grow ps-3 rounded-r-lg flex items-center">Pambaya</td> 
                 </tr>
                 <tr className="flex mb-1">
-                  <td className="bg-orange-400 w-40 p-1 rounded-l-lg flex items-center ps-4">Alternative Contact Number</td>
+                  <td className=" border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Alternative Contact Number</td>
                   <td className="p-1 border-2 flex-grow flex items-center ps-3 rounded-r-lg">Pambaya</td> 
                 </tr>
               </tbody>
@@ -104,27 +104,27 @@ const ConsignerDetails = () => {
             <table className="table-fixed w-full">
               <tbody className="text-sm flex flex-col justify-between h-56">
                 <tr className="flex mb-1">
-                  <td className="bg-orange-400 w-40 p-1 rounded-l-lg flex items-center ps-4">Address Line 1</td>
+                  <td className=" border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Address Line 1</td>
                   <td className="p-1 border-2 flex-grow ps-3 rounded-r-lg">Pambaya</td> 
                 </tr>
                 <tr className="flex mb-1">
-                  <td className="bg-orange-400 w-40 p-1 rounded-l-lg flex items-center ps-4">Address Line 2</td>
+                  <td className=" border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Address Line 2</td>
                   <td className="p-1 border-2 flex-grow flex items-center ps-3 rounded-r-lg">Pambaya</td> 
                 </tr>
                 <tr className="flex mb-1">
-                  <td className="bg-orange-400 w-40 p-1 rounded-l-lg flex items-center ps-4">City</td>
+                  <td className=" border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">City</td>
                   <td className="p-1 border-2 flex-grow flex items-center ps-3 rounded-r-lg">Pambaya</td> 
                 </tr>
                 <tr className="flex mb-1">
-                  <td className="bg-orange-400 w-40 p-1 rounded-l-lg flex items-center ps-4">Province</td>
+                  <td className=" border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Province</td>
                   <td className="p-1 border-2 flex-grow ps-3 rounded-r-lg">Pambaya</td> 
                 </tr>
                 <tr className="flex mb-1">
-                  <td className="bg-orange-400 w-40 p-1 rounded-l-lg flex items-center ps-4">Postal Code</td>
+                  <td className=" border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Postal Code</td>
                   <td className="p-1 border-2 flex-grow ps-3 rounded-r-lg">Pambaya</td> 
                 </tr>
                 <tr className="flex mb-1">
-                  <td className="bg-orange-400 w-40 p-1 rounded-l-lg flex items-center ps-4">Document</td>
+                  <td className=" border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Document</td>
                   <td className="p-1 border-2 flex-grow ps-3 rounded-r-lg">
                     <a href={'/pdf/1.pdf'} target="_blank" rel="noopener noreferrer" className="flex items-center">
                       <Image
@@ -145,7 +145,7 @@ const ConsignerDetails = () => {
           {
             !consignerStatus ?
               <form onSubmit={(e) => handleEmailSent(e,"businessVerified")}>
-                <button type="submit" className="bg-green-500 py-2 px-5 rounded-lg hover:bg-green-600 duration-300 hover:text-white mt-2">Verify Consigner</button>
+                <button type="submit" className="bg-green-500 py-2 px-5 rounded-lg hover:bg-green-600 duration-300 hover:text-white mt-6">Verify Consigner</button>
               </form> 
             : null
           }
