@@ -92,64 +92,19 @@ const Prioratize = () => {
           <ProcessBox step={steps} completion={2}/>
         </Box>
 
-      <div className='px-10'>
-        <div className='my-4 '>
-          <div className='text-2xl font-semibold mb-3'>Order Fulfillment Plan</div>
-          <div className='flex flex-row justify-center gap-5'>
-            <div className='border-2 flex-1 py-3 px-3 rounded-lg shadow-lg'>
-              <div className='text-sm font-semibold mb-2'>
-                <span className='bg-red-300 px-5 py-1 rounded-xl'>Pickup</span>
-              </div>
-              <div className='flex flex-row items-center'>
-                <p className='text-sm font-semibold mr-1'>Pickup Location:</p>
-                <p className='text-sm'>SAMAN STORES JAFFNA</p>
-              </div>
-              <div className='flex flex-row items-center'>
-                <p className='text-sm font-semibold mr-1'>Pickup Date:</p>
-                <p className='text-sm'>{ordersDetails.pickupDate}</p>
-              </div>
-              <div className='flex flex-row items-center'>
-                <p className='text-sm font-semibold mr-1'>Pickup Time:</p>
-                <p className='text-sm'>
-                {ordersDetails.fromTime}{(fromDate >= 0 && fromDate < 12) ? ' AM' : ' PM'} - 
-                {ordersDetails.toTime}{(toDate >= 0 && toDate < 12) ? ' AM' : ' PM'}
-                </p>
-              </div>
-            </div>
-            <div className='border-2 flex-1 py-3 px-3 rounded-lg shadow-lg'>
-              <div className='text-sm font-semibold mb-2'>
-                <span className='bg-red-300 px-5 py-1 rounded-xl'>Total</span>
-              </div>
-              <div className='flex flex-row items-center'>
-                <p className='text-sm font-semibold mr-1'>Estimated Cost:</p>
-                <p className='text-sm'>Rs. 2</p>
-              </div>
-              <div className='flex flex-row items-center'>
-                <p className='text-sm font-semibold mr-1'>Total Distance:</p>
-                <p className='text-sm'>5cm</p>
-              </div>
-              <div className='flex flex-row items-center'>
-                <p className='text-sm font-semibold mr-1'>Total No of Vehicles:</p>
-                <p className='text-sm'>3</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div className='text-2xl font-semibold mb-3'>Optimized Routes</div>
-          <div className='flex flex-col gap-3'>
-            <OptimizeRoutes />
-          </div>
+        <div className='px-10 mt-2'>
+         
+         
 
           <div className='flex flex-row justify-between px-4'>
             <div>
               <button className='bg-gray-400 py-3 px-12 rounded-lg text-white hover:bg-gray-500 text-sm duration-500' onClick={handleBack}>Back</button>
             </div>
             <div className='flex flex-row gap-10 px-4'>
-              <button className='bg-red-700 py-3 px-12 rounded-lg text-white hover:bg-red-800 text-sm duration-500' onClick={handleDeclineOpen}>
+              <button className='bg-red-700 px-11 rounded-lg text-white hover:bg-red-800 text-sm duration-500' onClick={handleDeclineOpen}>
                 Decline
               </button>
-               <div>
+              <div>
                 <Modal
                   open={openDecline}
                   onClose={handleDeclineClose}
@@ -161,7 +116,7 @@ const Prioratize = () => {
                   </Box>
                 </Modal>
               </div>
-              <button className='bg-success py-1 px-12 rounded-lg text-white hover:bg-green-500 text-sm duration-500' onClick={handleSuccessOpen}>
+              <button className='bg-success px-11 rounded-lg text-white hover:bg-green-500 text-sm duration-500' onClick={handleSuccessOpen}>
                 Submit
               </button>
               <Modal
@@ -176,8 +131,8 @@ const Prioratize = () => {
               </Modal>
             </div>
           </div>
+          
         </div>
-      </div>
       </Box>
     </Box>
   )

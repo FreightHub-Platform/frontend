@@ -22,12 +22,12 @@ const VehicleDocument = () => {
       <table className="table-fixed w-full text-sm">
         <tbody>
           <tr className="flex mb-1">
-            <td className="bg-orange-400 w-32 p-1">Expire date</td>
-            <td className="p-1 border-2 flex-grow">Pambaya</td> 
+            <td className="bg-orange-400 w-32 p-1 rounded-l-lg ps-4 flex items-center">Expire date</td>
+            <td className="p-1 border-2 flex-grow rounded-r-lg ps-5 items-center">Pambaya</td> 
           </tr>
           <tr className="flex mb-1">
             <td className="bg-orange-400 w-32 p-1 flex justify-center items-center">Image</td>
-            <td className="p-1 border-2 flex justify-center">
+            <td className="p-1 border-2 flex justify-center ps-3">
               <Image 
                 src="/images/homefleet.jpg"
                 onClick={() => handleOpen('/images/homefleet.jpg')}
@@ -45,12 +45,12 @@ const VehicleDocument = () => {
       <table className="table-fixed w-full text-sm">
         <tbody>
           <tr className="flex mb-1">
-            <td className="bg-orange-400 w-32 p-1">Expire date</td>
-            <td className="p-1 border-2 flex-grow">Pambaya</td> 
+            <td className="bg-orange-400 w-32 p-1 rounded-l-lg ps-4 flex items-center">Expire date</td>
+            <td className="p-1 border-2 flex-grow rounded-r-lg ps-5 items-center">Pambaya</td> 
           </tr>
           <tr className="flex mb-1">
             <td className="bg-orange-400 w-32 p-1 flex justify-center items-center">Image</td>
-            <td className="p-1 border-2 flex justify-center">
+            <td className="p-1 border-2 flex justify-center ps-3">
               <Image 
                 src="/images/homefleet.jpg"
                 onClick={() => handleOpen('/images/homefleet.jpg')}
