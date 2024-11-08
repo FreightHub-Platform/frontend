@@ -91,19 +91,26 @@ const ViewPurchaseOrders = () => {
 
 
   const handleNext = () => {
+
+    let hasError = false;
+
     if(!ordersDetails.purchaseOrders.length){
       handleNotificationClick()
+      hasError = true
     } else {
       // setLoading(true);
       ordersDetails.purchaseOrders.forEach(item => {
         if(!item.items || !item.items.length){
           handleItemNotificationClick()
-        } else {
-          setLoading(true);
-          router.push('/consigner/orders/new/finalize');
-        }
+          hasError = true
+        } 
       })
       
+    }
+
+    if(!hasError){
+      setLoading(true);
+      router.push('/consigner/orders/new/finalize');
     }
   }
 

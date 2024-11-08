@@ -21,7 +21,6 @@ const AddItem = ({ order, orderIndex, updateOrderItems, cancelOrder }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [allowSharing, setAllowSharing] = useState(order.allow_shearing)
 
   const [items, setItems] = useState(order.items || []);
 
@@ -39,15 +38,21 @@ const AddItem = ({ order, orderIndex, updateOrderItems, cancelOrder }) => {
     updateOrderItems(orderIndex, updatedItems);
   }
 
+  const handleLoadSharing = () => {
+    const orderDetails = JSON.parse(localStorage.getItem('ordersDetails'))
+    orderDetails.purchaseOrders[orderIndex].ltlFlag = !orderDetails.purchaseOrders[orderIndex].ltlFlag
+    localStorage.setItem('ordersDetails', JSON.stringify(orderDetails))
+  }
+
 
 
   return (
-    <Box component="section" className='px-5 py-2 mb-2 shadow-lg rounded-lg border-orange-500 border-1 rounded-md flex flex-col'>
+    <Box component="section" className='px-5 py-2 mb-2 shadow-lg rounded-lg border-orange-500 border-1 flex flex-col'>
       <div className='flex flex-row justify-between items-center'>
         <div className='bg-zinc-300 px-4 py-1 rounded-3xl font-semibold text-xs'>PO {order.poNumber}</div>
         <div>
           <FormControlLabel 
-            control={<Checkbox className='text-sm' defaultChecked={order.ltlFlag} onClick={() => setAllowSharing(!allowSharing)}/>} 
+            control={<Checkbox className='text-sm' defaultChecked={order.ltlFlag} onClick={handleLoadSharing}/>} 
             label={
               <Typography className='text-sm'>
                 Allow Load Sharing
