@@ -13,3 +13,19 @@
 body {
   @apply select-none;
 }
+
+.custom-scrollbar-horizontal::-webkit-scrollbar {
+  width: 8px; /* Thin scrollbar width */
+}
+
+.custom-scrollbar-horizontal::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Background of the scrollbar track */
+  border-radius: 8px; /* Rounded corners for track */
+}
+
+.custom-scrollbar-horizontal::-webkit-scrollbar-thumb {
+  background-color: #c1c1c1; /* Color of the scrollbar thumb */
+  border-radius: 8px; /* Rounded corners for thumb */
+  border: 2px solid #f1f1f1; /* Creates spacing around thumb */
+}
+
