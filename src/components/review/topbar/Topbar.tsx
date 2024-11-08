@@ -69,15 +69,15 @@ export function Topbar() {
                   isBordered
                   color="warning"
                   radius="full"
-                  src="https://i.pravatar.cc/150?u=a04258a2462d826712d"
+                  // src="https://i.pravatar.cc/150?u=a04258a2462d826712d"
                 />
               </Badge>
             </div>
           </div>
           <div className="flex flex-row gap-6">
             <div className="flex flex-col  align-middle my-auto">
-              <p className="text-medium">John Doe</p>
-              <p className="text-sm text-gray-500">Consigner</p>
+              {/* <p className="text-medium">John Doe</p> */}
+              <p className="text-sm text-gray-500">Review Board</p>
             </div>
             {/* <IconButton aria-label="delete">
               <ExpandMoreIcon />

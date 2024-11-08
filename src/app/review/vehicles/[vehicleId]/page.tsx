@@ -66,14 +66,15 @@ const ProfileDetails = () => {
   return(
     <div className="flex justify-center w-11/12 mb-3">
       <div className="grid grid-cols-[400px_1fr] gap-3">
-        <div className="gap-2 bg-white p-5 rounded-2xl">
+      <div className="gap-2 bg-white p-5 rounded-2xl max-h-[85vh]">
+      <div className="bg-white p-5 rounded-2xl max-h-[75vh] overflow-y-auto">
           <div>
-            <div className="p-1 bg-orange-300 w-full flex justify-between mb-3 rounded-lg">
-              <div className="flex w-full justify-center">Driver Details</div>
-              { 
-                !verifiedDriver ? 
+          <div className="p-1 w-full flex justify-between mb-3 rounded-lg" style={{ backgroundColor: '#FF9800'}}>
+              <div className="flex w-full text-white justify-center font-bold">Driver Details</div>
+              {
+                !verifiedDriver ?
                   <form onSubmit={(e) => handleEmailSent(e,"driverMissMatch")}>
-                    <button type="submit" className="me-4 hover:text-red-600 cursor-pointer"><ForwardToInboxIcon /></button>
+                    <button type="submit" className="me-4 hover:text-white cursor-pointer"><ForwardToInboxIcon /></button>
                   </form>
                 : null
               }
@@ -87,6 +88,7 @@ const ProfileDetails = () => {
           <div>
             <BankDetails />
           </div> 
+          </div>
           {!verifiedDriver ? 
             <div className="flex justify-center">
               <form onSubmit={(e) => handleEmailSent(e,"driverVerified")}>
@@ -96,28 +98,30 @@ const ProfileDetails = () => {
             : null
           }
         </div>
-        <div className="bg-white p-5 rounded-2xl">
-          <div className="p-1 bg-orange-300 w-full flex justify-between mb-2 rounded-lg">
-            <div className="flex w-full justify-center">Vehicle Details</div>
-            {
-              !verifiedVehicle ? 
-                <form onSubmit={(e) => handleEmailSent(e,"vehicleMissMatch")}>
-                  <button type="submit" className="me-4 hover:text-red-600 cursor-pointer"><ForwardToInboxIcon /></button>
-                </form>
-              : null
-            }
-            
+        <div className="gap-2 bg-white p-5 rounded-2xl max-h-[85vh]">
+          <div className="bg-white p-5 rounded-2xl max-h-[75vh] overflow-y-auto">
+          <div className="p-1 bg-orange-300 w-full flex justify-between mb-2 rounded-lg" style={{ backgroundColor: '#FF9800'}}>
+              <div className="flex w-full justify-center font-bold text-white">Vehicle Details</div>
+              {
+                !verifiedVehicle ?
+                  <form onSubmit={(e) => handleEmailSent(e,"vehicleMissMatch")}>
+                    <button type="submit" className="me-4 hover:text-white cursor-pointer"><ForwardToInboxIcon /></button>
+                  </form>
+                : null
+              }
+              
+            </div>
+            <div><VehicleDetails /></div>
+            <div className="p-1 border-3 font-bold w-full flex justify-center mb-2 mt-4 rounded-lg" style={{ borderColor: '#FF9800'}}>Vehicle Images</div>
+            <div><VehicleImages /></div>  
+            <div className="p-1 border-3 font-bold w-full flex justify-center mb-2 mt-4 rounded-lg" style={{ borderColor: '#FF9800'}}>Vehicle Documents</div>
+            <div><VehicleDocument /></div> 
           </div>
-          <div><VehicleDetails /></div>
-          <div className="p-1 bg-orange-300 w-full flex justify-center mb-2 mt-4 rounded-lg">Vehicle Images</div>
-          <div><VehicleImages /></div>  
-          <div className="p-1 bg-orange-300 w-full flex justify-center mb-2 mt-4 rounded-lg">Vehicle Documents</div>
-          <div><VehicleDocument /></div> 
 
           {!verifiedVehicle ? 
-            <div className="flex justify-center items-center h-48">
+            <div className="flex justify-center items-center">
               <form onSubmit={(e) => handleEmailSent(e,"vehicleVerified")}>
-                <button className="bg-green-500 py-2 px-5 rounded-lg hover:bg-green-600 duration-300 hover:text-white">Verify Vehicle</button>
+              <button className="bg-green-500 py-2 px-5 rounded-lg hover:bg-green-600 duration-300 hover:text-white mt-2">Verify Vehicle</button>
               </form>
             </div>
            : null
