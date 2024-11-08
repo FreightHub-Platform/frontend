@@ -183,7 +183,7 @@ const ProfileC = () => {
             </table>
           </div>
         </div> 
-        <div className='mt-6'>
+        <div className='mt-11'>
           <div className='text-base text-slate-600 mb-3'>
             CHANGE PASSWORD
           </div>
