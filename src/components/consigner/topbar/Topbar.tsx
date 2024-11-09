@@ -4,17 +4,15 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { Smooch_Sans } from "next/font/google";
 import { IconButton } from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Avatar } from "@nextui-org/avatar";
 import Image from "next/image";
 import Logo from "../../../../public/images/Logo.svg";
 import SearchIn from "./SeachInput";
 import { Badge } from "@nextui-org/badge";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import Cookies from "js-cookie";
 import { getConsignerById } from "../../../utils/consigner";
+import Notification from "./Notification";
 
 const displayFont = Smooch_Sans({
   weight: "700",
@@ -48,6 +46,7 @@ export function Topbar() {
   }, []);
 
   const [notification, setNotification] = useState(false)
+  const [showBadge, setShowBadge] = useState(true)
 
   return (
     <nav className="flex w-full justify-between px-5 py-2 bg-white items-center">
@@ -64,18 +63,22 @@ export function Topbar() {
         <div className="flex flex-row gap-x-6">
           <div className="flex flex-row gap-3">
             <div className="relative">
-              <IconButton aria-label="delete" onClick={() => {setNotification(notification ? false : true)}}>
-                <Badge content="99+" size="sm" shape="circle" color="danger">
-                  <NotificationsNoneOutlinedIcon
-                    fontSize="large"
-                    className="text-gray-600"
-                  />
-                </Badge>
+              <IconButton aria-label="delete" onClick={() => {setNotification(notification ? false : true); setShowBadge(false)}}>
+                {showBadge ? (
+                  <Badge content="99+" size="sm" shape="circle" color="danger">
+                    <NotificationsNoneOutlinedIcon
+                      fontSize="large"
+                      className="text-gray-600"
+                    />
+                  </Badge>
+                  ) : (
+                    <NotificationsNoneOutlinedIcon fontSize="large" className="text-gray-600" />
+                )}
               </IconButton>
               {
                 notification ? 
-                  <div className="h-[490px] w-[400px] bg-slate-200 absolute z-50 right-7 top-16 p-1" >
-                    <div className="hover:bg-slate-100 bg-white">hello</div>
+                  <div className="max-h-[600px] w-[500px] absolute z-50 right-7 top-10 flex shadow-2xl rounded-2xl" >
+                    <Notification />
                   </div>
                 : null
               }

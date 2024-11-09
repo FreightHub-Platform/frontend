@@ -78,30 +78,36 @@ const Sidebar = () => {
           />
         ))}
       </div>
-      <div className="absolute">
+      <div className="relative">
         {isSidebarExpanded ? (
           <button
           type="button"
-          style={{ top: "39vh" }}
           className={cn(
-            "absolute -z-10  left-52  h-16 rounded-xl  bg-white flex items-center justify-center",
+            "pl-4 w-8 h-16 rounded-xl bg-white flex items-center justify-center p-0 absolute",
             isSidebarExpanded ? "transform rotate-180" : ""
           )}
           onClick={toggleSidebar}
           title="Toggle Sidebar"
+          style={{
+            bottom: "320px",
+            right: "-22px", 
+          }}
         >
             <span className="material-icons"><ArrowForwardIosIcon/></span>
         </button>
         ): (
           <button
           type="button"
-          style={{ top: "39vh" }}
           className={cn(
-            "absolute -z-10  left-24 pl-4 w-8 h-16 rounded-xl  bg-white flex items-center justify-center",
+            "pl-4 w-8 h-16 rounded-xl bg-white flex items-center justify-center p-0 absolute",
             isSidebarExpanded ? "transform rotate-180" : ""
           )}
           onClick={toggleSidebar}
           title="Toggle Sidebar"
+          style={{
+            bottom: "320px",
+            right: "-20px", 
+          }}
         >
             <span className="material-icons"><ArrowForwardIosIcon/></span>
         </button>

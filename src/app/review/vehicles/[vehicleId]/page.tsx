@@ -64,6 +64,8 @@ const ProfileDetails = () => {
   };
 
   return(
+
+                    <div className="flex justify-center">
     <div className="flex justify-center w-11/12 mb-3">
       <div className="grid grid-cols-[400px_1fr] gap-3">
       <div className="gap-2 bg-white p-5 rounded-2xl max-h-[85vh]">
@@ -75,6 +77,7 @@ const ProfileDetails = () => {
                 !verifiedDriver ?
                   <form onSubmit={(e) => handleEmailSent(e,"driverMissMatch")}>
                     <button type="submit" className="me-4 hover:text-white cursor-pointer"><ForwardToInboxIcon /></button>
+
                   </form>
                 : null
               }
@@ -127,28 +130,29 @@ const ProfileDetails = () => {
            : null
           }
         </div>
-      </div>
-      <div>
-        <Backdrop
-          sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
-          open={submitting}
-        >
-          <CircularProgress color="inherit" />
-        </Backdrop>
-      </div>
-      <div>
-        <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-          <Alert
-            onClose={handleClose}
-            severity={sentMail ? "success" : "error"}
-            variant="filled"
-            sx={{ width: '100%' }}
+        <div>
+          <Backdrop
+            sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
+            open={submitting}
           >
-            {sentMail ? "Email sent success!" : "Email sent fail!"}
-          </Alert>
-        </Snackbar>
+            <CircularProgress color="inherit" />
+          </Backdrop>
+        </div>
+        <div>
+          <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+            <Alert
+              onClose={handleClose}
+              severity={sentMail ? "success" : "error"}
+              variant="filled"
+              sx={{ width: '100%' }}
+            >
+              {sentMail ? "Email sent success!" : "Email sent fail!"}
+            </Alert>
+          </Snackbar>
+        </div>
       </div>
     </div>
+        </div>
   )
 }
 

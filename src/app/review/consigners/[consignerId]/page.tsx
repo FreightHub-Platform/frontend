@@ -60,6 +60,7 @@ const ConsignerDetails = () => {
   };
 
   return(
+   <div className="flex justify-center">
     <div className="w-11/12 mb-3">
       <div className="bg-white p-5 rounded-2xl">
         <div className="p-1 w-full flex justify-between mb-3 rounded-lg"  style={{ backgroundColor: '#FF9800'}}>
@@ -168,11 +169,24 @@ const ConsignerDetails = () => {
             variant="filled"
             sx={{ width: '100%' }}
           >
-            {sentMail ? "Email sent success!" : "Email sent fail!"}
-          </Alert>
-        </Snackbar>
+            <CircularProgress color="inherit" />
+          </Backdrop>
+        </div>
+        <div>
+          <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+            <Alert
+              onClose={handleClose}
+              severity={sentMail ? "success" : "error"}
+              variant="filled"
+              sx={{ width: '100%' }}
+            >
+              {sentMail ? "Email sent success!" : "Email sent fail!"}
+            </Alert>
+          </Snackbar>
+        </div>
       </div>
     </div>
+  </div>
   )
 }
 
