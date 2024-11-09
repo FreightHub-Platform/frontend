@@ -18,8 +18,8 @@ export default function Layout({
           <Sidebar />
           <div className="w-full overflow-x-auto bg-gray-200">
             <div className="sm:h-[calc(99vh-60px)] overflow-auto">
-              <div className=" w-full flex justify-center mx-auto overflow-auto h-[calc(100vh - 120px)] overflow-y-auto relative ms-8">
-                <div className=" w-full md:max-w6xl mt-6 "> {children}</div>
+              <div className=" w-full flex justify-center mx-auto overflow-auto h-full overflow-y-auto relative ">
+                <div className="w-full md:max-w6xl mt-6 "> {children}</div>
               </div>
             </div>
           </div>

@@ -102,7 +102,7 @@ const ProfileC = () => {
   };
 
   return(
-    <div className="w-full mb-3 flex justify-center">
+    <div className="w-full mb-3 flex justify-center pb-5">
       <div className="bg-white p-5 w-11/12 rounded-2xl">
         <div className="p-1 bg-orange-300 w-full flex justify-between mb-3 rounded-lg">
           <div className="flex w-full justify-center">Profile Details</div>

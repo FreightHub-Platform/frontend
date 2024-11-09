@@ -2,7 +2,7 @@
 
 const AddOrdersPage = () => {
     return (
-      <div className='flex justify-center '>
+      <div className='flex justify-center'>
         Orders   
       </div>
     )
