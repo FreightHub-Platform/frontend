@@ -102,6 +102,7 @@ export const updateBusiness = async (businessInformation: businessInfo, token: S
     return response.status === 200;
 
   } catch (error) {
+    return 0;
     console.error('Error:', error);
     throw new Error('An unexpected error occurred.');
   }

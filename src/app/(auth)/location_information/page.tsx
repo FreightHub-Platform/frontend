@@ -138,7 +138,7 @@ const Location = () => {
       const data = await updateLocation(locationInformation, localStorage.getItem('jwt'));
 
       if (data) {
-        router.push('/consigner/regcomplete') // have to create this page
+        router.push('/regcomplete') // have to create this page
       } else {
         alert("Something is wrong");
       }
