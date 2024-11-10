@@ -25,31 +25,26 @@ import SearchIcon from "@mui/icons-material/Search";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { columns, vehicles, statusOptions } from "./Data";
+import { columns, users, statusOptions } from "./Data";
 import { capitalize } from "./Utils";
-import ProgressBar from "./ProgressBar";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
-  "No Warnings": "success",
-  "Oil Leakage": "warning",
-  Stopped: "warning",
-  "No Contact": "danger",
-  "Consignee not available": "danger",
-  "Fuel Problem": "secondary",
+  Active: "success",
+  Pending: "warning",
+  Inactive: "danger",
 };
 
 const INITIAL_VISIBLE_COLUMNS = [
-  "vehicle",
-  "sroute",
-  "eroute",
+  "userName",
+  "email",
+  "role",
   "status",
-  "progress",
   "actions",
 ];
 
-type User = (typeof vehicles)[0];
+type User = (typeof users)[0];
 
-export default function OnRouteVehicles() {
+export default function UserTable() {
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([])
@@ -60,7 +55,7 @@ export default function OnRouteVehicles() {
   const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
-    column: "vehicle",
+    column: "userName",
     direction: "ascending",
   });
 
@@ -77,24 +72,24 @@ export default function OnRouteVehicles() {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredvehicles = [...vehicles];
+    let filteredusers = [...users];
 
     if (hasSearchFilter) {
-      filteredvehicles = filteredvehicles.filter((user) =>
-        user.vehicle.toLowerCase().includes(filterValue.toLowerCase())
+      filteredusers = filteredusers.filter((user) =>
+        user.userName.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     if (
       statusFilter !== "all" &&
       Array.from(statusFilter).length !== statusOptions.length
     ) {
-      filteredvehicles = filteredvehicles.filter((user) =>
+      filteredusers = filteredusers.filter((user) =>
         Array.from(statusFilter).includes(user.status)
       );
     }
 
-    return filteredvehicles;
-  }, [hasSearchFilter, statusFilter, filterValue]);
+    return filteredusers;
+  }, [users, filterValue, statusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -119,31 +114,31 @@ export default function OnRouteVehicles() {
     const cellValue = user[columnKey as keyof User];
 
     switch (columnKey) {
-      case "vehicle":
+      case "user":
         return (
           <User
-            avatarProps={{ radius: "lg", src: user.image }}
-            description={user.type}
+            // avatarProps={{ radius: "lg", src: user.image }}
+            description={user.role}
             name={cellValue}
           >
-            {user.type}
+            {user.role}
           </User>
         );
-      case "sroute":
+      case "email":
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">{cellValue}</p>
             <p className="text-bold text-tiny capitalize text-default-400">
-              {user.sdate}
+              {user.email}
             </p>
           </div>
         );
-      case "eroute":
+      case "role":
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">{cellValue}</p>
             <p className="text-bold text-tiny capitalize text-default-400">
-              {user.edate}
+              {user.role}
             </p>
           </div>
         );
@@ -158,8 +153,6 @@ export default function OnRouteVehicles() {
             {cellValue}
           </Chip>
         );
-      case "progress":
-        return <ProgressBar value={user.progress} />;
       case "actions":
         return (
           <div className="relative flex justify-center items-center gap-2">
@@ -280,7 +273,7 @@ export default function OnRouteVehicles() {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {vehicles.length} vehicles
+            Total {users.length} vehicles
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -298,11 +291,12 @@ export default function OnRouteVehicles() {
     );
   }, [
     filterValue,
-    onSearchChange,
     statusFilter,
     visibleColumns,
+    onSearchChange,
     onRowsPerPageChange,
-    onClear,
+    users.length,
+    hasSearchFilter,
   ]);
 
   const bottomContent = React.useMemo(() => {
@@ -342,14 +336,7 @@ export default function OnRouteVehicles() {
         </div>
       </div>
     );
-  }, [
-    selectedKeys,
-    filteredItems.length,
-    page,
-    pages,
-    onPreviousPage,
-    onNextPage,
-  ]);
+  }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
 
   return (
     <Table
