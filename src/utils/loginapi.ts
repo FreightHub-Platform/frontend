@@ -111,8 +111,9 @@ export const updateBusiness = async (
     );
     return response.status === 200;
   } catch (error) {
-    console.error("Error:", error);
-    throw new Error("An unexpected error occurred.");
+    return 0;
+    console.error('Error:', error);
+    throw new Error('An unexpected error occurred.');
   }
 };
 

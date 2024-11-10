@@ -102,10 +102,10 @@ const ProfileC = () => {
   };
 
   return(
-    <div className="w-11/12 mb-3">
-      <div className="bg-white p-3">
-        <div className="p-1 bg-orange-300 w-full flex justify-between mb-3">
-          <div className="flex w-full justify-center">Profile Details</div>
+    <div className="w-full mb-3 flex justify-center pb-5">
+      <div className="bg-white p-5 w-11/12 rounded-2xl">
+        <div className="p-1 bg-orange-300 w-full flex justify-between rounded-lg mb-3" style={{ backgroundColor: '#FF9800'}}>
+          <div className="flex w-full justify-center font-bold text-white">Profile Details</div>
           {/* { 
             !consignerStatus ?
               <form onSubmit={(e) => handleEmailSent(e,"businessMissMatch")}>
@@ -120,24 +120,24 @@ const ProfileC = () => {
             <table className="table-fixed w-full">
               <tbody className="text-sm flex flex-col justify-between h-56">
                 <tr className="flex mb-1">
-                  <td className="bg-orange-400 w-40 p-1">Business Name</td>
-                  <td className="p-1 border-2 flex-grow">Pambaya</td> 
+                  <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Business Name</td>
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
                 </tr>
                 <tr className="flex mb-1">
-                  <td className="bg-orange-400 w-40 p-1">Business Registration Number</td>
-                  <td className="p-1 border-2 flex-grow flex items-center">Pambaya</td> 
+                  <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Business Registration Number</td>
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
                 </tr>
                 <tr className="flex mb-1">
-                  <td className="bg-orange-400 w-40 p-1">Email</td>
-                  <td className="p-1 border-2 flex-grow">Pambaya</td> 
+                  <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Email</td>
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
                 </tr>
                 <tr className="flex mb-1">
-                  <td className="bg-orange-400 w-40 p-1">Main Contact Number</td>
-                  <td className="p-1 border-2 flex-grow">Pambaya</td> 
+                  <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Main Contact Number</td>
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
                 </tr>
                 <tr className="flex mb-1">
-                  <td className="bg-orange-400 w-40 p-1">Alternative Contact Number</td>
-                  <td className="p-1 border-2 flex-grow flex items-center">Pambaya</td> 
+                  <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Alternative Contact Number</td>
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
                 </tr>
               </tbody>
             </table>
@@ -146,29 +146,29 @@ const ProfileC = () => {
             <table className="table-fixed w-full">
               <tbody className="text-sm flex flex-col justify-between h-56">
                 <tr className="flex mb-1">
-                  <td className="bg-orange-400 w-40 p-1">Address Line 1</td>
-                  <td className="p-1 border-2 flex-grow">Pambaya</td> 
+                  <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Address Line 1</td>
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
                 </tr>
                 <tr className="flex mb-1">
-                  <td className="bg-orange-400 w-40 p-1">Address Line 2</td>
-                  <td className="p-1 border-2 flex-grow flex items-center">Pambaya</td> 
+                  <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Address Line 2</td>
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
                 </tr>
                 <tr className="flex mb-1">
-                  <td className="bg-orange-400 w-40 p-1">City</td>
-                  <td className="p-1 border-2 flex-grow flex items-center">Pambaya</td> 
+                  <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">City</td>
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
                 </tr>
                 <tr className="flex mb-1">
-                  <td className="bg-orange-400 w-40 p-1">Province</td>
-                  <td className="p-1 border-2 flex-grow">Pambaya</td> 
+                  <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Province</td>
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
                 </tr>
                 <tr className="flex mb-1">
-                  <td className="bg-orange-400 w-40 p-1">Postal Code</td>
-                  <td className="p-1 border-2 flex-grow">Pambaya</td> 
+                  <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Postal Code</td>
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
                 </tr>
                 <tr className="flex mb-1">
-                  <td className="bg-orange-400 w-40 p-1 flex items-center">Document</td>
+                  <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Document</td>
                   <td className="p-1 border-2 flex-grow">
-                    <a href={'/pdf/1.pdf'} target="_blank" rel="noopener noreferrer" className="flex items-center">
+                    <a href={'/pdf/1.pdf'} target="_blank" rel="noopener noreferrer" className="flex items-center ps-1">
                       <Image
                         src="/images/pdf.svg" 
                         alt="Description of the SVG"
@@ -183,7 +183,7 @@ const ProfileC = () => {
             </table>
           </div>
         </div> 
-        <div className='mt-6'>
+        <div className='mt-11'>
           <div className='text-base text-slate-600 mb-3'>
             CHANGE PASSWORD
           </div>
@@ -303,6 +303,7 @@ const ProfileC = () => {
           </div>
         </div>
       </div>
+
       <div>
         <Backdrop
           sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}

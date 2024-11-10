@@ -4,7 +4,7 @@ import styles from "./pickup.module.css"
 
 const PickupInformation = () => {
     return (
-        <div className='flex justify-center '>
+        <div className='flex justify-center pb-10'>
             <NewOrder />
         </div>
     )

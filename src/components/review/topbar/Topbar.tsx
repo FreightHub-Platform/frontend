@@ -12,6 +12,7 @@ import { Badge } from "@nextui-org/badge";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
+import Notification from "./Notification";
 
 const displayFont = Smooch_Sans({
   weight: "700",
@@ -21,6 +22,10 @@ const displayFont = Smooch_Sans({
 });
 
 export function Topbar() {
+
+  const [notification, setNotification] = React.useState(false)
+  const [showBadge, setShowBadge] = React.useState(true)
+
   return (
     <nav className="flex w-full justify-between px-5 py-2 bg-white items-center">
       <div className="flex flex-row text-4xl items-center ">
@@ -35,15 +40,26 @@ export function Topbar() {
       <div>
         <div className="flex flex-row gap-x-6">
           <div className="flex flex-row gap-3">
-            <div>
-              <IconButton aria-label="delete">
-                <Badge content="99+" size="sm" shape="circle" color="danger">
-                  <NotificationsNoneOutlinedIcon
-                    fontSize="large"
-                    className="text-gray-600"
-                  />
-                </Badge>
+            <div className="relative">
+              <IconButton aria-label="delete" onClick={() => {setNotification(notification ? false : true); setShowBadge(false)}}>
+                {showBadge ? (
+                  <Badge content="99+" size="sm" shape="circle" color="danger">
+                    <NotificationsNoneOutlinedIcon
+                      fontSize="large"
+                      className="text-gray-600"
+                    />
+                  </Badge>
+                  ) : (
+                    <NotificationsNoneOutlinedIcon fontSize="large" className="text-gray-600" />
+                )}
               </IconButton>
+              {
+                notification ? 
+                  <div className="max-h-[600px] w-[500px] absolute z-50 right-7 top-10 flex shadow-2xl rounded-2xl" >
+                    <Notification />
+                  </div>
+                : null
+              }
             </div>
             {/* <div>
               <IconButton aria-label="delete">
@@ -69,15 +85,14 @@ export function Topbar() {
                   isBordered
                   color="warning"
                   radius="full"
-                  src="https://i.pravatar.cc/150?u=a04258a2462d826712d"
+                  // src="https://i.pravatar.cc/150?u=a04258a2462d826712d"
                 />
               </Badge>
             </div>
           </div>
           <div className="flex flex-row gap-6">
             <div className="flex flex-col  align-middle my-auto">
-              <p className="text-medium">John Doe</p>
-              <p className="text-sm text-gray-500">Consigner</p>
+              <p className="text-sm text-gray-500">Review Board</p>
             </div>
             {/* <IconButton aria-label="delete">
               <ExpandMoreIcon />
