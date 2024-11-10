@@ -1,24 +1,21 @@
-
-import axios from "axios"
+import axios from "axios";
 import Cookies from "js-cookie";
 
 export const api = axios.create({
-  baseURL: "http://localhost:8080/api"
-})
-
-
+  baseURL: "http://134.122.112.82:8080/api",
+});
 
 //CONSIGNER APIS
 export const consignerApi = axios.create({
-  baseURL: "http://localhost:8080/api/consigner"
-})
+  baseURL: "http://134.122.112.82:8080/api/consigner",
+});
 
 // consignerApi.interceptors.request.use(
 //   (config) => {
 //     const token = Cookies.get('jwt');
 //     // const token = localStorage.getItem('jwt');
 //     if (token) {
-//       config.headers['Authorization'] = `Bearer ${token}`;  
+//       config.headers['Authorization'] = `Bearer ${token}`;
 //     }
 //     return config;
 //   },
@@ -29,11 +26,11 @@ export const consignerApi = axios.create({
 
 //ORDER APIS
 export const orderApi = axios.create({
-   baseURL: "http://localhost:8080/api/orders"
-})
+  baseURL: "http://134.122.112.82:8080/api/orders",
+});
 
 // orderApi.interceptors.request.use((config) => {
-//   const token = Cookies.get('jwt'); 
+//   const token = Cookies.get('jwt');
 //   if(token) {
 //     config.headers['Authorization'] = `Bearer ${token}`;
 //   }
