@@ -2,12 +2,12 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 export const api = axios.create({
-  baseURL: "http://localhost:8080/api",
+  baseURL: "http://auth.freighthub.danujaya.live/api",
 });
 
 //CONSIGNER APIS
 export const consignerApi = axios.create({
-  baseURL: "http://localhost:8080/api/consigner",
+  baseURL: "http://auth.freighthub.danujaya.live/api/consigner",
 });
 
 // consignerApi.interceptors.request.use(
@@ -26,7 +26,7 @@ export const consignerApi = axios.create({
 
 //ORDER APIS
 export const orderApi = axios.create({
-  baseURL: "http://localhost:8080/api/orders",
+  baseURL: "http://auth.freighthub.danujaya.live/api/orders",
 });
 
 // orderApi.interceptors.request.use((config) => {
