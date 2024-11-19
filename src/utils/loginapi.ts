@@ -101,7 +101,8 @@ export const updateBusiness = async (
   // const response = await consignerApi.post('/register/0', businessInformation);
   try {
     const response = await axios.post(
-      "http://auth.freighthub.danujaya.live/api/consigner/register/0",
+      // "http://auth.freighthub.danujaya.live/api/consigner/register/0",
+      "http://localhost:8080/api/consigner/register/0",
       businessInformation,
       {
         headers: {
