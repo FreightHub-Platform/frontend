@@ -22,7 +22,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { supplierColumns, suppliers, supplierTypes, industryCertifications, paymentTerms } from "./Suppliers";
+import {
+  supplierColumns,
+  suppliers,
+  supplierTypes,
+  industryCertifications,
+  paymentTerms,
+} from "./Suppliers";
 import { capitalize } from "../dashboard/ordersTable/Utils";
 
 const INITIAL_VISIBLE_COLUMNS = [
@@ -49,9 +55,12 @@ export default function SuppliersDataTable() {
   const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
     new Set(INITIAL_VISIBLE_COLUMNS)
   );
-  const [supplierTypeFilter, setSupplierTypeFilter] = React.useState<Selection>("all");
-  const [industryCertificationsFilter, setIndustryCertificationsFilter] = React.useState<Selection>("all");
-  const [paymentTermsFilter, setPaymentTermsFilter] = React.useState<Selection>("all");
+  const [supplierTypeFilter, setSupplierTypeFilter] =
+    React.useState<Selection>("all");
+  const [industryCertificationsFilter, setIndustryCertificationsFilter] =
+    React.useState<Selection>("all");
+  const [paymentTermsFilter, setPaymentTermsFilter] =
+    React.useState<Selection>("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(15);
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: "id",
@@ -78,28 +87,47 @@ export default function SuppliersDataTable() {
       );
     }
 
-    if (supplierTypeFilter !== "all" && Array.from(supplierTypeFilter).length > 0) {
+    if (
+      supplierTypeFilter !== "all" &&
+      Array.from(supplierTypeFilter).length > 0
+    ) {
       filteredSuppliers = filteredSuppliers.filter((supplier) =>
-        Array.from(supplierTypeFilter).includes(supplier.supplierType.toLowerCase())
+        Array.from(supplierTypeFilter).includes(
+          supplier.supplierType.toLowerCase()
+        )
       );
     }
 
-    if (industryCertificationsFilter !== "all" && Array.from(industryCertificationsFilter).length > 0) {
+    if (
+      industryCertificationsFilter !== "all" &&
+      Array.from(industryCertificationsFilter).length > 0
+    ) {
       filteredSuppliers = filteredSuppliers.filter((supplier) =>
-        supplier.industryCertifications.some(cert =>
+        supplier.industryCertifications.some((cert) =>
           Array.from(industryCertificationsFilter).includes(cert.toLowerCase())
         )
       );
     }
 
-    if (paymentTermsFilter !== "all" && Array.from(paymentTermsFilter).length > 0) {
+    if (
+      paymentTermsFilter !== "all" &&
+      Array.from(paymentTermsFilter).length > 0
+    ) {
       filteredSuppliers = filteredSuppliers.filter((supplier) =>
-        Array.from(paymentTermsFilter).includes(supplier.paymentTerms.toLowerCase())
+        Array.from(paymentTermsFilter).includes(
+          supplier.paymentTerms.toLowerCase()
+        )
       );
     }
 
     return filteredSuppliers;
-  }, [suppliers, filterValue, supplierTypeFilter, industryCertificationsFilter, paymentTermsFilter]);
+  }, [
+    suppliers,
+    filterValue,
+    supplierTypeFilter,
+    industryCertificationsFilter,
+    paymentTermsFilter,
+  ]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -120,33 +148,38 @@ export default function SuppliersDataTable() {
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((supplier: Supplier, columnKey: React.Key) => {
-    const cellValue = supplier[columnKey as keyof Supplier];
+  const renderCell = React.useCallback(
+    (supplier: Supplier, columnKey: React.Key) => {
+      const cellValue = supplier[columnKey as keyof Supplier];
 
-    switch (columnKey) {
-      case "contactDetails":
-        return `${supplier.contactDetails.phone} / ${supplier.contactDetails.email}`;
-      case "industryCertifications":
-        return supplier.industryCertifications.join(", ");
-      case "actions":
-        return (
-          <div className="relative flex justify-center items-center gap-2">
-            <Dropdown>
-              <DropdownTrigger>
-                <Button isIconOnly size="sm" variant="light">
-                  <MoreVertIcon className="text-default-300" />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem>View</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </div>
-        );
-      default:
-        return cellValue;
-    }
-  }, []);
+      switch (columnKey) {
+        case "contactDetails":
+          return `${supplier.contactDetails.phone} / ${supplier.contactDetails.email}`;
+        case "industryCertifications":
+          return supplier.industryCertifications.join(", ");
+        case "actions":
+          return (
+            <div className="relative flex justify-center items-center gap-2">
+              <Dropdown>
+                <DropdownTrigger>
+                  <Button isIconOnly size="sm" variant="light">
+                    <MoreVertIcon className="text-default-300" />
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu>
+                  <DropdownItem>View</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </div>
+          );
+        default:
+          return typeof cellValue === "object"
+            ? JSON.stringify(cellValue)
+            : cellValue;
+      }
+    },
+    []
+  );
 
   const onNextPage = React.useCallback(() => {
     if (page < pages) {
@@ -314,14 +347,13 @@ export default function SuppliersDataTable() {
     );
   }, [
     filterValue,
+    onSearchChange,
     supplierTypeFilter,
     industryCertificationsFilter,
     paymentTermsFilter,
     visibleColumns,
-    onSearchChange,
     onRowsPerPageChange,
-    suppliers.length,
-    hasSearchFilter,
+    onClear,
   ]);
 
   const bottomContent = React.useMemo(() => {
@@ -361,7 +393,14 @@ export default function SuppliersDataTable() {
         </div>
       </div>
     );
-  }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
+  }, [
+    selectedKeys,
+    filteredItems.length,
+    page,
+    pages,
+    onPreviousPage,
+    onNextPage,
+  ]);
 
   return (
     <Table
