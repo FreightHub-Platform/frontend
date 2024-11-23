@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Table,
@@ -20,18 +20,35 @@ import {
   Selection,
   ChipProps,
   SortDescriptor,
+  Spinner,
 } from "@nextui-org/react";
 import SearchIcon from "@mui/icons-material/Search";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { columns, users, statusOptions } from "./Data";
 import { capitalize } from "./Utils";
+import { userApi } from "../../../utils/config";
+import PersonIcon from "@mui/icons-material/Person";
+
+const columns = [
+  { name: "ID", uid: "id", sortable: true },
+  { name: "", uid: "userName" },
+  { name: "EMAIL", uid: "email", sortable: true },
+  { name: "ROLE", uid: "role", sortable: true },
+  { name: "STATUS", uid: "status", sortable: true },
+  { name: "ACTIONS", uid: "actions" },
+];
+
+const statusOptions = [
+  { name: "Active", uid: "active" },
+  { name: "Pending", uid: "pending" },
+  { name: "Inactive", uid: "inactive" },
+];
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
-  Active: "success",
-  Pending: "warning",
-  Inactive: "danger",
+  active: "success",
+  pending: "warning",
+  inactive: "danger",
 };
 
 const INITIAL_VISIBLE_COLUMNS = [
@@ -42,9 +59,46 @@ const INITIAL_VISIBLE_COLUMNS = [
   "actions",
 ];
 
-type User = (typeof users)[0];
+type User = {
+  id: number | string;
+  userName: string;
+  email: string;
+  role: string;
+  status: string;
+};
 
 export default function UserTable() {
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [apiResponse, setApiResponse] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        setLoading(true);
+        const jwtToken = localStorage.getItem("jwt");
+        const response = await userApi.get("/all", {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        });
+        setUsers(response.data.data);
+        setError(null);
+      } catch (err: any) {
+        console.error("Error fetching users:", err);
+        setError(err.response?.data?.message || "Failed to fetch users.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  // Debug: Log the API response (optional)
+  console.log("API Response:", apiResponse);
+
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([])
@@ -53,7 +107,7 @@ export default function UserTable() {
     new Set(INITIAL_VISIBLE_COLUMNS)
   );
   const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(15);
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: "userName",
     direction: "ascending",
@@ -72,23 +126,25 @@ export default function UserTable() {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredusers = [...users];
+    let filteredUsers = [...users];
 
     if (hasSearchFilter) {
-      filteredusers = filteredusers.filter((user) =>
-        user.userName.toLowerCase().includes(filterValue.toLowerCase())
+      filteredUsers = filteredUsers.filter((user) =>
+        Object.values(user).some((value) =>
+          value?.toString().toLowerCase().includes(filterValue.toLowerCase())
+        )
       );
     }
     if (
       statusFilter !== "all" &&
       Array.from(statusFilter).length !== statusOptions.length
     ) {
-      filteredusers = filteredusers.filter((user) =>
+      filteredUsers = filteredUsers.filter((user) =>
         Array.from(statusFilter).includes(user.status)
       );
     }
 
-    return filteredusers;
+    return filteredUsers;
   }, [users, filterValue, statusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
@@ -102,11 +158,18 @@ export default function UserTable() {
 
   const sortedItems = React.useMemo(() => {
     return [...items].sort((a: User, b: User) => {
-      const first = a[sortDescriptor.column as keyof User] as number;
-      const second = b[sortDescriptor.column as keyof User] as number;
-      const cmp = first < second ? -1 : first > second ? 1 : 0;
+      const first = a[sortDescriptor.column as keyof User];
+      const second = b[sortDescriptor.column as keyof User];
 
-      return sortDescriptor.direction === "descending" ? -cmp : cmp;
+      if (typeof first === "string" && typeof second === "string") {
+        return sortDescriptor.direction === "descending"
+          ? second.localeCompare(first)
+          : first.localeCompare(second);
+      } else {
+        return sortDescriptor.direction === "descending"
+          ? (second as number) - (first as number)
+          : (first as number) - (second as number);
+      }
     });
   }, [sortDescriptor, items]);
 
@@ -114,16 +177,19 @@ export default function UserTable() {
     const cellValue = user[columnKey as keyof User];
 
     switch (columnKey) {
-      case "user":
+      case "userName":
         return (
-          <User
-            // avatarProps={{ radius: "lg", src: user.image }}
-            description={user.role}
-            name={cellValue}
-          >
-            {user.role}
-          </User>
+          <div className="flex items-center gap-2">
+            <PersonIcon />
+            <div className="flex flex-col">
+              <p className="text-bold text-small capitalize">{cellValue}</p>
+              <p className="text-bold text-tiny capitalize text-default-400">
+                {user.userName}
+              </p>
+            </div>
+          </div>
         );
+
       case "email":
         return (
           <div className="flex flex-col">
@@ -137,9 +203,9 @@ export default function UserTable() {
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">{cellValue}</p>
-            <p className="text-bold text-tiny capitalize text-default-400">
-              {user.role}
-            </p>
+            {/* <p className="text-bold text-tiny capitalize text-default-400"> */}
+            {/* {user.role} */}
+            {/* </p> */}
           </div>
         );
       case "status":
@@ -155,15 +221,37 @@ export default function UserTable() {
         );
       case "actions":
         return (
-          <div className="relative flex justify-center items-center gap-2">
+          <div className="relative flex justify-end items-center gap-2">
+            <Button
+              size="sm"
+              variant="flat"
+              color="primary"
+              onPress={() => console.log("View", user.id)}
+            >
+              View
+            </Button>
+            <Button
+              size="sm"
+              variant="flat"
+              color="danger"
+              onPress={() => console.log("Delete", user.id)}
+            >
+              Delete
+            </Button>
             <Dropdown>
               <DropdownTrigger>
-                <Button isIconOnly size="sm" variant="light">
-                  <MoreVertIcon className="text-default-300" />
+                <Button size="sm" variant="flat">
+                  Change Status
                 </Button>
               </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem>View</DropdownItem>
+              <DropdownMenu
+                onAction={(key) =>
+                  console.log("Change status to", key, "for user", user.id)
+                }
+              >
+                {statusOptions.map((status) => (
+                  <DropdownItem key={status.uid}>{status.name}</DropdownItem>
+                ))}
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -283,7 +371,9 @@ export default function UserTable() {
             >
               <option value="5">5</option>
               <option value="10">10</option>
-              <option value="15">15</option>
+              <option value="15" selected>
+                15
+              </option>
             </select>
           </label>
         </div>
@@ -358,14 +448,41 @@ export default function UserTable() {
         {(column) => (
           <TableColumn
             key={column.uid}
-            align={column.uid === "actions" ? "center" : "start"}
+            align={column.uid === "actions" ? "end" : "start"}
             allowsSorting={column.sortable}
+            style={{
+              width:
+                column.uid === "email"
+                  ? "30%"
+                  : column.uid === "role"
+                  ? "20%"
+                  : column.uid === "status"
+                  ? "20%"
+                  : column.uid === "actions"
+                  ? "30%"
+                  : "auto", // Fallback for unspecified columns
+            }}
           >
             {column.name}
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={"No vehicles found"} items={sortedItems}>
+      <TableBody
+        emptyContent={
+          loading ? (
+            <div className="flex justify-center items-center">
+              <Spinner size="lg" />
+            </div>
+          ) : error ? (
+            <div className="flex justify-center items-center text-danger">
+              {error}
+            </div>
+          ) : (
+            "No Users found"
+          )
+        }
+        items={sortedItems}
+      >
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (
