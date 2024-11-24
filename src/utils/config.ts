@@ -42,3 +42,9 @@ export const orderApi = axios.create({
 // (error) => {
 //   return Promise.reject(error);
 // })
+
+//USER APIS
+export const userApi = axios.create({
+  // baseURL: "http://auth.freighthub.danujaya.live/api/users",
+  baseURL: "http://localhost:8080/api/user",
+});
