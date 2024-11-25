@@ -39,9 +39,9 @@ const SucessPlacement = () => {
       body: "Your order #12345 has been successfully placed.",
       read: false,
     }
-    const response = await updateNotification(1, notificationBody)
-    console.log(Cookies.get('jwt'))
-    console.log(success)
+    // const response = await updateNotification(1, notificationBody)
+    // console.log(Cookies.get('jwt'))
+    // console.log(success)
     
     if (success) {
       localStorage.removeItem('ordersDetails');

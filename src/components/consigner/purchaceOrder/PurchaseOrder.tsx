@@ -134,8 +134,11 @@ const PurchaseOrder = ({closeFunction}) => {
         "dropTime": drop_offTime,
         "address": address,
         "storeName": storeName,
-        "ltlFlag": allowSharing
+        "ltlFlag": allowSharing,
+        "dropLocation": location
       }
+
+      console.log(newDetail)
       
       closeFunction(newDetail);
     }
