@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Table,
@@ -28,6 +28,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { columns, consigners, statusOptions } from "./Data";
 import { capitalize } from "./Utils";
 import { usePathname, useRouter } from "next/navigation";
+import { getAllVehicleDetails } from "../../../../utils/review";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   "Verified": "success",
@@ -68,6 +69,20 @@ export default function VehicleTable({onViewMore}) {
   const [page, setPage] = React.useState(1);
 
   const hasSearchFilter = Boolean(filterValue);
+
+  //Methana Function eka gahanna
+  useEffect(() => {
+    const fetchAllVehicles = async () => {
+      try {
+        const data = await getAllVehicleDetails() 
+      } catch (error) {
+        
+      }
+    }
+
+    fetchAllVehicles()
+  }, [])
+
 
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;

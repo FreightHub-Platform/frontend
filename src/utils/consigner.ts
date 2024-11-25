@@ -3,7 +3,7 @@
 import { consignerApi } from "./config";
 
 
-  //GET CONSIGNER DETAILS BY ID with axios
+//GET CONSIGNER DETAILS BY ID with axios
 export const getConsignerById = async (consigner: any, token: String) => {
   try {
     const response = await consignerApi.post('/single', consigner, {
@@ -12,7 +12,6 @@ export const getConsignerById = async (consigner: any, token: String) => {
       }
     });
     
-
     return response.data.data;
     
   } catch (error) {
@@ -21,27 +20,29 @@ export const getConsignerById = async (consigner: any, token: String) => {
   }
 };
 
+//CHANGE PASSWORD
+export const changePassword = async (consignerId: any, newPassword: string, oldPassword: string, token: string) => {
+  try {
+    const response = await consignerApi.put("", {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('An unexpected error occurred.');
+  }
+}
 
-//GET CONSIGNER DETAILS BY ID
-// export const getConsignerById = async (consigner: any, jwt: any) => {
-//     try {
-//       const response = await fetch('http://localhost:8080/api/consigner/single', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//           'Authorization': `Bearer ${jwt}`,
-//         },
-//         body: JSON.stringify(consigner),
-//       });
-  
-//       if (response.ok) {
-//         const responseData = await response.json();
-//         return responseData.data;
-//       } else {
-//         return false;
-//       }
-//     } catch (error) {
-//       console.error('Error:', error);
-//       throw new Error('An unexpected error occurred.');
-//     }
-//   };
+
+//GET CONSIGNER ORDERS
+export const getConsignerOrders = async () =>{
+  try {
+    const response = await consignerApi.get("", {
+     
+    })
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('An unexpected error occurred.');
+  }
+}

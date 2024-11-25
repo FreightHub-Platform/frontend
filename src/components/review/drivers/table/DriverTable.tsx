@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter, usePathname  } from 'next/navigation'
 
 import {
@@ -28,6 +28,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { columns, consigners, statusOptions } from "./Data";
 import { capitalize } from "./Utils";
+import { getAllDriverDetails } from "../../../../utils/review";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   "Verified": "success",
@@ -66,6 +67,19 @@ export default function DriverTable({onViewMore}) {
   });
 
   const [page, setPage] = React.useState(1);
+
+  //Methana Function eka gahanna
+  useEffect(() => {
+    const fetchAllDrivers = async () => {
+      try {
+        const data = await getAllDriverDetails() 
+      } catch (error) {
+        
+      }
+    }
+
+    fetchAllDrivers()
+  }, [])
 
   const hasSearchFilter = Boolean(filterValue);
 

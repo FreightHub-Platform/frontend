@@ -10,6 +10,7 @@ import Image from "next/image";
 import Logo from '../../../components/review/consigners/info/Logo';
 import { FormControl, FormHelperText, IconButton, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { changePassword } from '../../../utils/consigner';
 
 
 
@@ -47,7 +48,7 @@ const ProfileC = () => {
   const [open, setOpen] = useState(false);
   const [passwordChange, setPasswordChange] = useState(false);
 
-  const handleChangePassword = () => {
+  const handleChangePassword = async () => {
     let hasError = false;
 
     if(!oldPassword){
@@ -83,8 +84,13 @@ const ProfileC = () => {
     }
 
     if(!hasError){
-      // setLoading(true)
-      setPasswordChange(true)
+      setLoading(true)
+      try {
+        await changePassword("ConsignerID", newPassword, oldPassword, "token")
+        setPasswordChange(true)  
+      } catch (error) {
+        setPasswordChange(false) 
+      }
       setOpen(true)
     }
  

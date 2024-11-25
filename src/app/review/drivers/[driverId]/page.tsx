@@ -12,7 +12,10 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { usePathname } from "next/navigation"
+import { getDriverDetails, verifyDriver, verifyVehicle } from "../../../../utils/review"
+import { updateNotification } from "../../../../utils/notification"
 
 const ProfileDetails = () => {
 
@@ -22,6 +25,8 @@ const ProfileDetails = () => {
   const [submitting, setSubmitting] = useState(false);
   const [open, setOpen] = useState(false);
   const [sentMail, setSentMail] = useState(false);
+
+  const path = usePathname()
 
   const handleEmailSent = async(e, type) => {
     e.preventDefault();
@@ -51,6 +56,55 @@ const ProfileDetails = () => {
     setSubmitting(false)
   }
 
+  //Meka handle verify thana meka ona widiyata hadaganna @GEETHIKA
+  const handleVerify = async (e, type) => {
+    e.preventDefault();
+    setSubmitting(true)
+    const driverId = path.split('/')[3]
+    try {
+      if(type === 'driverVerified') {
+        const response = await verifyDriver(driverId)
+        if(1){ // response eka succes nm yawnna
+          handleEmailSent(e,type);
+          const notifactionDetails = {
+            date: new Date(),
+            body: "Your account has been successfully verified. Now you can continue with your works.",
+            read: false,
+          }
+          const res = await updateNotification(driverId, notifactionDetails)
+        }
+      } else {
+        const response = await verifyVehicle(1)
+        if(1){ // response eka succes nm yawnna
+        handleEmailSent(e,type);
+        const notifactionDetails = {
+          date: new Date().toISOString().slice(0, 19),
+          body: "Your account has been successfully verified. Now you can continue with your works.",
+          read: false,
+        }
+        const res = await updateNotification(2, notifactionDetails)
+      }
+      }
+      
+    } catch (error) {
+      console.error('Error fetching consigner data:', error);
+    }
+  }
+
+  /* Methana function eka gahaganna @GEETHIKA*/
+  useEffect(() => {
+    const fetchDriverDetails = async () => {
+      const driverId = path.split('/')[3]
+      try {
+        const data = await getDriverDetails(driverId)
+      } catch (error) {
+        
+      }
+    }
+
+    fetchDriverDetails();
+  }, [])
+
   const handleClose = (
     event?: React.SyntheticEvent | Event,
     reason?: SnackbarCloseReason,
@@ -63,12 +117,11 @@ const ProfileDetails = () => {
   };
 
   return(
-
-      <div className="flex justify-center">
-        <div className="flex justify-center w-11/12 mb-3">
+    <div className="flex justify-center">
+        <div className="flex justify-center w-11/12">
           <div className="grid grid-cols-[400px_1fr] gap-3">
-            <div className="gap-2 bg-white p-5 rounded-2xl max-h-[85vh]">
-              <div className="bg-white p-5 rounded-2xl max-h-[75vh] overflow-y-auto">
+            <div className="gap-2 bg-white p-3 rounded-2xl max-h-[85vh]">
+              <div className="bg-white p-5 rounded-2xl max-h-[75vh] overflow-y-auto custom-scrollbar-horizontal">
               <div>
                 <div className="p-1 w-full flex justify-between mb-3 rounded-lg" style={{ backgroundColor: '#FF9800'}}>
                   <div className="flex w-full text-white justify-center font-bold">Driver Details</div>
@@ -94,7 +147,7 @@ const ProfileDetails = () => {
 
           {!verifiedDriver ? 
             <div className="flex justify-center">
-              <form onSubmit={(e) => handleEmailSent(e,"driverVerified")}>
+              <form onSubmit={(e) => handleVerify(e,"driverVerified")}>
                 <button type="submit" className="bg-green-500 py-2 px-5 rounded-lg hover:bg-green-600 duration-300 hover:text-white mt-2">Verify Driver</button>
               </form>
             </div> 
@@ -103,8 +156,8 @@ const ProfileDetails = () => {
           
           
         </div>
-        <div className="gap-2 bg-white p-5 rounded-2xl max-h-[85vh]">
-          <div className="bg-white p-5 rounded-2xl max-h-[75vh] overflow-y-auto">
+        <div className="gap-2 bg-white p-3 rounded-2xl max-h-[85vh]">
+          <div className="bg-white p-5 rounded-2xl max-h-[75vh] overflow-y-auto custom-scrollbar-horizontal">
             <div className="p-1 bg-orange-300 w-full flex justify-between mb-2 rounded-lg" style={{ backgroundColor: '#FF9800'}}>
               <div className="flex w-full justify-center font-bold text-white">Vehicle Details</div>
               {
@@ -125,7 +178,7 @@ const ProfileDetails = () => {
 
           {!verifiedVehicle ? 
             <div className="flex justify-center">
-              <form onSubmit={(e) => handleEmailSent(e,"vehicleVerified")}>
+              <form onSubmit={(e) => handleVerify(e,"vehicleVerified")}>
                 <button className="bg-green-500 py-2 px-5 rounded-lg hover:bg-green-600 duration-300 hover:text-white mt-2">Verify Vehicle</button>
               </form>
             </div>
@@ -155,7 +208,7 @@ const ProfileDetails = () => {
         </div>
       </div>
     </div>
-  </div >
+    </div >
   )
 }
 
