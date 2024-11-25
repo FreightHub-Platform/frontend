@@ -2,22 +2,22 @@
 import axios from "axios";
 
 export const api = axios.create({
-  // baseURL: "http://auth.freighthub.danujaya.live/api",
-  baseURL: "http://localhost:8080/api",
+  baseURL: "https://auth.freighthub.danujaya.live/api",
+  // baseURL: "http://localhost:8080/api",
 });
 
 
 //CONSIGNER APIS
 export const consignerApi = axios.create({
-  // baseURL: "http://auth.freighthub.danujaya.live/api/consigner",
-  baseURL: "http://localhost:8080/api/consigner",
+  baseURL: "https://auth.freighthub.danujaya.live/api/consigner",
+  // baseURL: "http://localhost:8080/api/consigner",
 });
 
 
 //ORDER APIS
 export const orderApi = axios.create({
-  // baseURL: "http://auth.freighthub.danujaya.live/api/orders",
-  baseURL: "http://localhost:8080/api/orders",
+  baseURL: "https://auth.freighthub.danujaya.live/api/orders",
+  // baseURL: "http://localhost:8080/api/orders",
 });
 
 
@@ -34,7 +34,7 @@ export const notificationApi = axios.create({
 
 //USER APIS
 export const userApi = axios.create({
-  // baseURL: "http://auth.freighthub.danujaya.live/api/users",
-  baseURL: "http://localhost:8080/api/user",
+  baseURL: "https://auth.freighthub.danujaya.live/api/user",
+  // baseURL: "http://localhost:8080/api/user",
 });
 

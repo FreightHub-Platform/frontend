@@ -234,6 +234,7 @@ export default function UserTable() {
               size="sm"
               variant="flat"
               color="danger"
+              isDisabled={user.status === "inactive"}
               onPress={() => console.log("Delete", user.id)}
             >
               Delete
@@ -310,6 +311,10 @@ export default function UserTable() {
           />
           <div className="flex gap-3">
             <Dropdown>
+              {/* Add user button */}
+              <Button color="primary" onPress={() => console.log("Add User")}>
+                Add User
+              </Button>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
                   endContent={<ExpandMoreIcon className="text-small" />}
