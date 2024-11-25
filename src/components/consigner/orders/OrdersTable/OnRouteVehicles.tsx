@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   Table,
@@ -28,6 +28,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { columns, vehicles, statusOptions } from "./Data";
 import { capitalize } from "./Utils";
 import ProgressBar from "./ProgressBar";
+import { getConsignerOrders } from "../../../../utils/consigner";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   "No Warnings": "success",
@@ -65,6 +66,19 @@ export default function OnRouteVehicles() {
   });
 
   const [page, setPage] = React.useState(1);
+
+  //Methana Function eka gahanna
+  useEffect(() => {
+    const fetchConsignerOrders = async () => {
+      try {
+        const data = await getConsignerOrders() 
+      } catch (error) {
+        
+      }
+    }
+
+    fetchConsignerOrders()
+  }, [])
 
   const hasSearchFilter = Boolean(filterValue);
 

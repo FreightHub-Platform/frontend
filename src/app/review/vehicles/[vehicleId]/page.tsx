@@ -12,7 +12,10 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { usePathname } from "next/navigation"
+import { getVehicleDetails, verifyDriver, verifyVehicle } from "../../../../utils/review"
+import { updateNotification } from "../../../../utils/notification"
 
 
 const ProfileDetails = () => {
@@ -23,6 +26,8 @@ const ProfileDetails = () => {
   const [submitting, setSubmitting] = useState(false);
   const [open, setOpen] = useState(false);
   const [sentMail, setSentMail] = useState(false);
+
+  const path = usePathname()
 
   const handleEmailSent = async(e, type) => {
     e.preventDefault();
@@ -52,6 +57,55 @@ const ProfileDetails = () => {
     setSubmitting(false)
   }
 
+  //Meka handle verify thana meka ona widiyata hadaganna @GEETHIKA
+  const handleVerify = async (e, type) => {
+    e.preventDefault();
+    setSubmitting(true)
+    const vehicleId = path.split('/')[3]
+    try {
+      const response = await verifyVehicle(vehicleId)
+      if(type === 'driverVerified') {
+        const response = await verifyDriver(1)
+        if(1){ // response eka succes nm yawnna
+          handleEmailSent(e,type);
+          const notifactionDetails = {
+            date: new Date().toISOString().slice(0, 19),
+            body: "Your account has been successfully verified. Now you can continue with your works.",
+            read: false,
+          }
+          const res = await updateNotification(1, notifactionDetails)
+        }
+      } else {
+        const response = await verifyVehicle(1)
+        if(1){ // response eka succes nm yawnna
+        handleEmailSent(e,type);
+        const notifactionDetails = {
+          date: new Date(),
+          body: "Your account has been successfully verified. Now you can continue with your works.",
+          read: false,
+        }
+        const res = await updateNotification(2, notifactionDetails)
+      }
+      }
+    } catch (error) {
+      console.error('Error fetching consigner data:', error);
+    }
+  }
+  
+  /* Methana function eka gahaganna @GEETHIKA*/
+  useEffect(() => {
+    const fetchVehicleDetails = async () => {
+      const vehicleId = path.split('/')[3]
+      try {
+        const data = await getVehicleDetails(vehicleId)
+      } catch (error) {
+        
+      }
+    }
+
+    fetchVehicleDetails();
+  }, [])
+
   const handleClose = (
     event?: React.SyntheticEvent | Event,
     reason?: SnackbarCloseReason,
@@ -64,95 +118,94 @@ const ProfileDetails = () => {
   };
 
   return(
+    <div className="flex justify-center">
+      <div className="flex justify-center w-11/12 ">
+        <div className="grid grid-cols-[400px_1fr] gap-3">
+        <div className="gap-2 bg-white p-3 rounded-2xl max-h-[85vh]">
+        <div className="bg-white p-5 rounded-2xl max-h-[75vh] overflow-y-auto custom-scrollbar-horizontal">
+            <div>
+            <div className="p-1 w-full flex justify-between mb-3 rounded-lg" style={{ backgroundColor: '#FF9800'}}>
+                <div className="flex w-full text-white justify-center font-bold">Driver Details</div>
+                {
+                  !verifiedDriver ?
+                    <form onSubmit={(e) => handleEmailSent(e,"driverMissMatch")}>
+                      <button type="submit" className="me-4 hover:text-white cursor-pointer"><ForwardToInboxIcon /></button>
 
-                    <div className="flex justify-center">
-    <div className="flex justify-center w-11/12 mb-3">
-      <div className="grid grid-cols-[400px_1fr] gap-3">
-      <div className="gap-2 bg-white p-5 rounded-2xl max-h-[85vh]">
-      <div className="bg-white p-5 rounded-2xl max-h-[75vh] overflow-y-auto">
-          <div>
-          <div className="p-1 w-full flex justify-between mb-3 rounded-lg" style={{ backgroundColor: '#FF9800'}}>
-              <div className="flex w-full text-white justify-center font-bold">Driver Details</div>
-              {
-                !verifiedDriver ?
-                  <form onSubmit={(e) => handleEmailSent(e,"driverMissMatch")}>
-                    <button type="submit" className="me-4 hover:text-white cursor-pointer"><ForwardToInboxIcon /></button>
-
-                  </form>
-                : null
-              }
-              
+                    </form>
+                  : null
+                }
+                
+              </div>
+              <ProfilePhoto />
             </div>
-            <ProfilePhoto />
-          </div>
-          <div className="mt-2">
-            <Details />
-          </div>  
-          <div>
-            <BankDetails />
-          </div> 
-          </div>
-          {!verifiedDriver ? 
-            <div className="flex justify-center">
-              <form onSubmit={(e) => handleEmailSent(e,"driverVerified")}>
-                <button type="submit" className="bg-green-500 py-2 px-5 rounded-lg hover:bg-green-600 duration-300 hover:text-white mt-2">Verify Driver</button>
-              </form>
+            <div className="mt-2">
+              <Details />
+            </div>  
+            <div>
+              <BankDetails />
             </div> 
-            : null
-          }
-        </div>
-        <div className="gap-2 bg-white p-5 rounded-2xl max-h-[85vh]">
-          <div className="bg-white p-5 rounded-2xl max-h-[75vh] overflow-y-auto">
-          <div className="p-1 bg-orange-300 w-full flex justify-between mb-2 rounded-lg" style={{ backgroundColor: '#FF9800'}}>
-              <div className="flex w-full justify-center font-bold text-white">Vehicle Details</div>
-              {
-                !verifiedVehicle ?
-                  <form onSubmit={(e) => handleEmailSent(e,"vehicleMissMatch")}>
-                    <button type="submit" className="me-4 hover:text-white cursor-pointer"><ForwardToInboxIcon /></button>
-                  </form>
-                : null
-              }
-              
             </div>
-            <div><VehicleDetails /></div>
-            <div className="p-1 border-3 font-bold w-full flex justify-center mb-2 mt-4 rounded-lg" style={{ borderColor: '#FF9800'}}>Vehicle Images</div>
-            <div><VehicleImages /></div>  
-            <div className="p-1 border-3 font-bold w-full flex justify-center mb-2 mt-4 rounded-lg" style={{ borderColor: '#FF9800'}}>Vehicle Documents</div>
-            <div><VehicleDocument /></div> 
+            {!verifiedDriver ? 
+              <div className="flex justify-center">
+                <form onSubmit={(e) => handleVerify(e,"driverVerified")}>
+                  <button type="submit" className="bg-green-500 py-2 px-5 rounded-lg hover:bg-green-600 duration-300 hover:text-white mt-2">Verify Driver</button>
+                </form>
+              </div> 
+              : null
+            }
           </div>
-
-          {!verifiedVehicle ? 
-            <div className="flex justify-center items-center">
-              <form onSubmit={(e) => handleEmailSent(e,"vehicleVerified")}>
-              <button className="bg-green-500 py-2 px-5 rounded-lg hover:bg-green-600 duration-300 hover:text-white mt-2">Verify Vehicle</button>
-              </form>
+          <div className="gap-2 bg-white p-3 rounded-2xl max-h-[85vh]">
+            <div className="bg-white p-5 rounded-2xl max-h-[75vh] overflow-y-auto custom-scrollbar-horizontal">
+            <div className="p-1 bg-orange-300 w-full flex justify-between mb-2 rounded-lg" style={{ backgroundColor: '#FF9800'}}>
+                <div className="flex w-full justify-center font-bold text-white">Vehicle Details</div>
+                {
+                  !verifiedVehicle ?
+                    <form onSubmit={(e) => handleEmailSent(e,"vehicleMissMatch")}>
+                      <button type="submit" className="me-4 hover:text-white cursor-pointer"><ForwardToInboxIcon /></button>
+                    </form>
+                  : null
+                }
+                
+              </div>
+              <div><VehicleDetails /></div>
+              <div className="p-1 border-3 font-bold w-full flex justify-center mb-2 mt-4 rounded-lg" style={{ borderColor: '#FF9800'}}>Vehicle Images</div>
+              <div><VehicleImages /></div>  
+              <div className="p-1 border-3 font-bold w-full flex justify-center mb-2 mt-4 rounded-lg" style={{ borderColor: '#FF9800'}}>Vehicle Documents</div>
+              <div><VehicleDocument /></div> 
             </div>
-           : null
-          }
-        </div>
-        <div>
-          <Backdrop
-            sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
-            open={submitting}
-          >
-            <CircularProgress color="inherit" />
-          </Backdrop>
-        </div>
-        <div>
-          <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-            <Alert
-              onClose={handleClose}
-              severity={sentMail ? "success" : "error"}
-              variant="filled"
-              sx={{ width: '100%' }}
+
+            {!verifiedVehicle ? 
+              <div className="flex justify-center items-center">
+                <form onSubmit={(e) => handleVerify(e,"vehicleVerified")}>
+                <button className="bg-green-500 py-2 px-5 rounded-lg hover:bg-green-600 duration-300 hover:text-white mt-2">Verify Vehicle</button>
+                </form>
+              </div>
+            : null
+            }
+          </div>
+          <div>
+            <Backdrop
+              sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
+              open={submitting}
             >
-              {sentMail ? "Email sent success!" : "Email sent fail!"}
-            </Alert>
-          </Snackbar>
+              <CircularProgress color="inherit" />
+            </Backdrop>
+          </div>
+          <div>
+            <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+              <Alert
+                onClose={handleClose}
+                severity={sentMail ? "success" : "error"}
+                variant="filled"
+                sx={{ width: '100%' }}
+              >
+                {sentMail ? "Email sent success!" : "Email sent fail!"}
+              </Alert>
+            </Snackbar>
+          </div>
         </div>
       </div>
     </div>
-        </div>
   )
 }
 

@@ -9,6 +9,7 @@ import Cookies from 'js-cookie';
 import * as React from 'react';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import { updateNotification } from '../../../../../utils/notification';
 
 const SucessPlacement = () => {
 
@@ -33,6 +34,12 @@ const SucessPlacement = () => {
     console.log(orderDetailsJson);
 
     const success = await saveOrder(orderDetailsJson, localStorage.getItem('jwt'));
+    const notificationBody = {
+      date: new Date().toISOString().slice(0, 19),
+      body: "Your order #12345 has been successfully placed.",
+      read: false,
+    }
+    const response = await updateNotification(1, notificationBody)
     console.log(Cookies.get('jwt'))
     console.log(success)
     

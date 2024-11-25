@@ -7,8 +7,11 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { getConsignerDetails, verifyConsigner } from "../../../../utils/review";
+import { updateNotification } from "../../../../utils/notification";
 
 const ConsignerDetails = () => {
 
@@ -17,6 +20,8 @@ const ConsignerDetails = () => {
   const [submitting, setSubmitting] = useState(false);
   const [open, setOpen] = useState(false);
   const [sentMail, setSentMail] = useState(false);
+
+  const path = usePathname()
 
   const handleEmailSent = async (e, type) => {
     e.preventDefault();
@@ -45,6 +50,43 @@ const ConsignerDetails = () => {
 
     setSubmitting(false);
   }
+
+  //Meka handle verify thana meka ona widiyata hadaganna @GEETHIKA
+  const handleVerify = async (e, type) => {
+    e.preventDefault();
+    setSubmitting(true);
+    const consignetId = path.split('/')[3]
+    try {
+      const response = await verifyConsigner(consignetId)
+      if(1){ // response eka succes nm yawnna
+        handleEmailSent(e,type);
+        const notifactionDetails = {
+          date: new Date().toISOString().slice(0, 19),
+          body: "Your account has been successfully verified. Now you can continue with your works.",
+          read: false,
+        }
+        const res = await updateNotification(consignetId, notifactionDetails)
+      }
+    } catch (error) {
+      console.error('Error fetching consigner data:', error);
+    }
+  }
+
+  /* Methana function eka gahaganna @GEETHIKA*/
+  useEffect(() => {
+    const fetchConsignerDetails = async () => {
+      const consignetId = path.split('/')[3]
+      try {
+        const data = await getConsignerDetails(consignetId)
+      } catch (error) {
+        
+      }
+    }
+
+    fetchConsignerDetails();
+  }, [])
+
+
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -142,7 +184,7 @@ const ConsignerDetails = () => {
           <div className="flex justify-center">
             {
               !consignerStatus ?
-                <form onSubmit={(e) => handleEmailSent(e, "businessVerified")}>
+                <form onSubmit={(e) => handleVerify(e, "businessVerified")}>
                   <button type="submit" className="bg-green-500 py-2 px-5 rounded-lg hover:bg-green-600 duration-300 hover:text-white mt-6">Verify Consigner</button>
                 </form>
                 : null

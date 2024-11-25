@@ -1,10 +1,11 @@
+
 import axios from "axios";
-import Cookies from "js-cookie";
 
 export const api = axios.create({
   // baseURL: "http://auth.freighthub.danujaya.live/api",
   baseURL: "http://localhost:8080/api",
 });
+
 
 //CONSIGNER APIS
 export const consignerApi = axios.create({
@@ -12,19 +13,6 @@ export const consignerApi = axios.create({
   baseURL: "http://localhost:8080/api/consigner",
 });
 
-// consignerApi.interceptors.request.use(
-//   (config) => {
-//     const token = Cookies.get('jwt');
-//     // const token = localStorage.getItem('jwt');
-//     if (token) {
-//       config.headers['Authorization'] = `Bearer ${token}`;
-//     }
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
 
 //ORDER APIS
 export const orderApi = axios.create({
@@ -32,19 +20,21 @@ export const orderApi = axios.create({
   baseURL: "http://localhost:8080/api/orders",
 });
 
-// orderApi.interceptors.request.use((config) => {
-//   const token = Cookies.get('jwt');
-//   if(token) {
-//     config.headers['Authorization'] = `Bearer ${token}`;
-//   }
-//   return config
-// },
-// (error) => {
-//   return Promise.reject(error);
-// })
+
+//REVIEW APIS backend eka balala hariyata daganna CONTROLLER EKE NAMA 'API/CONTOLLER_NAME'
+export const reviewApi = axios.create({
+  baseURL: "http://localhost:8080/api"
+});
+
+//NOTIFICATION API
+export const notificationApi = axios.create({
+  baseURL: "http://localhost:8080/api"
+})
+
 
 //USER APIS
 export const userApi = axios.create({
   // baseURL: "http://auth.freighthub.danujaya.live/api/users",
   baseURL: "http://localhost:8080/api/user",
 });
+

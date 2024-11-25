@@ -9,50 +9,6 @@ import {
 } from "./interfaces/signIn_signUp";
 import { api, consignerApi } from "./config";
 
-// Define the response data type
-// interface ResponseData {
-//   completion: number;
-//   role: string;
-//   token: string;
-// }
-
-// // Define the response type
-// interface SigninResponse {
-//   statusCode: number;
-//   message: string;
-//   data: ResponseData;
-// }
-
-// // Define the error response type
-// interface ErrorResponse {
-//   error: true;
-//   message: string;
-// }
-
-//SIGNIN
-// export const handleSignin = async (userDetails: UserLogin) => {
-//   try {
-//     const response = await fetch('http://localhost:8080/api/auth/login', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify(userDetails),
-//     });
-
-//     if (response.ok) {
-//       const responseData = await response.json();
-//       return responseData.data;
-//     } else {
-//       const errorData = await response.json();
-//       throw new Error(errorData.message);
-//     }
-//   } catch (error) {
-//     console.error('Error:', error);
-//     throw new Error('An unexpected error occurred.');
-//   }
-// };
-
 //SignIn with axios
 export const handleSignin = async (userDetails: UserLogin) => {
   try {
@@ -68,30 +24,6 @@ export const handleSignin = async (userDetails: UserLogin) => {
   }
 };
 
-//UPDATE BUSINESS INFORMATION
-// export const updateBusiness = async (businessInformation, jwt) => {
-//   try {
-//     const response = await fetch('http://localhost:8080/api/consigner/register/0', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'Authorization': `Bearer ${jwt}`,
-//       },
-//       body: JSON.stringify(businessInformation),
-//     });
-
-//     if (!response.ok) {
-//       const errorText = await response.text();
-//       console.error('Response Error:', errorText);
-//       return false;
-//     } else {
-//       return true;
-//     }
-//   } catch (error) {
-//     console.error('Error:', error);
-//     throw new Error('An unexpected error occurred.');
-//   }
-// };
 
 //upadte with axios
 export const updateBusiness = async (
@@ -118,28 +50,6 @@ export const updateBusiness = async (
   }
 };
 
-//UPDATE CONTACT INFO
-// export const updateContact = async (contactInformation: {id: string, mainNumber: string, altNumber: string }, jwt: any) => {
-//   try {
-//     const response = await fetch('http://localhost:8080/api/consigner/register/1', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'Authorization': `Bearer ${jwt}`,
-//       },
-//       body: JSON.stringify(contactInformation),
-//     });
-
-//     if (response.ok) {
-//       return true;
-//     } else {
-//       return false;
-//     }
-//   } catch (error) {
-//     console.error('Error:', error);
-//     throw new Error('An unexpected error occurred.');
-//   }
-// };
 
 //Update contact with axios
 export const updateContact = async (
@@ -164,28 +74,6 @@ export const updateContact = async (
   }
 };
 
-//UPDATE LOCATION INFO
-// export const updateLocation = async (locationInformation: any, jwt: string) => {
-//   try {
-//     const response = await fetch('http://localhost:8080/api/consigner/register/2', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'Authorization': `Bearer ${jwt}`,
-//       },
-//       body: JSON.stringify(locationInformation),
-//     });
-
-//     if (response.ok) {
-//       return true;
-//     } else {
-//       return false;
-//     }
-//   } catch (error) {
-//     console.error('Error:', error);
-//     throw new Error('An unexpected error occurred.');
-//   }
-// };
 
 //update location with axios
 export const updateLocation = async (
@@ -210,27 +98,6 @@ export const updateLocation = async (
   }
 };
 
-//MOBILE VERIFICATION
-// export const sendMobileNumber = async (mobileNumber: string, jwt:string) => {
-//   try {
-//     const response = await fetch(`http://localhost:8080/api/otpv1/sendOtp?phoneNumber=${mobileNumber}`, {
-//       method: 'POST',
-//       headers: {
-//         'Authorization': `Bearer ${jwt}`,
-//         'Content-Type': 'application/json',
-//       },
-//     });
-
-//     if (response.ok) {
-//       return true;
-//     } else {
-//       return false;
-//     }
-//   } catch (error) {
-//     console.error('Error:', error);
-//     throw new Error('An unexpected error occurred.');
-//   }
-// }
 
 //Mobile verification with axios
 export const sendMobileNumber = async (mobileNumber: string, jwt: string) => {
@@ -252,27 +119,6 @@ export const sendMobileNumber = async (mobileNumber: string, jwt: string) => {
   }
 };
 
-//VERIFY MOBILE NUMBER
-// export const verifyMobileNumber = async (mobileNumber:string, otp:string, jwt:string) => {
-//   try {
-//     const response = await fetch(`http://localhost:8080/api/otpv1/verifyOtp?phoneNumber=${mobileNumber}&otp=${otp}`, {
-//       method: 'POST',
-//       headers: {
-//         'Authorization': `Bearer ${jwt}`,
-//         'Content-Type': 'application/json',
-//       },
-//     });
-
-//     if (response.ok) {
-//       return true;
-//     } else {
-//       return false;
-//     }
-//   } catch (error) {
-//     console.error('Error:', error);
-//     throw new Error('An unexpected error occurred.');
-//   }
-// }
 
 //verify mobile number with axios
 export const verifyMobileNumber = async (
