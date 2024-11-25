@@ -61,6 +61,7 @@ const Prioratize = () => {
     pickupDate: '',
     fromTime: '',
     toTime: '',
+    pickupLocation: '',
     purchaseOrders: []
   });
 
@@ -73,6 +74,7 @@ const Prioratize = () => {
           pickupDate: parsedOrder.pickupDate || '',
           fromTime: parsedOrder.fromTime || '',
           toTime: parsedOrder.toTime || '',
+          pickupLocation: parsedOrder.pickupLocation || '',
           purchaseOrders: parsedOrder.purchaseOrders || [] 
         });
       }

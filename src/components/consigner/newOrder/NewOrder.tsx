@@ -89,8 +89,9 @@ const NewOrder = () => {
         fromTime: from,
         toTime: to,
         orderTime: currentTime.toLocaleTimeString(),
-        // location,
+        pickupLocation: location
       };
+      console.log(order);
       localStorage.setItem("ordersDetails", JSON.stringify(order));
       router.push(`/consigner/orders/new/purchase_order`);
     }
