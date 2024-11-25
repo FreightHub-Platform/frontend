@@ -8,7 +8,7 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const token = Cookies.get("jwtToken");
+    const token = Cookies.get("jwt");
 
     if (!token) {
       router.replace("/login");

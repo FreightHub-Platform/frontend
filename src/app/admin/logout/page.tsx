@@ -8,8 +8,8 @@ const LogoutPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    localStorage.removeItem("userToken");
-    Cookies.remove("jwtToken");
+    localStorage.removeItem("jwt");
+    Cookies.remove("jwt");
     router.push("/login");
   }, [router]);
 
