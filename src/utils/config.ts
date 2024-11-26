@@ -27,6 +27,18 @@ export const notificationApi = axios.create({
   baseURL: "http://localhost:8080/api",
 });
 
+//DRIVER APIS
+export const driverApi = axios.create({
+  // baseURL: "https://auth.freighthub.danujaya.live/api/driver",
+  baseURL: "http://localhost:8080/api/driver",
+});
+
+//VEHICLE APIS
+export const vehicleApi = axios.create({
+  // baseURL: "https://auth.freighthub.danujaya.live/api/vehicle",
+  baseURL: "http://localhost:8080/api/vehicle",
+});
+
 //USER APIS
 export const userApi = axios.create({
   // baseURL: "https://auth.freighthub.danujaya.live/api/user",

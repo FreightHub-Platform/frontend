@@ -74,7 +74,8 @@ export default function VehicleTable({onViewMore}) {
   useEffect(() => {
     const fetchAllVehicles = async () => {
       try {
-        const data = await getAllVehicleDetails() 
+        const data = await getAllVehicleDetails(localStorage.getItem('jwt')) 
+        console.log(data)
       } catch (error) {
         
       }

@@ -71,7 +71,8 @@ export default function ConsignerTable({onViewMore}) {
   useEffect(() => {
     const fetchAllConsigners = async () => {
       try {
-        const data = await getAllConsignerDetails() 
+        const data = await getAllConsignerDetails(localStorage.getItem('jwt')) 
+        console.log(data)
       } catch (error) {
         
       }
