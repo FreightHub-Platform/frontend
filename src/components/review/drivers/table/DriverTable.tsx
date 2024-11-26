@@ -72,7 +72,8 @@ export default function DriverTable({onViewMore}) {
   useEffect(() => {
     const fetchAllDrivers = async () => {
       try {
-        const data = await getAllDriverDetails() 
+        const data = await getAllDriverDetails(localStorage.getItem('jwt')) 
+        console.log(data)
       } catch (error) {
         
       }

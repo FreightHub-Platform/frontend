@@ -16,7 +16,7 @@ import { changePassword } from '../../../utils/consigner';
 
 const ProfileC = () => {
 
-  const currentPassward = "abc123"
+  // const currentPassward = "abc123"
 
   const [showOldPassword, setShowOldPassword] = React.useState(false);
   const [oldPassword, setOldPassword] = useState("")
@@ -54,10 +54,10 @@ const ProfileC = () => {
     if(!oldPassword){
       hasError = true;
       setOldPasswordError(true)
-    } else if(oldPassword !== currentPassward) {
-      hasError = true;
-      setOldPasswordError(false)
-      setOldPasswordMissmatchError(true)
+    // } else if(oldPassword !== currentPassward) {
+    //   hasError = true;
+    //   setOldPasswordError(false)
+    //   setOldPasswordMissmatchError(true)
     } else {
       setOldPasswordError(false)
       setOldPasswordMissmatchError(false)
@@ -86,10 +86,23 @@ const ProfileC = () => {
     if(!hasError){
       setLoading(true)
       try {
-        await changePassword("ConsignerID", newPassword, oldPassword, "token")
-        setPasswordChange(true)  
+        const changePw = {
+          id : localStorage.getItem('id'),
+          newPassword: newPassword,
+          oldPassword: oldPassword
+        }
+        console.log(changePw)
+        var code = await changePassword(changePw, localStorage.getItem('jwt'))
+        console.log(code)
+        setPasswordChange(true)
+        setLoading(false)
+        
       } catch (error) {
+        hasError = true;
+        setOldPasswordError(false)
+        setOldPasswordMissmatchError(true)
         setPasswordChange(false) 
+        setLoading(false)
       }
       setOpen(true)
     }
