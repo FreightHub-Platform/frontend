@@ -1,6 +1,6 @@
 "use server"
 
-import { consignerApi } from "./config";
+import { api, consignerApi, orderApi } from "./config";
 
 
 //GET CONSIGNER DETAILS BY ID with axios
@@ -21,13 +21,14 @@ export const getConsignerById = async (consigner: any, token: String) => {
 };
 
 //CHANGE PASSWORD
-export const changePassword = async (consignerId: any, newPassword: string, oldPassword: string, token: string) => {
+export const changePassword = async (changePw: any, token: string) => {
   try {
-    const response = await consignerApi.put("", {
+    const response = await api.post("/auth/change_pw", changePw, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
     });
+    return response.data.statusCode
   } catch (error) {
     console.error('Error:', error);
     throw new Error('An unexpected error occurred.');
@@ -36,11 +37,14 @@ export const changePassword = async (consignerId: any, newPassword: string, oldP
 
 
 //GET CONSIGNER ORDERS
-export const getConsignerOrders = async () =>{
+export const getConsignerOrders = async (consigner : any, token : String) =>{
   try {
-    const response = await consignerApi.get("", {
-     
+    const response = await orderApi.post("/consigner", consigner, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
     })
+    return response.data.data;
   } catch (error) {
     console.error('Error:', error);
     throw new Error('An unexpected error occurred.');

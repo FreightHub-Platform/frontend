@@ -94,7 +94,7 @@ export default function OnRouteVehicles() {
     }
 
     return filteredvehicles;
-  }, [vehicles, filterValue, statusFilter]);
+  }, [hasSearchFilter, statusFilter, filterValue]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -159,11 +159,7 @@ export default function OnRouteVehicles() {
           </Chip>
         );
       case "progress":
-        return(
-          <ProgressBar
-          value={user.progress}
-          />
-        );
+        return <ProgressBar value={user.progress} />;
       case "actions":
         return (
           <div className="relative flex justify-center items-center gap-2">
@@ -302,12 +298,11 @@ export default function OnRouteVehicles() {
     );
   }, [
     filterValue,
+    onSearchChange,
     statusFilter,
     visibleColumns,
-    onSearchChange,
     onRowsPerPageChange,
-    vehicles.length,
-    hasSearchFilter,
+    onClear,
   ]);
 
   const bottomContent = React.useMemo(() => {
@@ -347,7 +342,14 @@ export default function OnRouteVehicles() {
         </div>
       </div>
     );
-  }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
+  }, [
+    selectedKeys,
+    filteredItems.length,
+    page,
+    pages,
+    onPreviousPage,
+    onNextPage,
+  ]);
 
   return (
     <Table

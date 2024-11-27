@@ -1,6 +1,6 @@
 "use server"
 
-import { reviewApi } from "./config"
+import { consignerApi, driverApi, reviewApi, vehicleApi } from "./config"
 
 //GET CONSIGNER DETAILS
 /* Methana function eka gahaganna @GEETHIKA*/
@@ -59,27 +59,42 @@ export const verifyVehicle = async (id) => {
 
 
 //GET ALL VEHICLE DETAILS
-export const getAllVehicleDetails = async () =>{
+export const getAllVehicleDetails = async (token : String) =>{
   try {
-    const response = await reviewApi.get('')// get eka athulata call karana function eka danna
+    const response = await vehicleApi.get('/', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })// get eka athulata call karana function eka danna
+    return response.data.data;
   } catch (error) {
     throw new Error('An unexpected error occurred.');
   }
 }
 
 //GET ALL DRIVER DETAILS
-export const getAllDriverDetails = async () =>{
+export const getAllDriverDetails = async (token : String) =>{
   try {
-    const response = await reviewApi.get('')// get eka athulata call karana function eka danna
+    const response = await driverApi.get('/', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    return response.data.data;
   } catch (error) {
     throw new Error('An unexpected error occurred.');
   }
 }
 
 //GET ALL DRIVER DETAILS
-export const getAllConsignerDetails = async () =>{
+export const getAllConsignerDetails = async (token : String) =>{
   try {
-    const response = await reviewApi.get('')// get eka athulata call karana function eka danna
+    const response = await consignerApi.get('/', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })// get eka athulata call karana function eka danna
+    return response.data.data;
   } catch (error) {
     throw new Error('An unexpected error occurred.');
   }

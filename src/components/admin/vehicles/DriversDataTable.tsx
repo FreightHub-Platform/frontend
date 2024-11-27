@@ -22,7 +22,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { driverColumns, drivers, licenseTypes, employmentStatuses, preferredVehicleTypes } from "./Drivers";
+import {
+  driverColumns,
+  drivers,
+  licenseTypes,
+  employmentStatuses,
+  preferredVehicleTypes,
+} from "./Drivers";
 import { capitalize } from "../dashboard/ordersTable/Utils";
 
 const INITIAL_VISIBLE_COLUMNS = [
@@ -50,9 +56,12 @@ export default function DriversDataTable() {
   const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
     new Set(INITIAL_VISIBLE_COLUMNS)
   );
-  const [licenseTypeFilter, setLicenseTypeFilter] = React.useState<Selection>("all");
-  const [employmentStatusFilter, setEmploymentStatusFilter] = React.useState<Selection>("all");
-  const [preferredVehicleTypeFilter, setPreferredVehicleTypeFilter] = React.useState<Selection>("all");
+  const [licenseTypeFilter, setLicenseTypeFilter] =
+    React.useState<Selection>("all");
+  const [employmentStatusFilter, setEmploymentStatusFilter] =
+    React.useState<Selection>("all");
+  const [preferredVehicleTypeFilter, setPreferredVehicleTypeFilter] =
+    React.useState<Selection>("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(15);
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: "id",
@@ -79,26 +88,45 @@ export default function DriversDataTable() {
       );
     }
 
-    if (licenseTypeFilter !== "all" && Array.from(licenseTypeFilter).length > 0) {
+    if (
+      licenseTypeFilter !== "all" &&
+      Array.from(licenseTypeFilter).length > 0
+    ) {
       filteredDrivers = filteredDrivers.filter((driver) =>
         Array.from(licenseTypeFilter).includes(driver.licenseType.toLowerCase())
       );
     }
 
-    if (employmentStatusFilter !== "all" && Array.from(employmentStatusFilter).length > 0) {
+    if (
+      employmentStatusFilter !== "all" &&
+      Array.from(employmentStatusFilter).length > 0
+    ) {
       filteredDrivers = filteredDrivers.filter((driver) =>
-        Array.from(employmentStatusFilter).includes(driver.employmentStatus.toLowerCase())
+        Array.from(employmentStatusFilter).includes(
+          driver.employmentStatus.toLowerCase()
+        )
       );
     }
 
-    if (preferredVehicleTypeFilter !== "all" && Array.from(preferredVehicleTypeFilter).length > 0) {
+    if (
+      preferredVehicleTypeFilter !== "all" &&
+      Array.from(preferredVehicleTypeFilter).length > 0
+    ) {
       filteredDrivers = filteredDrivers.filter((driver) =>
-        Array.from(preferredVehicleTypeFilter).includes(driver.preferredVehicleType.toLowerCase())
+        Array.from(preferredVehicleTypeFilter).includes(
+          driver.preferredVehicleType.toLowerCase()
+        )
       );
     }
 
     return filteredDrivers;
-  }, [drivers, filterValue, licenseTypeFilter, employmentStatusFilter, preferredVehicleTypeFilter]);
+  }, [
+    hasSearchFilter,
+    licenseTypeFilter,
+    employmentStatusFilter,
+    preferredVehicleTypeFilter,
+    filterValue,
+  ]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -119,43 +147,48 @@ export default function DriversDataTable() {
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((driver: Driver, columnKey: React.Key) => {
-    const cellValue = driver[columnKey as keyof Driver];
+  const renderCell = React.useCallback(
+    (driver: Driver, columnKey: React.Key) => {
+      const cellValue = driver[columnKey as keyof Driver];
 
-    switch (columnKey) {
-      case "contactDetails":
-        return `${driver.contactDetails.phone} / ${driver.contactDetails.email}`;
-      case "certifications":
-        return driver.certifications.join(", ");
-      case "trainingRecords":
-        return driver.trainingRecords.join(", ");
-      case "performanceReviews":
-        return driver.performanceReviews.join(", ");
-      case "previousVehicles":
-        return driver.previousVehicles.join(", ");
-      case "medicalCertifications":
-        return driver.medicalCertifications.join(", ");
-      case "safetyTraining":
-        return driver.safetyTraining.join(", ");
-      case "actions":
-        return (
-          <div className="relative flex justify-center items-center gap-2">
-            <Dropdown>
-              <DropdownTrigger>
-                <Button isIconOnly size="sm" variant="light">
-                  <MoreVertIcon className="text-default-300" />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem>View</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </div>
-        );
-      default:
-        return cellValue;
-    }
-  }, []);
+      switch (columnKey) {
+        case "contactDetails":
+          return `${driver.contactDetails.phone} / ${driver.contactDetails.email}`;
+        case "certifications":
+          return driver.certifications.join(", ");
+        case "trainingRecords":
+          return driver.trainingRecords.join(", ");
+        case "performanceReviews":
+          return driver.performanceReviews.join(", ");
+        case "previousVehicles":
+          return driver.previousVehicles.join(", ");
+        case "medicalCertifications":
+          return driver.medicalCertifications.join(", ");
+        case "safetyTraining":
+          return driver.safetyTraining.join(", ");
+        case "actions":
+          return (
+            <div className="relative flex justify-center items-center gap-2">
+              <Dropdown>
+                <DropdownTrigger>
+                  <Button isIconOnly size="sm" variant="light">
+                    <MoreVertIcon className="text-default-300" />
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu>
+                  <DropdownItem>View</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </div>
+          );
+        default:
+          return typeof cellValue === "object"
+            ? JSON.stringify(cellValue)
+            : cellValue;
+      }
+    },
+    []
+  );
 
   const onNextPage = React.useCallback(() => {
     if (page < pages) {
@@ -323,14 +356,13 @@ export default function DriversDataTable() {
     );
   }, [
     filterValue,
+    onSearchChange,
     licenseTypeFilter,
     employmentStatusFilter,
     preferredVehicleTypeFilter,
     visibleColumns,
-    onSearchChange,
     onRowsPerPageChange,
-    drivers.length,
-    hasSearchFilter,
+    onClear,
   ]);
 
   const bottomContent = React.useMemo(() => {
@@ -370,7 +402,14 @@ export default function DriversDataTable() {
         </div>
       </div>
     );
-  }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
+  }, [
+    selectedKeys,
+    filteredItems.length,
+    page,
+    pages,
+    onPreviousPage,
+    onNextPage,
+  ]);
 
   return (
     <Table

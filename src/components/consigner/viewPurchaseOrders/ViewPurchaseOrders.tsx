@@ -41,6 +41,7 @@ const ViewPurchaseOrders = () => {
     pickupDate: '',
     fromTime: '',
     toTime: '',
+    pickupLocation: '',
     purchaseOrders: []
   });
 
@@ -53,6 +54,7 @@ const ViewPurchaseOrders = () => {
           pickupDate: parsedOrder.pickupDate || '',
           fromTime: parsedOrder.fromTime || '',
           toTime: parsedOrder.toTime || '',
+          pickupLocation: parsedOrder.pickupLocation || '',
           purchaseOrders: parsedOrder.purchaseOrders || [] 
         });
       }
