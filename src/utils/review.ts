@@ -4,9 +4,16 @@ import { consignerApi, driverApi, reviewApi, vehicleApi } from "./config"
 
 //GET CONSIGNER DETAILS
 /* Methana function eka gahaganna @GEETHIKA*/
-export const getConsignerDetails = async (id) =>{
+export const getConsignerDetails = async (cid : any, token : String) =>{
   try {
-    const response = await reviewApi.get('')// get eka athulata call karana function eka danna
+    const response = await consignerApi.post('/single', cid, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    console.log(response.data.data)// get eka athulata call karana function eka danna
+    return response.data.data;
+    
   } catch (error) {
     throw new Error('An unexpected error occurred.');
   }
