@@ -63,10 +63,16 @@ const ProfileDetails = () => {
     setSubmitting(true)
     const vehicleId = path.split('/')[3]
     try {
-      const response = await verifyVehicle(vehicleId)
+      const vid = {
+        id : vehicleId
+      }
       if(type === 'driverVerified') {
-        const response = await verifyDriver(1)
-        if(1){ // response eka succes nm yawnna
+        const driverId = 1
+        const did = {
+          id : driverId
+        }
+        const response = await verifyDriver(did, localStorage.getItem('jwt'))
+        if(response == 200){ // response eka succes nm yawnna
           handleEmailSent(e,type);
           const notifactionDetails = {
             date: new Date().toISOString().slice(0, 19),
@@ -76,8 +82,8 @@ const ProfileDetails = () => {
           const res = await updateNotification(1, notifactionDetails)
         }
       } else {
-        const response = await verifyVehicle(1)
-        if(1){ // response eka succes nm yawnna
+        const response = await verifyVehicle(vid, localStorage.getItem('jwt'))
+        if( response == 200){ // response eka succes nm yawnna
         handleEmailSent(e,type);
         const notifactionDetails = {
           date: new Date(),
@@ -97,7 +103,10 @@ const ProfileDetails = () => {
     const fetchVehicleDetails = async () => {
       const vehicleId = path.split('/')[3]
       try {
-        const data = await getVehicleDetails(vehicleId)
+        const vid = {
+          id : vehicleId
+        }
+        const data = await getVehicleDetails(vid, localStorage.getItem('jwt'))
       } catch (error) {
         
       }
