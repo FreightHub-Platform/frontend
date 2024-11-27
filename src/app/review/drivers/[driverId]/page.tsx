@@ -40,7 +40,7 @@ const ProfileDetails = () => {
       },
       body: JSON.stringify({
         'name': "Nuwan Fernando",
-        'to': "fnimal402@gmail.com",
+        'to': "echostikmusic@gmail.com",
         'mailType': type
       })
     })

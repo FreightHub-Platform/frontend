@@ -20,6 +20,7 @@ const ConsignerDetails = () => {
   const [submitting, setSubmitting] = useState(false);
   const [open, setOpen] = useState(false);
   const [sentMail, setSentMail] = useState(false);
+  const [consignerData, setConsignerData] = useState();
 
   const path = usePathname()
 
@@ -80,7 +81,13 @@ const ConsignerDetails = () => {
     const fetchConsignerDetails = async () => {
       const consignetId = path.split('/')[3]
       try {
-        const data = await getConsignerDetails(consignetId)
+        setSubmitting(true)
+        const cid = {
+          id : consignetId
+        }
+        const data = await getConsignerDetails(cid, localStorage.getItem('jwt'))
+        setConsignerData(data)
+        setSubmitting(false)
       } catch (error) {
         
       }
@@ -89,6 +96,9 @@ const ConsignerDetails = () => {
     fetchConsignerDetails();
   }, [])
 
+  useEffect(() => {
+    console.log(consignerData)
+  }, [consignerData]);
 
 
   const handleClose = (
@@ -122,23 +132,23 @@ const ConsignerDetails = () => {
                 <tbody className="text-sm flex flex-col justify-between h-56">
                   <tr className="flex mb-1">
                     <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Business Name</td>
-                    <td className="p-1 border-2 flex-grow ps-3 rounded-r-lg">Pambaya</td>
+                    <td className="p-1 border-2 flex-grow ps-3 rounded-r-lg">{consignerData ? consignerData.businessName : null }</td>
                   </tr>
                   <tr className="flex mb-1">
                     <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Business Registration Number</td>
-                    <td className="p-1 border-2 flex-grow flex items-center ps-3 rounded-r-lg">Pambaya</td>
+                    <td className="p-1 border-2 flex-grow flex items-center ps-3 rounded-r-lg">{consignerData ? consignerData.brn : null }</td>
                   </tr>
                   <tr className="flex mb-1">
                     <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Email</td>
-                    <td className="p-1 border-2 flex-grow ps-3 rounded-r-lg">Pambaya</td>
+                    <td className="p-1 border-2 flex-grow ps-3 rounded-r-lg">{consignerData ? consignerData.username : null }</td>
                   </tr>
                   <tr className="flex mb-1">
                     <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Main Contact Number</td>
-                    <td className="p-1 border-2 flex-grow ps-3 rounded-r-lg flex items-center">Pambaya</td>
+                    <td className="p-1 border-2 flex-grow ps-3 rounded-r-lg flex items-center">{consignerData ? consignerData.mainNumber : null }</td>
                   </tr>
                   <tr className="flex mb-1">
-                    <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Alternative Contact Number</td>
-                    <td className="p-1 border-2 flex-grow ps-3 rounded-r-lg flex items-center">Pambaya</td>
+                    <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Alternative altNumber</td>
+                    <td className="p-1 border-2 flex-grow ps-3 rounded-r-lg flex items-center">{consignerData ? consignerData.altNumber : null }</td>
                   </tr>
                 </tbody>
               </table>
@@ -148,23 +158,23 @@ const ConsignerDetails = () => {
                 <tbody className="text-sm flex flex-col justify-between h-56">
                   <tr className="flex mb-1">
                     <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Address Line 1</td>
-                    <td className="p-1 border-2 flex-grow ps-3 rounded-r-lg">Pambaya</td>
+                    <td className="p-1 border-2 flex-grow ps-3 rounded-r-lg">{consignerData ? consignerData.addressLine1 : null }</td>
                   </tr>
                   <tr className="flex mb-1">
                     <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Address Line 2</td>
-                    <td className="p-1 border-2 flex-grow ps-3 rounded-r-lg">Pambaya</td>
+                    <td className="p-1 border-2 flex-grow ps-3 rounded-r-lg">{consignerData ? consignerData.addressLine2 : null }</td>
                   </tr>
                   <tr className="flex mb-1">
                     <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">City</td>
-                    <td className="p-1 border-2 flex-grow ps-3 rounded-r-lg">Pambaya</td>
+                    <td className="p-1 border-2 flex-grow ps-3 rounded-r-lg">{consignerData ? consignerData.city : null }</td>
                   </tr>
                   <tr className="flex mb-1">
                     <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Province</td>
-                    <td className="p-1 border-2 flex-grow ps-3 rounded-r-lg">Pambaya</td>
+                    <td className="p-1 border-2 flex-grow ps-3 rounded-r-lg">{consignerData ? consignerData.province : null }</td>
                   </tr>
                   <tr className="flex mb-1">
                     <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Postal Code</td>
-                    <td className="p-1 border-2 flex-grow ps-3 rounded-r-lg">Pambaya</td>
+                    <td className="p-1 border-2 flex-grow ps-3 rounded-r-lg">{consignerData ? consignerData.postalCode : null }</td>
                   </tr>
                   <tr className="flex mb-1">
                     <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Document</td>
@@ -214,6 +224,7 @@ const ConsignerDetails = () => {
             </Alert>
           </Snackbar>
         </div>
+        
       </div>
     </div>
   )
