@@ -98,6 +98,8 @@ const ProfileDetails = () => {
     }
   }
 
+  const [driverVehicleDetails, setDriverVehicleDetails] = useState({driver: "", vehicle: ""})
+
   /* Methana function eka gahaganna @GEETHIKA*/
   useEffect(() => {
     const fetchDriverDetails = async () => {
@@ -107,6 +109,8 @@ const ProfileDetails = () => {
           id : driverId
         }
         const data = await getDriverDetails(did, localStorage.getItem('jwt'))
+        setDriverVehicleDetails({driver: data.driver, vehicle: data.vehicle})
+        console.log(data)
       } catch (error) {
         
       }
@@ -114,6 +118,10 @@ const ProfileDetails = () => {
 
     fetchDriverDetails();
   }, [])
+
+  useEffect(() => {
+    console.log(driverVehicleDetails)
+  }, [driverVehicleDetails])
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -144,10 +152,10 @@ const ProfileDetails = () => {
               }
               
             </div>
-            <ProfilePhoto />
+            <ProfilePhoto pic={driverVehicleDetails.driver}/>
           </div>
           <div className="mt-2">
-            <Details />
+            <Details driver={driverVehicleDetails.driver}/>
           </div>  
           <div>
             <BankDetails />
