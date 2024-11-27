@@ -42,6 +42,7 @@ export const getDriverDetails = async (did : any, token : String) =>{
         'Authorization': `Bearer ${token}`
       }
     })
+    console.log(response.data.data)
     return response.data.data;
   } catch (error) {
     throw new Error('An unexpected error occurred.');
@@ -70,6 +71,7 @@ export const getVehicleDetails = async (vid : any, token : String) =>{
         'Authorization': `Bearer ${token}`
       }
     })// get eka athulata call karana function eka danna
+    console.log(response.data.data);
     return response.data.data;
   } catch (error) {
     throw new Error('An unexpected error occurred.');
