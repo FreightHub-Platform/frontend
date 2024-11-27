@@ -171,7 +171,7 @@ const LoginBox = ({onLinkClick}) => {
       } else if (role == "admin") {
         router.push('/admin/dashboard');
       } else if (role == "review_board") {
-        // router.push('/review_board/dashboard');
+        router.push('/review/consigners');
       } else if (role == "fleet_owner") {
         // router.push('/fleet_owner/dashboard');
         console.log('fleet_owner');
