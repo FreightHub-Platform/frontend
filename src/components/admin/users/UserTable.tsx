@@ -310,11 +310,11 @@ export default function UserTable() {
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
+            {/* Add user button */}
+            <Button color="primary" onPress={() => console.log("Add User")}>
+              Add User
+            </Button>
             <Dropdown>
-              {/* Add user button */}
-              <Button color="primary" onPress={() => console.log("Add User")}>
-                Add User
-              </Button>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
                   endContent={<ExpandMoreIcon className="text-small" />}
