@@ -57,12 +57,15 @@ const ConsignerDetails = () => {
     setSubmitting(true);
     const consignetId = path.split('/')[3]
     try {
-      const response = await verifyConsigner(consignetId)
-      if(1){ // response eka succes nm yawnna
+      const cid = {
+        id : consignetId
+      }
+      const response = await verifyConsigner(cid, localStorage.getItem('jwt'))
+      if(response == 200){ // response eka succes nm yawnna
         handleEmailSent(e,type);
         const notifactionDetails = {
           date: new Date().toISOString().slice(0, 19),
-          body: "Your account has been successfully verified. Now you can continue with your works.",
+          body: "The account has been successfully verified.",
           read: false,
         }
         const res = await updateNotification(consignetId, notifactionDetails)

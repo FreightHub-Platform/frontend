@@ -63,26 +63,33 @@ const ProfileDetails = () => {
     const driverId = path.split('/')[3]
     try {
       if(type === 'driverVerified') {
-        const response = await verifyDriver(driverId)
-        if(1){ // response eka succes nm yawnna
+        const did = {
+          id : driverId
+        }
+        const response = await verifyDriver(did, localStorage.getItem('jwt'))
+        if(response == 200){ // response eka succes nm yawnna
           handleEmailSent(e,type);
           const notifactionDetails = {
             date: new Date(),
             body: "Your account has been successfully verified. Now you can continue with your works.",
             read: false,
           }
-          const res = await updateNotification(driverId, notifactionDetails)
+          // const res = await updateNotification(driverId, notifactionDetails)
         }
       } else {
-        const response = await verifyVehicle(1)
-        if(1){ // response eka succes nm yawnna
+        const vehicleId = 11
+        const vid = {
+          id : vehicleId
+        }
+        const response = await verifyVehicle(vid, localStorage.getItem('jwt'))
+        if(response == 200){ // response eka succes nm yawnna
         handleEmailSent(e,type);
         const notifactionDetails = {
           date: new Date().toISOString().slice(0, 19),
           body: "Your account has been successfully verified. Now you can continue with your works.",
           read: false,
         }
-        const res = await updateNotification(2, notifactionDetails)
+        // const res = await updateNotification(2, notifactionDetails)
       }
       }
       
@@ -96,7 +103,10 @@ const ProfileDetails = () => {
     const fetchDriverDetails = async () => {
       const driverId = path.split('/')[3]
       try {
-        const data = await getDriverDetails(driverId)
+        const did = {
+          id : driverId
+        }
+        const data = await getDriverDetails(did, localStorage.getItem('jwt'))
       } catch (error) {
         
       }
