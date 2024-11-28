@@ -4,7 +4,7 @@ import Image from 'next/image';
 import ViewPhoto from '../ViewPhoto';
 import * as React from 'react';
 
-const VehicleImages = () => {
+const VehicleImages = ({vehicle}) => {
 
   const [open, setOpen] = React.useState(false);
   const [imgSrc, setImgSrc] = React.useState('');
@@ -20,8 +20,9 @@ const VehicleImages = () => {
     <div className="grid grid-cols-3 gap-1">
       <div className='relative w-full h-36'>
         <Image 
-          src="/images/homefleet.jpg"
-          onClick={() => handleOpen('/images/homefleet.jpg')}
+        //
+          src={vehicle.side1Pic}
+          onClick={() => handleOpen(vehicle.side1Pic)}
           style={{ cursor: 'pointer' }}
           alt=""
           fill 
@@ -29,8 +30,9 @@ const VehicleImages = () => {
       </div>
       <div className='relative w-full h-36'>
         <Image 
-          src="/images/1.jpg"
-          onClick={() => handleOpen('/images/1.jpg')}
+        //
+          src={vehicle.side2Pic}
+          onClick={() => handleOpen(vehicle.side2Pic)}
           style={{ cursor: 'pointer' }}
           alt=""
           fill 
@@ -38,8 +40,9 @@ const VehicleImages = () => {
       </div>
       <div className='relative w-full h-36'>
         <Image 
-          src="/images/2.jpg"
-          onClick={() => handleOpen('/images/2.jpg')}
+        //
+          src={vehicle.rearPic}
+          onClick={() => handleOpen(vehicle.rearPic)}
           style={{ cursor: 'pointer' }}
           alt=""
           fill 
@@ -47,8 +50,9 @@ const VehicleImages = () => {
       </div>
       <div className='relative w-full h-36'>
         <Image 
-          src="/images/homefleet.jpg"
-          onClick={() => handleOpen('/images/homefleet.jpg')}
+        //
+          src={vehicle.frontPic}
+          onClick={() => handleOpen(vehicle.frontPic)}
           style={{ cursor: 'pointer' }}
           alt=""
           fill 
@@ -56,8 +60,9 @@ const VehicleImages = () => {
       </div>
       <div className='relative w-full h-36'>
         <Image 
-          src="/images/1.jpg"
-          onClick={() => handleOpen('/images/1.jpg')}
+        //
+          src={vehicle.trailerImage}
+          onClick={() => handleOpen(vehicle.trailerImage)}
           style={{ cursor: 'pointer' }}
           alt=""
           fill 
