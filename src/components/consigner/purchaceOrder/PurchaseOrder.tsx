@@ -144,7 +144,7 @@ const PurchaseOrder = ({closeFunction}) => {
     }
   }
 
-  const [location, setLocation] = useState({ lat: 0, lng: 0 });
+  const [location, setLocation] = useState({ lat: Math.floor(Math.random() * 181), lng: Math.floor(Math.random() * 181) });
 
   const handleLocationSelected = (location: { lat: number; lng: number }) => {
     setLocation(location);
