@@ -62,8 +62,8 @@ const Details = ({driver}) => {
         </tr>
         </tbody>
       </table>
-      <NICDetals />
-      <DrivingLicense />
+      <NICDetals driver={driver}/>
+      <DrivingLicense driver={driver}/>
     </div>
   )
 }
