@@ -29,6 +29,7 @@ import { orderApi } from "../../../utils/config";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { capitalize } from "../../../utils/functions/functions";
 import PersonIcon from "@mui/icons-material/Person";
+import OrderDetailsModal from "./OrderDetailsModal";
 
 type Order = {
   id: number;
@@ -80,6 +81,20 @@ export default function OrdersTable() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleViewOrderDetails = (orderId: number) => {
+    setSelectedOrderId(orderId);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedOrderId(null);
+  };
+
   // Fetch orders from API
   useEffect(() => {
     const fetchOrders = async () => {
@@ -267,9 +282,9 @@ export default function OrdersTable() {
               size="sm"
               variant="flat"
               color="primary"
-              onPress={() => console.log("View", order.id)}
+              onPress={() => handleViewOrderDetails(order.id)}
             >
-              View
+              View Details
             </Button>
             <Button
               size="sm"
@@ -470,66 +485,73 @@ export default function OrdersTable() {
   }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
 
   return (
-    <Table
-      aria-label="Example table with custom cells, pagination and sorting"
-      isHeaderSticky
-      bottomContent={bottomContent}
-      bottomContentPlacement="outside"
-      classNames={{
-        wrapper: "",
-      }}
-      selectedKeys={selectedKeys}
-      sortDescriptor={sortDescriptor}
-      topContent={topContent}
-      topContentPlacement="outside"
-      onSelectionChange={setSelectedKeys}
-      onSortChange={setSortDescriptor}
-    >
-      <TableHeader columns={headerColumns}>
-        {(column) => (
-          <TableColumn
-            key={column.uid}
-            align={column.uid === "actions" ? "end" : "start"}
-            allowsSorting={column.sortable}
-            style={{
-              width:
-                column.uid === "role"
-                  ? "10%"
-                  : column.uid === "status"
-                  ? "10%"
-                  : column.uid === "actions"
-                  ? "20%"
-                  : "auto",
-            }}
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody
-        emptyContent={
-          loading ? (
-            <div className="flex justify-center items-center">
-              <Spinner size="lg" />
-            </div>
-          ) : error ? (
-            <div className="flex justify-center items-center text-danger">
-              {error}
-            </div>
-          ) : (
-            "No Users found"
-          )
-        }
-        items={sortedItems}
+    <>
+      <Table
+        aria-label="Example table with custom cells, pagination and sorting"
+        isHeaderSticky
+        bottomContent={bottomContent}
+        bottomContentPlacement="outside"
+        classNames={{
+          wrapper: "",
+        }}
+        selectedKeys={selectedKeys}
+        sortDescriptor={sortDescriptor}
+        topContent={topContent}
+        topContentPlacement="outside"
+        onSelectionChange={setSelectedKeys}
+        onSortChange={setSortDescriptor}
       >
-        {(item) => (
-          <TableRow key={item.id}>
-            {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
-            )}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+        <TableHeader columns={headerColumns}>
+          {(column) => (
+            <TableColumn
+              key={column.uid}
+              align={column.uid === "actions" ? "end" : "start"}
+              allowsSorting={column.sortable}
+              style={{
+                width:
+                  column.uid === "role"
+                    ? "10%"
+                    : column.uid === "status"
+                    ? "10%"
+                    : column.uid === "actions"
+                    ? "20%"
+                    : "auto",
+              }}
+            >
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody
+          emptyContent={
+            loading ? (
+              <div className="flex justify-center items-center">
+                <Spinner size="lg" />
+              </div>
+            ) : error ? (
+              <div className="flex justify-center items-center text-danger">
+                {error}
+              </div>
+            ) : (
+              "No Users found"
+            )
+          }
+          items={sortedItems}
+        >
+          {items.map((item) => (
+            <TableRow key={item.id}>
+              {(columnKey) => (
+                <TableCell>{renderCell(item, columnKey)}</TableCell>
+              )}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <OrderDetailsModal
+        orderId={selectedOrderId}
+        open={isModalOpen}
+        onClose={handleCloseModal}
+      />
+    </>
   );
 }
