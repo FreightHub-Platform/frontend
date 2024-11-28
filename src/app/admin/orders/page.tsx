@@ -4,6 +4,7 @@ import { LoadScript } from "@react-google-maps/api";
 import SearchBar from "../../../components/maps/SearchBar";
 import GoogleMapRouteComponent from "../../../components/maps/GoogleMapRouteComponent";
 import AuthGuard from "../../../components/common/auth/AuthGurd";
+import OrdersTable from "../../../components/common/orders/OrdersTable";
 
 const libraries = ["places"];
 
@@ -43,6 +44,11 @@ const Orders: React.FC = () => {
             </div>
           </div>
           <GoogleMapRouteComponent origin={origin} destination={destination} />
+        </div>
+        {/* Orders Table */}
+        <div className="mt-8 px-4">
+          <h2 className="text-xl font-bold mb-4">Orders List</h2>
+          <OrdersTable />
         </div>
       </LoadScript>
     </AuthGuard>
