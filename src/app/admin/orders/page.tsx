@@ -34,13 +34,13 @@ const Orders: React.FC = () => {
         googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!}
         libraries={["places"]}
       >
-        <div className="bg-gray-100 min-h-screen">
+        <div className="bg-gray-100">
           <div className="flex flex-col md:flex-row gap-4 p-4">
             <div className="w-full max-w-lg">
-              <SearchBar onPlaceSelected={handleOriginSelected} />
+              {/* <SearchBar onPlaceSelected={handleOriginSelected} /> */}
             </div>
             <div className="w-full max-w-lg">
-              <SearchBar onPlaceSelected={handleDestinationSelected} />
+              {/* <SearchBar onPlaceSelected={handleDestinationSelected} /> */}
             </div>
           </div>
           <GoogleMapRouteComponent origin={origin} destination={destination} />
