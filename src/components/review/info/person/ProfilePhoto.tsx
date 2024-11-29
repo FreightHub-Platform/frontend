@@ -22,7 +22,9 @@ const ProfilePhoto = ({ pic }) => {
         width={400}
         height={400}
         onClick={() => handleOpen(pic.profilePic)} // Pass pic to handleOpen
-        style={{ cursor: 'pointer' }}
+        style={{
+          cursor: "pointer",
+        }}
         alt="Profile Photo" // Provide a meaningful alt text
       />
 

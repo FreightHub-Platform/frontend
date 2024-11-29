@@ -107,10 +107,12 @@ const ProfileDetails = () => {
     const fetchVehicleDetails = async () => {
       const vehicleId = path.split('/')[3]
       try {
+        setSubmitting(true)
         const vid = {
           id : vehicleId
         }
         const data = await getVehicleDetails(vid, localStorage.getItem('jwt'))
+        
         setDriverVehicleDetails({driver: data.driver, vehicle: data.vehicle})
         
         if(data.driver.verifyStatus == "verified"){
@@ -120,6 +122,7 @@ const ProfileDetails = () => {
         if(data.vehicle.verifyStatus == 'verified'){
           setVerifiedVr(true)
         } 
+        setSubmitting(false)
       } catch (error) {
         
       }

@@ -109,6 +109,7 @@ const ProfileDetails = () => {
     const fetchDriverDetails = async () => {
       const driverId = path.split('/')[3]
       try {
+        setSubmitting(true)
         const did = {
           id : driverId
         }
@@ -123,6 +124,7 @@ const ProfileDetails = () => {
           setVerifiedVr(true)
         } 
         console.log(data)
+        setSubmitting(false)
       } catch (error) {
         
       }

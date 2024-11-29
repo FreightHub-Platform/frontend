@@ -290,7 +290,7 @@ export default function ConsignerTable({onViewMore}) {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {consignerData.length} vehicles
+            Total {consignerData.length} consigners
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -382,7 +382,7 @@ export default function ConsignerTable({onViewMore}) {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={"No vehicles found"} items={sortedItems}>
+      <TableBody emptyContent={"No consigners found"} items={sortedItems}>
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (
