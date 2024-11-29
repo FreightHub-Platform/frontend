@@ -72,7 +72,7 @@ const ProfileDetails = () => {
         const response = await verifyDriver(did, localStorage.getItem('jwt'))
         if(response == 200){ // response eka succes nm yawnna
           handleEmailSent(e,type);
-          router.reload();
+          router.refresh()
           const notifactionDetails = {
             date: new Date(),
             body: "Your account has been successfully verified. Now you can continue with your works.",

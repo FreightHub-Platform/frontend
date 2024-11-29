@@ -97,6 +97,10 @@ const ProfileDetails = () => {
       console.error('Error fetching consigner data:', error);
     }
   }
+
+  const [driverVehicleDetails, setDriverVehicleDetails] = useState({driver: "", vehicle: ""})
+  const [verifiedDr, setVerifiedDr] = useState(false);
+  const [verifiedVr, setVerifiedVr] = useState(false);
   
   /* Methana function eka gahaganna @GEETHIKA*/
   useEffect(() => {
@@ -107,6 +111,15 @@ const ProfileDetails = () => {
           id : vehicleId
         }
         const data = await getVehicleDetails(vid, localStorage.getItem('jwt'))
+        setDriverVehicleDetails({driver: data.driver, vehicle: data.vehicle})
+        
+        if(data.driver.verifyStatus == "verified"){
+          setVerifiedDr(true)
+        } 
+
+        if(data.vehicle.verifyStatus == 'verified'){
+          setVerifiedVr(true)
+        } 
       } catch (error) {
         
       }
@@ -114,6 +127,18 @@ const ProfileDetails = () => {
 
     fetchVehicleDetails();
   }, [])
+
+  useEffect(() => {
+    console.log(driverVehicleDetails)
+  }, [driverVehicleDetails])
+
+  useEffect(() => {
+    console.log(verifiedDr)
+  }, [verifiedDr])
+
+  useEffect(() => {
+    console.log(verifiedVr)
+  }, [verifiedVr])
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -145,10 +170,10 @@ const ProfileDetails = () => {
                 }
                 
               </div>
-              <ProfilePhoto />
+              <ProfilePhoto pic={driverVehicleDetails.driver}/>
             </div>
             <div className="mt-2">
-              <Details />
+              <Details driver={driverVehicleDetails.driver}/>
             </div>  
             <div>
               <BankDetails />
@@ -176,11 +201,11 @@ const ProfileDetails = () => {
                 }
                 
               </div>
-              <div><VehicleDetails /></div>
+              <div><VehicleDetails vehicle={driverVehicleDetails.vehicle}/></div>
               <div className="p-1 border-3 font-bold w-full flex justify-center mb-2 mt-4 rounded-lg" style={{ borderColor: '#FF9800'}}>Vehicle Images</div>
-              <div><VehicleImages /></div>  
+              <div><VehicleImages vehicle={driverVehicleDetails.vehicle}/></div>  
               <div className="p-1 border-3 font-bold w-full flex justify-center mb-2 mt-4 rounded-lg" style={{ borderColor: '#FF9800'}}>Vehicle Documents</div>
-              <div><VehicleDocument /></div> 
+              <div><VehicleDocument vehicle={driverVehicleDetails.vehicle}/></div> 
             </div>
 
             {!verifiedVehicle ? 
