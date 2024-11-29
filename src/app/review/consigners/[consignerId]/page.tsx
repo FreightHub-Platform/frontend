@@ -32,9 +32,9 @@ const ConsignerDetails = () => {
   const [submitting, setSubmitting] = useState(false);
   const [open, setOpen] = useState(false);
   const [sentMail, setSentMail] = useState(false);
-  const [consignerData, setConsignerData] = useState<ConsignerData | undefined>(
-    undefined
-  );
+
+  const [consignerData, setConsignerData] = useState(null);
+
 
   const path = usePathname();
 
