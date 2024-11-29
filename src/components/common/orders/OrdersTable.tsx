@@ -25,79 +25,108 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { orderApi } from "../../../utils/config";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { capitalize } from "./Utils";
-import { userApi } from "../../../utils/config";
+import { capitalize } from "../../../utils/functions/functions";
 import PersonIcon from "@mui/icons-material/Person";
+import OrderDetailsModal from "./OrderDetailsModal";
+
+type Order = {
+  id: number;
+  orderTime: string;
+  pickupDate: string;
+  fromTime: string;
+  toTime: string;
+  status: string;
+  userId: number;
+};
 
 const columns = [
-  { name: "ID", uid: "id", sortable: true },
-  { name: "", uid: "userName" },
-  { name: "EMAIL", uid: "email", sortable: true },
-  { name: "ROLE", uid: "role", sortable: true },
-  { name: "STATUS", uid: "status", sortable: true },
-  { name: "ACTIONS", uid: "actions" },
+  { name: "Order ID", uid: "id", sortable: true },
+  { name: "Order Time", uid: "orderTime", sortable: true },
+  { name: "Pickup Date", uid: "pickupDate", sortable: true },
+  { name: "From Time", uid: "fromTime" },
+  { name: "To Time", uid: "toTime" },
+  { name: "Status", uid: "status", sortable: true },
+  { name: "User ID", uid: "userId", sortable: true },
+  { name: "Actions", uid: "actions" },
 ];
 
 const statusOptions = [
-  { name: "Active", uid: "active" },
+  { name: "Created", uid: "created" },
   { name: "Pending", uid: "pending" },
-  { name: "Inactive", uid: "inactive" },
+  { name: "Completed", uid: "completed" },
+  { name: "Ongoing", uid: "ongoing" },
 ];
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
-  active: "success",
-  pending: "warning",
-  inactive: "danger",
+  Completed: "success",
+  Pending: "warning",
+  Ongoing: "default",
+  Created: "danger",
 };
 
 const INITIAL_VISIBLE_COLUMNS = [
-  "userName",
-  "email",
-  "role",
+  "id",
+  "orderTime",
+  "pickupDate",
+  "fromTime",
+  "toTime",
+  "userId",
   "status",
   "actions",
 ];
 
-type User = {
-  id: number | string;
-  userName: string;
-  email: string;
-  role: string;
-  status: string;
-};
-
-export default function UserTable() {
-  const [users, setUsers] = useState<User[]>([]);
+export default function OrdersTable() {
+  const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [apiResponse, setApiResponse] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleViewOrderDetails = (orderId: number) => {
+    setSelectedOrderId(orderId);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedOrderId(null);
+  };
+
+  // Fetch orders from API
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchOrders = async () => {
       try {
         setLoading(true);
         const jwtToken = localStorage.getItem("jwt");
-        const response = await userApi.get("/all", {
-          headers: {
-            Authorization: `Bearer ${jwtToken}`,
-          },
+        const response = await orderApi.get("/all", {
+          headers: { Authorization: `Bearer ${jwtToken}` },
         });
-        setUsers(response.data.data);
+
+        const ordersData = response.data.data.map((order: any) => ({
+          id: order.id,
+          orderTime: new Date(order.orderTime).toLocaleString(), // Format order time
+          pickupDate: order.pickupDate,
+          fromTime: order.fromTime,
+          toTime: order.toTime,
+          status: capitalize(order.status),
+          userId: order.userId,
+        }));
+
+        setOrders(ordersData);
         setError(null);
       } catch (err: any) {
-        console.error("Error fetching users:", err);
-        setError(err.response?.data?.message || "Failed to fetch users.");
+        console.error("Error fetching orders:", err);
+        setError("Failed to load orders. Please try again.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchUsers();
+    fetchOrders();
   }, []);
-
-  // Debug: Log the API response (optional)
-  console.log("API Response:", apiResponse);
 
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
@@ -109,7 +138,7 @@ export default function UserTable() {
   const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(15);
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
-    column: "userName",
+    column: "orderTime",
     direction: "ascending",
   });
 
@@ -126,11 +155,11 @@ export default function UserTable() {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredUsers = [...users];
+    let filteredOrders = [...orders];
 
     if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter((user) =>
-        Object.values(user).some((value) =>
+      filteredOrders = filteredOrders.filter((order) =>
+        Object.values(order).some((value) =>
           value?.toString().toLowerCase().includes(filterValue.toLowerCase())
         )
       );
@@ -139,13 +168,13 @@ export default function UserTable() {
       statusFilter !== "all" &&
       Array.from(statusFilter).length !== statusOptions.length
     ) {
-      filteredUsers = filteredUsers.filter((user) =>
-        Array.from(statusFilter).includes(user.status)
+      filteredOrders = filteredOrders.filter((order) =>
+        Array.from(statusFilter).includes(order.status)
       );
     }
 
-    return filteredUsers;
-  }, [users, filterValue, statusFilter]);
+    return filteredOrders;
+  }, [orders, filterValue, statusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -157,9 +186,9 @@ export default function UserTable() {
   }, [page, filteredItems, rowsPerPage]);
 
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: User, b: User) => {
-      const first = a[sortDescriptor.column as keyof User];
-      const second = b[sortDescriptor.column as keyof User];
+    return [...items].sort((a: Order, b: Order) => {
+      const first = a[sortDescriptor.column as keyof Order];
+      const second = b[sortDescriptor.column as keyof Order];
 
       if (typeof first === "string" && typeof second === "string") {
         return sortDescriptor.direction === "descending"
@@ -173,52 +202,79 @@ export default function UserTable() {
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
-    const cellValue = user[columnKey as keyof User];
+  const renderCell = React.useCallback((order: Order, columnKey: React.Key) => {
+    const cellValue = order[columnKey as keyof Order];
 
     switch (columnKey) {
-      case "userName":
+      case "id":
         return (
           <div className="flex items-center gap-2">
-            <PersonIcon />
             <div className="flex flex-col">
               <p className="text-bold text-small capitalize">{cellValue}</p>
               <p className="text-bold text-tiny capitalize text-default-400">
-                {user.userName}
+                {order.id}
               </p>
             </div>
           </div>
         );
 
-      case "email":
+      case "orderTime":
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">{cellValue}</p>
             <p className="text-bold text-tiny capitalize text-default-400">
-              {user.email}
+              {order.orderTime}
             </p>
           </div>
         );
-      case "role":
+      case "pickupDate":
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">{cellValue}</p>
-            {/* <p className="text-bold text-tiny capitalize text-default-400"> */}
-            {/* {user.role} */}
-            {/* </p> */}
+            <p className="text-bold text-tiny capitalize text-default-400">
+              {order.pickupDate}
+            </p>
+          </div>
+        );
+      case "fromTime":
+        return (
+          <div className="flex flex-col">
+            <p className="text-bold text-small capitalize">{cellValue}</p>
+            <p className="text-bold text-tiny capitalize text-default-400">
+              {order.fromTime}
+            </p>
+          </div>
+        );
+      case "toTime":
+        return (
+          <div className="flex flex-col">
+            <p className="text-bold text-small capitalize">{cellValue}</p>
+            <p className="text-bold text-tiny capitalize text-default-400">
+              {order.toTime}
+            </p>
           </div>
         );
       case "status":
         return (
           <Chip
             className="capitalize"
-            color={statusColorMap[user.status]}
+            color={statusColorMap[order.status]}
             size="sm"
             variant="flat"
           >
             {cellValue}
           </Chip>
         );
+      case "userId":
+        return (
+          <div className="flex flex-col">
+            <p className="text-bold text-small capitalize">{cellValue}</p>
+            <p className="text-bold text-tiny capitalize text-default-400">
+              {order.userId}
+            </p>
+          </div>
+        );
+
       case "actions":
         return (
           <div className="relative flex justify-end items-center gap-2">
@@ -226,16 +282,15 @@ export default function UserTable() {
               size="sm"
               variant="flat"
               color="primary"
-              onPress={() => console.log("View", user.id)}
+              onPress={() => handleViewOrderDetails(order.id)}
             >
-              View
+              View Details
             </Button>
             <Button
               size="sm"
               variant="flat"
               color="danger"
-              isDisabled={user.status === "inactive"}
-              onPress={() => console.log("Delete", user.id)}
+              onPress={() => console.log("Delete", order.id)}
             >
               Delete
             </Button>
@@ -247,7 +302,7 @@ export default function UserTable() {
               </DropdownTrigger>
               <DropdownMenu
                 onAction={(key) =>
-                  console.log("Change status to", key, "for user", user.id)
+                  console.log("Change status to", key, "for user", order.id)
                 }
               >
                 {statusOptions.map((status) => (
@@ -310,10 +365,6 @@ export default function UserTable() {
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            {/* Add user button */}
-            <Button color="primary" onPress={() => console.log("Add User")}>
-              Add User
-            </Button>
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
@@ -366,7 +417,7 @@ export default function UserTable() {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {users.length} vehicles
+            Total {orders.length} vehicles
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -390,7 +441,7 @@ export default function UserTable() {
     visibleColumns,
     onSearchChange,
     onRowsPerPageChange,
-    users.length,
+    orders.length,
     hasSearchFilter,
   ]);
 
@@ -434,68 +485,73 @@ export default function UserTable() {
   }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
 
   return (
-    <Table
-      aria-label="Example table with custom cells, pagination and sorting"
-      isHeaderSticky
-      bottomContent={bottomContent}
-      bottomContentPlacement="outside"
-      classNames={{
-        wrapper: "",
-      }}
-      selectedKeys={selectedKeys}
-      sortDescriptor={sortDescriptor}
-      topContent={topContent}
-      topContentPlacement="outside"
-      onSelectionChange={setSelectedKeys}
-      onSortChange={setSortDescriptor}
-    >
-      <TableHeader columns={headerColumns}>
-        {(column) => (
-          <TableColumn
-            key={column.uid}
-            align={column.uid === "actions" ? "end" : "start"}
-            allowsSorting={column.sortable}
-            style={{
-              width:
-                column.uid === "email"
-                  ? "30%"
-                  : column.uid === "role"
-                  ? "20%"
-                  : column.uid === "status"
-                  ? "20%"
-                  : column.uid === "actions"
-                  ? "30%"
-                  : "auto", // Fallback for unspecified columns
-            }}
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody
-        emptyContent={
-          loading ? (
-            <div className="flex justify-center items-center">
-              <Spinner size="lg" />
-            </div>
-          ) : error ? (
-            <div className="flex justify-center items-center text-danger">
-              {error}
-            </div>
-          ) : (
-            "No Users found"
-          )
-        }
-        items={sortedItems}
+    <>
+      <Table
+        aria-label="Example table with custom cells, pagination and sorting"
+        isHeaderSticky
+        bottomContent={bottomContent}
+        bottomContentPlacement="outside"
+        classNames={{
+          wrapper: "",
+        }}
+        selectedKeys={selectedKeys}
+        sortDescriptor={sortDescriptor}
+        topContent={topContent}
+        topContentPlacement="outside"
+        onSelectionChange={setSelectedKeys}
+        onSortChange={setSortDescriptor}
       >
-        {(item) => (
-          <TableRow key={item.id}>
-            {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
-            )}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+        <TableHeader columns={headerColumns}>
+          {(column) => (
+            <TableColumn
+              key={column.uid}
+              align={column.uid === "actions" ? "end" : "start"}
+              allowsSorting={column.sortable}
+              style={{
+                width:
+                  column.uid === "role"
+                    ? "10%"
+                    : column.uid === "status"
+                    ? "10%"
+                    : column.uid === "actions"
+                    ? "20%"
+                    : "auto",
+              }}
+            >
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody
+          emptyContent={
+            loading ? (
+              <div className="flex justify-center items-center">
+                <Spinner size="lg" />
+              </div>
+            ) : error ? (
+              <div className="flex justify-center items-center text-danger">
+                {error}
+              </div>
+            ) : (
+              "No Users found"
+            )
+          }
+          items={sortedItems}
+        >
+          {items.map((item) => (
+            <TableRow key={item.id}>
+              {(columnKey) => (
+                <TableCell>{renderCell(item, columnKey)}</TableCell>
+              )}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <OrderDetailsModal
+        orderId={selectedOrderId}
+        open={isModalOpen}
+        onClose={handleCloseModal}
+      />
+    </>
   );
 }
