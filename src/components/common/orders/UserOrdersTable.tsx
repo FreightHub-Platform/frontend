@@ -40,7 +40,7 @@ type Order = {
   status: string;
   userId: number;
 };
-
+const userId = localStorage.getItem("id");
 const columns = [
   { name: "Order ID", uid: "id", sortable: true },
   { name: "Order Time", uid: "orderTime", sortable: true },
@@ -49,6 +49,7 @@ const columns = [
   { name: "To Time", uid: "toTime" },
   { name: "Status", uid: "status", sortable: true },
   { name: "User ID", uid: "userId", sortable: true },
+  { name: "Pickup Location", uid: "pickupLocation" },
   { name: "Actions", uid: "actions" },
 ];
 
@@ -72,12 +73,12 @@ const INITIAL_VISIBLE_COLUMNS = [
   "pickupDate",
   "fromTime",
   "toTime",
-  "userId",
+  "pickupLocation",
   "status",
   "actions",
 ];
 
-export default function OrdersTable() {
+export default function UserOrdersTable() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -101,9 +102,13 @@ export default function OrdersTable() {
       try {
         setLoading(true);
         const jwtToken = localStorage.getItem("jwt");
-        const response = await orderApi.get("/all", {
-          headers: { Authorization: `Bearer ${jwtToken}` },
-        });
+        const response = await orderApi.post(
+          "/consigner",
+          { id: userId },
+          {
+            headers: { Authorization: `Bearer ${jwtToken}` },
+          }
+        );
 
         const ordersData = response.data.data.map((order: any) => ({
           id: order.id,
@@ -292,9 +297,9 @@ export default function OrdersTable() {
               color="danger"
               onPress={() => console.log("Delete", order.id)}
             >
-              Delete
+              Cancel
             </Button>
-            <Dropdown>
+            {/* <Dropdown>
               <DropdownTrigger>
                 <Button size="sm" variant="flat">
                   Change Status
@@ -309,7 +314,7 @@ export default function OrdersTable() {
                   <DropdownItem key={status.uid}>{status.name}</DropdownItem>
                 ))}
               </DropdownMenu>
-            </Dropdown>
+            </Dropdown> */}
           </div>
         );
       default:
