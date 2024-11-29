@@ -1,21 +1,19 @@
 
 const columns = [
-  {name: "LICENSE PLATE NO", uid: "license_plate", sortable: true},
-  {name: "VEHICLE REGISTRATION", uid: "reg_no", sortable: true},
+  {name: "LICENSE PLATE NO", uid: "licenseNo", sortable: true},
+  {name: "VEHICLE REGISTRATION", uid: "type", sortable: true},
   {name:"TYPE", uid: "type"},
   {name: "MAKE", uid: "make", sortable: true},
   {name: "MODEL", uid: "model", sortable: true},
-  {name: "IS REFIDGERATED", uid: "is_refid", sortable: true},
-  {name: "HAS CRANE", uid: "crane", sortable: true},
-  {name: "YEAR OF MANUFACTURE" , uid: "year_manufac", sortable: true},
+  {name: "IS REFIDGERATED", uid: "refrigFlag", sortable: true},
+  {name: "HAS CRANE", uid: "craneFlag", sortable: true},
   {name: "COLOR" , uid: "color", sortable: true},
-  {name: "OWNER" , uid: "owner", sortable: true},
-  {name: "STATUS", uid: "status"},
+  {name: "STATUS", uid: "verifyStatus"},
   {name: "ACTIONS", uid: "actions"},
 ];
 
 const statusOptions = [
-  {name: "Verified", uid: "Verified"},
+  {name: "verified", uid: "verified"},
   {name: "Not Verified", uid: "Not Verified"},
 ];
 
@@ -61,4 +59,4 @@ const consigners = [
   }
 ];
 
-export {columns, consigners, statusOptions};
+export {columns, statusOptions};

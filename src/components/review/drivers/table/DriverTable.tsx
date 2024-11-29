@@ -70,8 +70,10 @@ export default function DriverTable({onViewMore}) {
   useEffect(() => {
     const fetchAllDrivers = async () => {
       try {
+        onViewMore(true)
         const data = await getAllDriverDetails(localStorage.getItem('jwt')) 
         setDriverData(data)
+        onViewMore(false)
       } catch (error) {
         
       }
@@ -139,7 +141,7 @@ export default function DriverTable({onViewMore}) {
   const pathName = usePathname()
 
   const handleViewMore = (id) => {
-    onViewMore();
+    onViewMore(true);
     router.push(`${pathName}/${id}`)
   }
 
@@ -287,7 +289,7 @@ export default function DriverTable({onViewMore}) {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {driverData.length} vehicles
+            Total {driverData.length} Drivers
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -379,7 +381,7 @@ export default function DriverTable({onViewMore}) {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={"No vehicles found"} items={sortedItems}>
+      <TableBody emptyContent={"No drivers found"} items={sortedItems}>
         {(item) => (
           <TableRow key={item.nic}>
             {(columnKey) => (

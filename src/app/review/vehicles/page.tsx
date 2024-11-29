@@ -12,7 +12,7 @@ const VehiclePage = () => {
 
   return(
     <div className="flex justify-center">
-      <Vehicles onViewMore={() => setOpen(true)}/>
+      <Vehicles onViewMore={(state) => setOpen(state)}/>
 
       <div>
         <Backdrop

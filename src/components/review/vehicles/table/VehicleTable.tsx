@@ -15,7 +15,6 @@ import {
   DropdownMenu,
   DropdownItem,
   Chip,
-  User,
   Pagination,
   Selection,
   ChipProps,
@@ -25,31 +24,28 @@ import SearchIcon from "@mui/icons-material/Search";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { columns, consigners, statusOptions } from "./Data";
+import { columns, statusOptions } from "./Data";
 import { capitalize } from "./Utils";
 import { usePathname, useRouter } from "next/navigation";
 import { getAllVehicleDetails } from "../../../../utils/review";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
-  "Verified": "success",
+  "verified": "success",
   "Not Verified": "danger",
 };
 
 const INITIAL_VISIBLE_COLUMNS = [
-  "license_plate",
+  "licenseNo",
   "reg_no",
   "type",
-  "is_refid",
-  "crane",
-  "year_manufac",
-  "zip_code",
+  "refrigFlag",
+  "craneFlag",
   "color",
-  "owner",
-  "status",
+  "verifyStatus",
   "actions",
 ];
 
-type User = (typeof consigners)[0];
+
 
 export default function VehicleTable({onViewMore}) {
   const [filterValue, setFilterValue] = React.useState("");
@@ -69,13 +65,16 @@ export default function VehicleTable({onViewMore}) {
   const [page, setPage] = React.useState(1);
 
   const hasSearchFilter = Boolean(filterValue);
+  const [vehicleData, setVehicleData] = useState([])
 
   //Methana Function eka gahanna
   useEffect(() => {
     const fetchAllVehicles = async () => {
       try {
+        onViewMore(true)
         const data = await getAllVehicleDetails(localStorage.getItem('jwt')) 
-        console.log(data)
+        setVehicleData(data)
+        onViewMore(false)
       } catch (error) {
         
       }
@@ -84,6 +83,11 @@ export default function VehicleTable({onViewMore}) {
     fetchAllVehicles()
   }, [])
 
+  useEffect(() => {
+    console.log(vehicleData)
+  }, [vehicleData])
+
+  type User = (typeof vehicleData)[0];
 
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;
@@ -94,7 +98,7 @@ export default function VehicleTable({onViewMore}) {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredconsigners = [...consigners];
+    let filteredconsigners = [...vehicleData];
 
     if (hasSearchFilter) {
       filteredconsigners = filteredconsigners.filter((user) =>
@@ -111,7 +115,7 @@ export default function VehicleTable({onViewMore}) {
     }
 
     return filteredconsigners;
-  }, [consigners, filterValue, statusFilter]);
+  }, [vehicleData, filterValue, statusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -136,7 +140,7 @@ export default function VehicleTable({onViewMore}) {
   const router = useRouter()
 
   const handleViewMore = (id) => {
-    onViewMore();
+    onViewMore(true);
     router.push(`${path}/${id}`)
   }
 
@@ -145,9 +149,6 @@ export default function VehicleTable({onViewMore}) {
 
     // Handle verified function
     const userStatus = user.status
-    const handleVerified = () => {
-      
-    }
     
 
     switch (columnKey) {
@@ -156,7 +157,7 @@ export default function VehicleTable({onViewMore}) {
         return (
           <Chip
             className="capitalize"
-            color={statusColorMap[user.status]}
+            color={statusColorMap[user.verifyStatus]}
             size="sm"
             variant="flat"
           >
@@ -174,7 +175,7 @@ export default function VehicleTable({onViewMore}) {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem onClick={() => handleViewMore(user.license_plate)}>View More</DropdownItem>
+                <DropdownItem onClick={() => handleViewMore(user.id)}>View More</DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -284,7 +285,7 @@ export default function VehicleTable({onViewMore}) {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {consigners.length} vehicles
+            Total {vehicleData.length} vehicles
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -306,7 +307,7 @@ export default function VehicleTable({onViewMore}) {
     visibleColumns,
     onSearchChange,
     onRowsPerPageChange,
-    consigners.length,
+    vehicleData.length,
     hasSearchFilter,
   ]);
 
@@ -378,7 +379,7 @@ export default function VehicleTable({onViewMore}) {
       </TableHeader>
       <TableBody emptyContent={"No vehicles found"} items={sortedItems}>
         {(item) => (
-          <TableRow key={item.license_plate}>
+          <TableRow key={item.licenseNo}>
             {(columnKey) => (
               <TableCell>{renderCell(item, columnKey)}</TableCell>
             )}

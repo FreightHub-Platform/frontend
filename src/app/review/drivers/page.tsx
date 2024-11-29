@@ -12,7 +12,7 @@ const DriverPage = () => {
 
   return (
     <div className="flex justify-center">
-      <Drivers onViewMore={() => setOpen(true)}/>
+      <Drivers onViewMore={(state) => setOpen(state)}/>
       <div>
         <Backdrop
           sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
