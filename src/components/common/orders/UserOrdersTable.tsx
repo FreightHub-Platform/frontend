@@ -40,7 +40,7 @@ type Order = {
   status: string;
   userId: number;
 };
-const userId = localStorage.getItem("id");
+
 const columns = [
   { name: "Order ID", uid: "id", sortable: true },
   { name: "Order Time", uid: "orderTime", sortable: true },
@@ -101,6 +101,7 @@ export default function UserOrdersTable() {
     const fetchOrders = async () => {
       try {
         setLoading(true);
+        const userId = localStorage.getItem("key");
         const jwtToken = localStorage.getItem("jwt");
         const response = await orderApi.post(
           "/consigner",
