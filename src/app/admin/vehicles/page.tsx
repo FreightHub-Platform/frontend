@@ -8,6 +8,7 @@ import DriversDataTable from "../../../components/admin/vehicles/DriversDataTabl
 import SuppliersDataTable from "../../../components/admin/vehicles/SupplierDataTable";
 import SummaryCardSmall from "../../../components/admin/dashboard/SummaryCardSmall";
 import AuthGuard from "../../../components/common/auth/AuthGurd";
+import VehicleDetailsTable from "../../../components/admin/vehicles/VehicleDetailsTable";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -101,7 +102,7 @@ const Vehicles = () => {
             </Tabs>
           </Box>
           <CustomTabPanel value={value} index={0}>
-            <VehicleDataTable />
+            <VehicleDetailsTable />
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
             <DriversDataTable />
