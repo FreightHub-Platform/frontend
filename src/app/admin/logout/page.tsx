@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { motion } from "framer-motion";
+import { Spinner } from "@nextui-org/react";
 
 const LogoutPage = () => {
   const router = useRouter();
@@ -10,6 +11,8 @@ const LogoutPage = () => {
   useEffect(() => {
     localStorage.removeItem("jwt");
     Cookies.remove("jwt");
+    //remove everything from local storage
+    localStorage.clear();
     router.push("/login");
   }, [router]);
 
@@ -34,7 +37,9 @@ const LogoutPage = () => {
       
       "
       >
-        <p>Logging out...</p>
+        <div className="flex justify-center items-center">
+          <Spinner size="lg" />
+        </div>
       </div>
     </motion.div>
   );
