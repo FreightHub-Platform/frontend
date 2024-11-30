@@ -28,26 +28,21 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { api } from "../../../utils/config";
 import { capitalize } from "../../../utils/functions/functions";
 
-type VehicleType = {
+type DriverType = {
   id: number;
-  licenseNo: string;
-  model: string;
-  make: string;
-  year: string;
-  color: string;
-  craneFlag: boolean;
-  refrigFlag: boolean;
+  username: string;
   availability: string;
   verifyStatus: string;
+  contactNumber: string | null;
+  fname: string | null;
+  lname: string | null;
 };
+
 const columns = [
-  { name: "License No", uid: "licenseNo", sortable: true },
-  { name: "Model", uid: "model", sortable: true },
-  { name: "Make", uid: "make", sortable: true },
-  { name: "Year", uid: "year", sortable: true },
-  { name: "Color", uid: "color" },
-  { name: "Crane", uid: "craneFlag" },
-  { name: "Refrigeration", uid: "refrigFlag" },
+  { name: "Username", uid: "username", sortable: true },
+  { name: "First Name", uid: "fname" },
+  { name: "Last Name", uid: "lname" },
+  { name: "Contact", uid: "contactNumber" },
   { name: "Availability", uid: "availability", sortable: true },
   { name: "Verify Status", uid: "verifyStatus", sortable: true },
   { name: "Actions", uid: "actions" },
@@ -65,105 +60,85 @@ const verifyStatusOptions = [
 ];
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
-  active: "success",
-  pending: "warning",
-  inactive: "danger",
   available: "success",
   unavailable: "danger",
   verified: "success",
   rejected: "danger",
-  yes: "success",
-  no: "default",
+  pending: "warning",
 };
 
 const INITIAL_VISIBLE_COLUMNS = [
-  "licenseNo",
-  "model",
-  "make",
-  "year",
-  "color",
-  "craneFlag",
-  "refrigFlag",
+  "username",
+  "fname",
+  "lname",
+  "contactNumber",
   "availability",
   "verifyStatus",
   "actions",
 ];
 
-export default function VehicleDetailsTable() {
-  const [vehicles, setVehicles] = useState<VehicleType[]>([]);
+export default function DriverDetailsTabple() {
+  const [drivers, setDrivers] = useState<DriverType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [filterValue, setFilterValue] = useState<string>("");
+  const [availabilityFilter, setAvailabilityFilter] = useState<Selection>(
+    new Set([])
+  );
+  const [verifyStatusFilter, setVerifyStatusFilter] = useState<Selection>(
+    new Set([])
+  );
+  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
+    column: "username",
+    direction: "ascending",
+  });
+  const [page, setPage] = useState<number>(1);
 
   // Function to fetch vehicles from API
-  const fetchVehiclesFromAPI = async () => {
+  const fetchDrivers = async () => {
     try {
       setLoading(true);
       const jwtToken = localStorage.getItem("jwt");
-      const response = await api.get("/vehicle/", {
+      const response = await api.get("/driver/", {
         headers: { Authorization: `Bearer ${jwtToken}` },
       });
 
-      const vehiclesData = response.data.data.map((vehicle: any) => ({
-        id: vehicle.id,
-        licenseNo: vehicle.licenseNo,
-        model: vehicle.model,
-        make: vehicle.make,
-        year: vehicle.year.trim(),
-        color: vehicle.color.trim(),
-        craneFlag: vehicle.craneFlag ? "Yes" : "No",
-        refrigFlag: vehicle.refrigFlag ? "Yes" : "No",
-        availability: vehicle.availability,
-        verifyStatus: vehicle.verifyStatus,
+      const driversData = response.data.data.map((driver: any) => ({
+        id: driver.id,
+        username: driver.username,
+        availability: driver.availability,
+        verifyStatus: driver.verifyStatus,
+        contactNumber: driver.contactNumber,
+        fname: driver.fname,
+        lname: driver.lname,
       }));
 
-      // Save fetched data to local storage
-      localStorage.setItem("vehiclesData", JSON.stringify(vehiclesData));
-
-      setVehicles(vehiclesData);
+      localStorage.setItem("driversData", JSON.stringify(driversData));
+      setDrivers(driversData);
       setError(null);
     } catch (err: any) {
-      console.error("Error fetching vehicles:", err);
-      setError("Failed to load vehicles. Please try again.");
+      console.error("Error fetching drivers:", err);
+      setError("Failed to load drivers. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
-  // Initialize component
   useEffect(() => {
-    const cachedData = localStorage.getItem("vehiclesData");
+    const cachedData = localStorage.getItem("driversData");
 
     if (cachedData) {
-      // Use cached data if available
-      setVehicles(JSON.parse(cachedData));
+      setDrivers(JSON.parse(cachedData));
       setLoading(false);
 
-      // Refresh data in the background
-      fetchVehiclesFromAPI();
+      // Fetch data from API in the background
     } else {
-      // Fetch data if no cached data exists
-      fetchVehiclesFromAPI();
+      // Fetch data from API
+      fetchDrivers();
     }
   }, []);
 
-  const reloadPage = () => {
-    // Clear cache and reload page
-    localStorage.removeItem("vehiclesData");
-    window.location.reload();
-  };
-
-  const [availabilityFilter, setAvailabilityFilter] =
-    useState<Selection>("all");
-  const [verifyStatusFilter, setVerifyStatusFilter] =
-    useState<Selection>("all");
-  const [rowsPerPage, setRowsPerPage] = useState<number>(15);
-  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
-    column: "licenseNo",
-    direction: "ascending",
-  });
-  const [page, setPage] = useState<number>(1);
-
-  const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([])
   );
@@ -183,36 +158,33 @@ export default function VehicleDetailsTable() {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredVehicles = [...vehicles];
+    let filteredDrivers = [...drivers];
 
+    // Search filter
     if (filterValue) {
-      filteredVehicles = filteredVehicles.filter((vehicle) =>
-        Object.values(vehicle).some((value) =>
+      filteredDrivers = filteredDrivers.filter((driver) =>
+        Object.values(driver).some((value) =>
           value?.toString().toLowerCase().includes(filterValue.toLowerCase())
         )
       );
     }
 
-    if (
-      availabilityFilter !== "all" &&
-      Array.from(availabilityFilter).length !== availabilityStatusOptions.length
-    ) {
-      filteredVehicles = filteredVehicles.filter((vehicle) =>
-        Array.from(availabilityFilter).includes(vehicle.availability)
+    // Availability filter
+    if (availabilityFilter instanceof Set && availabilityFilter.size > 0) {
+      filteredDrivers = filteredDrivers.filter((driver) =>
+        (availabilityFilter as Set<string>).has(driver.availability)
       );
     }
 
-    if (
-      verifyStatusFilter !== "all" &&
-      Array.from(verifyStatusFilter).length !== verifyStatusOptions.length
-    ) {
-      filteredVehicles = filteredVehicles.filter((vehicle) =>
-        Array.from(verifyStatusFilter).includes(vehicle.verifyStatus)
+    // Verify Status filter
+    if (verifyStatusFilter instanceof Set && verifyStatusFilter.size > 0) {
+      filteredDrivers = filteredDrivers.filter((driver) =>
+        (verifyStatusFilter as Set<string>).has(driver.verifyStatus)
       );
     }
 
-    return filteredVehicles;
-  }, [vehicles, filterValue, availabilityFilter, verifyStatusFilter]);
+    return filteredDrivers;
+  }, [drivers, filterValue, availabilityFilter, verifyStatusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -224,55 +196,40 @@ export default function VehicleDetailsTable() {
   }, [page, filteredItems, rowsPerPage]);
 
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: VehicleType, b: VehicleType) => {
-      const first = a[sortDescriptor.column as keyof VehicleType];
-      const second = b[sortDescriptor.column as keyof VehicleType];
+    return [...filteredItems].sort((a: DriverType, b: DriverType) => {
+      const first = a[sortDescriptor.column as keyof DriverType];
+      const second = b[sortDescriptor.column as keyof DriverType];
 
       if (typeof first === "string" && typeof second === "string") {
         return sortDescriptor.direction === "descending"
           ? second.localeCompare(first)
           : first.localeCompare(second);
       } else {
-        return sortDescriptor.direction === "descending"
-          ? (second as number) - (first as number)
-          : (first as number) - (second as number);
+        return 0;
       }
     });
-  }, [sortDescriptor, items]);
+  }, [sortDescriptor, filteredItems]);
 
   const renderCell = React.useCallback(
-    (vehicle: VehicleType, columnKey: React.Key) => {
-      const cellValue = vehicle[columnKey as keyof VehicleType];
+    (driver: DriverType, columnKey: React.Key) => {
+      const cellValue = driver[columnKey as keyof DriverType];
 
       switch (columnKey) {
-        case "craneFlag":
-        case "refrigFlag":
-          return (
-            <Chip
-              size="sm"
-              variant="flat"
-              color={
-                statusColorMap[
-                  cellValue
-                    .toString()
-                    .toLowerCase() as keyof typeof statusColorMap
-                ]
-              }
-            >
-              {cellValue}
-            </Chip>
-          );
         case "availability":
         case "verifyStatus":
           return (
             <Chip
               size="sm"
               variant="flat"
-              color={statusColorMap[cellValue as keyof typeof statusColorMap]}
+              color={
+                statusColorMap[
+                  typeof cellValue === "string"
+                    ? cellValue.toLowerCase()
+                    : ("" as keyof typeof statusColorMap)
+                ]
+              }
             >
-              {typeof cellValue === "string"
-                ? capitalize(cellValue)
-                : String(cellValue)}
+              {capitalize(String(cellValue))}
             </Chip>
           );
 
@@ -292,9 +249,7 @@ export default function VehicleDetailsTable() {
           return (
             <div className="flex flex-col">
               <p className="text-bold text-small capitalize">
-                {typeof cellValue === "string"
-                  ? capitalize(cellValue)
-                  : String(cellValue)}
+                {String(cellValue)}
               </p>
             </div>
           );
@@ -439,7 +394,7 @@ export default function VehicleDetailsTable() {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {vehicles.length} vehicles
+            Total {drivers.length} drivers
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -463,7 +418,7 @@ export default function VehicleDetailsTable() {
     visibleColumns,
     onSearchChange,
     onRowsPerPageChange,
-    vehicles.length,
+    drivers.length,
     hasSearchFilter,
   ]);
 

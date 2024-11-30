@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import CommonSummaryCardSmall from "../../common/card/CommonSummaryCardSmall";
 import { userApi } from "../../../utils/config";
+import { Spinner } from "@nextui-org/react";
 
 type UserSummary = {
   totalUsers: number;
@@ -44,7 +45,11 @@ export default function UserSummaryCards() {
 
   // Placeholder content during loading or error
   if (loading) {
-    return <p>Loading user summary...</p>;
+    return (
+      <div className="flex justify-center items-center">
+        <Spinner size="lg" />
+      </div>
+    );
   }
 
   if (error || !summaryData) {

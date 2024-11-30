@@ -1,14 +1,14 @@
 "use client";
-import * as React from "react";
+
+import React, { useEffect, useState } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import VehicleDataTable from "../../../components/admin/vehicles/VehicleDataTable";
-import DriversDataTable from "../../../components/admin/vehicles/DriversDataTable";
-import SuppliersDataTable from "../../../components/admin/vehicles/SupplierDataTable";
-import SummaryCardSmall from "../../../components/admin/dashboard/SummaryCardSmall";
 import AuthGuard from "../../../components/common/auth/AuthGurd";
+import VehicleSummaryCards from "../../../components/admin/vehicles/VehicleSummaryCard";
 import VehicleDetailsTable from "../../../components/admin/vehicles/VehicleDetailsTable";
+import DriverDetailsTabple from "../../../components/admin/vehicles/DriverDetailsTabple";
+import { Spinner } from "@nextui-org/react";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -40,34 +40,48 @@ function a11yProps(index: number) {
 }
 
 const Vehicles = () => {
-  const [value, setValue] = React.useState(0);
+  const [vehicleData, setVehicleData] = useState<any[] | null>(null);
+  const [driverData, setDriverData] = useState<any[] | null>(null);
+  const [loadingCards, setLoadingCards] = useState<boolean>(true); // Only for cards
+  const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
+  useEffect(() => {
+    const fetchLocalStorageData = async () => {
+      const storedVehicles = localStorage.getItem("vehiclesData");
+      const storedDrivers = localStorage.getItem("driversData");
+
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      setVehicleData(storedVehicles ? JSON.parse(storedVehicles) : []);
+      setDriverData(storedDrivers ? JSON.parse(storedDrivers) : []);
+      setLoadingCards(false);
+    };
+
+    fetchLocalStorageData();
+  }, []);
+
   return (
     <>
       <AuthGuard>
+        {/* Summary Cards Section */}
         <div className="flex flex-row mb-6 gap-8 w-full justify-around content-full-minus-200 mx-auto px-6">
-          <SummaryCardSmall
-            borderColor="#4e46e590"
-            hoverBorderColor="#4e46e5"
-          />
-          <SummaryCardSmall
-            borderColor="#06ce6390"
-            hoverBorderColor="#04a152"
-          />
-          <SummaryCardSmall
-            borderColor="#d148ec90"
-            hoverBorderColor="#cf34d4"
-          />
-          <SummaryCardSmall
-            borderColor="#e5464e90"
-            hoverBorderColor="#c53030"
-          />
+          {loadingCards ? (
+            <div className="flex items-center justify-center w-full h-[150px]">
+              <Spinner size="lg" />
+            </div>
+          ) : (
+            <VehicleSummaryCards
+              vehicleData={vehicleData}
+              driverData={driverData}
+            />
+          )}
         </div>
 
+        {/* Tabs Section */}
         <Box sx={{ width: "100%" }}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <Tabs
@@ -95,20 +109,13 @@ const Vehicles = () => {
                 label={<span className="text-2xl">Drivers</span>}
                 {...a11yProps(1)}
               />
-              <Tab
-                label={<span className="text-2xl">Suppliers</span>}
-                {...a11yProps(2)}
-              />
             </Tabs>
           </Box>
           <CustomTabPanel value={value} index={0}>
             <VehicleDetailsTable />
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
-            <DriversDataTable />
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={2}>
-            <SuppliersDataTable />
+            <DriverDetailsTabple />
           </CustomTabPanel>
         </Box>
       </AuthGuard>
