@@ -157,10 +157,13 @@ const DataInitializer = ({ children }: { children: React.ReactNode }) => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div
+        className="flex items-center justify-center min-h-screen"
+        style={{ marginTop: "-80px" }}
+      >
         <div className="flex flex-col justify-center items-center">
-          <p>Loading data...</p>
           <Spinner size="lg" />
+          <p>Loading data...</p>
         </div>
       </div>
     );

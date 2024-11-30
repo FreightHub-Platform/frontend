@@ -92,7 +92,7 @@ const UserGrowthChart: React.FC = () => {
 
   return (
     <div className="p-5 bg-white rounded-md shadow-md">
-      <h2 className="text-lg font-semibold mb-4">User Growth Overview</h2>
+      <h2 className="text-lg  mb-4">User Growth Overview</h2>
       <Chart
         options={chartOptions}
         series={userSeries}

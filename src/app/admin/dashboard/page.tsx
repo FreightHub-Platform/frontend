@@ -1,13 +1,7 @@
-import SummaryCardSmall from "../../../components/admin/dashboard/SummaryCardSmall";
 import VehicleOverview from "../../../components/admin/dashboard/VehicleOverview";
 import IconButton from "@mui/material/IconButton";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import OnRouteVehicles from "../../../components/admin/dashboard/ordersTable/OnRouteVehicles";
-import SingleStackedBarChart from "../../../components/admin/dashboard/VehicleOverviewCard/SingleStackedBarChart";
-import DriveEtaIcon from "@mui/icons-material/DriveEta";
-import PublishIcon from "@mui/icons-material/Publish";
-import DownloadIcon from "@mui/icons-material/Download";
-import ScheduleIcon from "@mui/icons-material/Schedule";
 import { Divider } from "@mui/material";
 import DeliveryPerformanceCard from "../../../components/admin/dashboard/DeliveryPerformanceCard";
 import DeliveryExceptions from "../../../components/admin/dashboard/DeliveryExceptions";
@@ -16,6 +10,7 @@ import AuthGuard from "../../../components/common/auth/AuthGurd";
 import DataInitializer from "../../../components/admin/dashboard/stats/DataInitializer";
 import DashboardSummaryCards from "../../../components/admin/dashboard/stats/DashboardSummaryCards";
 import VehicleStatusChart from "../../../components/admin/dashboard/VehicleOverviewCard/VehicleStatusChart";
+import OrdersTable from "../../../components/admin/dashboard/stats/OrdersTable";
 
 const Admin = () => {
   const todayOnTheWay: number = 2;
@@ -106,7 +101,7 @@ const Admin = () => {
             </div>
             <div className=" w-2/6 bg-white rounded-md p-5">
               <div className="flex flex-row justify-between mb-3 align-middle ">
-                <div className="text-lg">Delivery Exceptions</div>
+                <div className="text-lg">Order Status Distribution</div>
                 <div></div>
               </div>
               <Divider className="mb-4 mt-1" />
@@ -132,7 +127,7 @@ const Admin = () => {
           <div className="flex pb-9 px-6 gap-x-8   justify-between">
             <div className="w-full flex flex-col p-5 bg-white rounded-md">
               <div className="flex flex-row justify-between mb-2 align-middle ">
-                <div className="text-lg">On Route Vehicles</div>
+                <div className="text-lg">Order Details</div>
                 <div>
                   <IconButton aria-label="delete" size="small">
                     <RefreshIcon />
@@ -140,7 +135,7 @@ const Admin = () => {
                 </div>
               </div>
               <Divider className="mb-4 mt-1" />
-              <OnRouteVehicles />
+              <OrdersTable />
             </div>
           </div>
         </DataInitializer>
