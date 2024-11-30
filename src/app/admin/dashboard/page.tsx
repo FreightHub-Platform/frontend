@@ -15,6 +15,7 @@ import OrdersTabs from "../../../components/admin/dashboard/orders/OrdersTabs";
 import AuthGuard from "../../../components/common/auth/AuthGurd";
 import DataInitializer from "../../../components/admin/dashboard/stats/DataInitializer";
 import DashboardSummaryCards from "../../../components/admin/dashboard/stats/DashboardSummaryCards";
+import VehicleStatusChart from "../../../components/admin/dashboard/VehicleOverviewCard/VehicleStatusChart";
 
 const Admin = () => {
   const todayOnTheWay: number = 2;
@@ -33,7 +34,7 @@ const Admin = () => {
           <div className="flex py-9 px-6 gap-x-8   justify-between">
             <div className="w-2/4 pr-5 bg-white rounded-md pl-5">
               <div className="flex mt-4 flex-row justify-between align-middle ">
-                <div className="text-lg">On Route Vehicles</div>
+                <div className="text-lg">Vehicle Status Overview</div>
                 <div>
                   <IconButton aria-label="delete" size="small">
                     <RefreshIcon />
@@ -41,51 +42,7 @@ const Admin = () => {
                 </div>
               </div>
               <Divider className="mb-4 mt-1" />
-              <div>
-                <SingleStackedBarChart
-                  onTheWay={todayOnTheWay}
-                  unloading={todayUnloading}
-                  loading={todayLoading}
-                  waiting={todayWaiting}
-                />
-                <div className="flex flex-col">
-                  <div className="flex p-2 flex-row justify-between">
-                    <div className="flex flex-row">
-                      <DriveEtaIcon />
-                      <div className="ml-3"> On the way</div>
-                    </div>
-                    <div> {todayOnTheWay} Hours</div>
-                    <div> 39.7% </div>
-                  </div>
-                  <Divider className="py-2" />
-                  <div className="flex p-2  flex-row justify-between">
-                    <div className="flex  p-2flex-row">
-                      <DownloadIcon />
-                      <div className="ml-3"> Unloading</div>
-                    </div>
-                    <div> {todayUnloading} Hours</div>
-                    <div> 39.7% </div>
-                  </div>
-                  <Divider className="py-2" />
-                  <div className="flex flex-row p-2 justify-between">
-                    <div className="flex flex-row">
-                      <PublishIcon />
-                      <div className="ml-3"> Loading</div>
-                    </div>
-                    <div> {todayLoading} Hours</div>
-                    <div> 39.7% </div>
-                  </div>
-                  <Divider className="py-2" />
-                  <div className="flex flex-row p-2 justify-between">
-                    <div className="flex flex-row">
-                      <ScheduleIcon />
-                      <div className="ml-3"> Waiting</div>
-                    </div>
-                    <div> {todayWaiting} Hours</div>
-                    <div> 39.7% </div>
-                  </div>
-                </div>
-              </div>
+              <VehicleStatusChart />
             </div>
             <div className="w-2/4 pr-5 bg-white rounded-md">
               <VehicleOverview />
