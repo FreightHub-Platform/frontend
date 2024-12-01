@@ -31,7 +31,8 @@ import { getAllVehicleDetails } from "../../../../utils/review";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   verified: "success",
-  Rejected: "danger",
+  rejected: "danger",
+  pending: "warning",
 };
 
 const INITIAL_VISIBLE_COLUMNS = [

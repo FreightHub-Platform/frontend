@@ -174,10 +174,10 @@ const ProfileDetails = () => {
               }
               
             </div>
-            <ProfilePhoto pic={driverVehicleDetails.driver}/>
+            <ProfilePhoto pic={driverVehicleDetails.driver ? driverVehicleDetails.driver : ""}/>
           </div>
           <div className="mt-2">
-            <Details driver={driverVehicleDetails.driver}/>
+            <Details driver={driverVehicleDetails.driver ? driverVehicleDetails.driver : ""}/>
           </div>  
           <div>
             <BankDetails />
@@ -209,11 +209,11 @@ const ProfileDetails = () => {
               }
               
             </div>
-            <div><VehicleDetails vehicle={driverVehicleDetails.vehicle}/></div>
+            <div><VehicleDetails vehicle={driverVehicleDetails.vehicle ? driverVehicleDetails.vehicle : ""}/></div>
             <div className="p-1 border-3 font-bold w-full flex justify-center mb-2 mt-4 rounded-lg" style={{ borderColor: '#FF9800'}}>Vehicle Images</div>
-            <div><VehicleImages vehicle={driverVehicleDetails.vehicle}/></div>  
+            <div><VehicleImages vehicle={driverVehicleDetails.vehicle ? driverVehicleDetails.vehicle : ""}/></div>  
             <div className="p-1 border-3 font-bold w-full flex justify-center mb-2 mt-4 rounded-lg" style={{ borderColor: '#FF9800'}}>Vehicle Documents</div>
-            <div><VehicleDocument vehicle={driverVehicleDetails.vehicle}/></div> 
+            <div><VehicleDocument vehicle={driverVehicleDetails.vehicle ? driverVehicleDetails.vehicle : ""}/></div> 
           </div>
 
           {!verifiedVr ? 
