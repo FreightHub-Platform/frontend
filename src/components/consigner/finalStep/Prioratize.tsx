@@ -61,6 +61,8 @@ const Prioratize = () => {
     pickupDate: '',
     fromTime: '',
     toTime: '',
+    pickupLocation: '',
+    pickupPoint: '',
     purchaseOrders: []
   });
 
@@ -73,6 +75,8 @@ const Prioratize = () => {
           pickupDate: parsedOrder.pickupDate || '',
           fromTime: parsedOrder.fromTime || '',
           toTime: parsedOrder.toTime || '',
+          pickupLocation: parsedOrder.pickupLocation || '',
+          pickupPoint: parsedOrder.pickupPoint || '',
           purchaseOrders: parsedOrder.purchaseOrders || [] 
         });
       }
@@ -103,7 +107,7 @@ const Prioratize = () => {
               <tbody className='flex flex-col gap-1'>
                 <tr>
                   <td className='font-semibold w-[120px]'>Pickup location:</td>
-                  <td>Pambaya</td>
+                  <td>{ordersDetails.pickupPoint}</td>
                 </tr>
                 <tr>
                   <td className='font-semibold w-[120px]'>Pickup date:</td>
@@ -173,11 +177,11 @@ const Prioratize = () => {
                       <td className='w-[100px] py-1 border-r border-slate-300 rounded-tl-lg'>Item Name</td>
                       <td className='w-[100px] py-1 border-r border-slate-300'>Weight(kg)</td>
                       <td className='w-[100px] py-1 border-r border-slate-300'>CBM</td>
-                      <td className='w-[100px] py-1 border-r border-slate-300'>Item Type</td>
-                      <td className='w-[100px] py-1 border-r border-slate-300'>Fragile</td>
+                      <td className='w-[100px] py-1 border-r border-slate-300 rounded-tr-lg'>Item Type</td>
+                      {/* <td className='w-[100px] py-1 border-r border-slate-300'>Fragile</td>
                       <td className='w-[100px] py-1 border-r border-slate-300'>Perishable</td>
                       <td className='w-[100px] py-1 border-r border-slate-300'>Refrigerated</td>
-                      <td className='w-[100px] py-1 rounded-tr-lg'>Hazardous</td>
+                      <td className='w-[100px] py-1 rounded-tr-lg'>Hazardous</td> */}
                     </tr>
                   </thead>
                   <tbody>
@@ -188,10 +192,10 @@ const Prioratize = () => {
                           <td className='border-r border-slate-300'>{item.weight}</td>
                           <td className='border-r border-slate-300'>{item.cbm}</td>
                           <td className='border-r border-slate-300'>{item.iTypeId.split(',')[1]}</td>
-                          <td className={item.fragile ? "border-r birder-slate-300 text-green-500" : "border-r border-slate-300 text-red-500"} >{item.fragile ? <DoneIcon /> : <CloseIcon />}</td>
+                          {/* <td className={item.fragile ? "border-r birder-slate-300 text-green-500" : "border-r border-slate-300 text-red-500"} >{item.fragile ? <DoneIcon /> : <CloseIcon />}</td>
                           <td className={item.perishable ? "border-r birder-slate-300 text-green-500" : "border-r border-slate-300 text-red-500"}>{item.perishable ? <DoneIcon /> : <CloseIcon />}</td>
                           <td className={item.refrigerated ? "border-r birder-slate-300 text-green-500" : "border-r border-slate-300 text-red-500"}>{item.refrigerated ? <DoneIcon /> : <CloseIcon />}</td>
-                          <td className={item.hazardous ? "border-r birder-slate-300 text-green-500" : "border-r border-slate-300 text-red-500"}>{item.hazardous ? <DoneIcon /> : <CloseIcon />}</td>
+                          <td className={item.hazardous ? "border-r birder-slate-300 text-green-500" : "border-r border-slate-300 text-red-500"}>{item.hazardous ? <DoneIcon /> : <CloseIcon />}</td> */}
                         </tr>
                       ))
                     }

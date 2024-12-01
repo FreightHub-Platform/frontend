@@ -71,9 +71,13 @@ export default function OnRouteVehicles() {
   useEffect(() => {
     const fetchConsignerOrders = async () => {
       try {
-        const data = await getConsignerOrders() 
+        const consigner = {
+          id : localStorage.getItem('id')
+        }
+        const data = await getConsignerOrders(consigner, localStorage.getItem('jwt')) 
+        console.log(data)
       } catch (error) {
-        
+        console.error('Error:', error);
       }
     }
 

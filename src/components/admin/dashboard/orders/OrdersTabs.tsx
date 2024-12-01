@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
@@ -36,14 +36,45 @@ function a11yProps(index: number) {
 }
 
 export default function OrdersTabs() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const [orders, setOrders] = useState<any[]>([]);
+  const [purchaseOrders, setPurchaseOrders] = useState<any[]>([]);
+  const [newOrders, setNewOrders] = useState<any[]>([]);
+  const [inTransitOrders, setInTransitOrders] = useState<any[]>([]);
+  const [completedOrders, setCompletedOrders] = useState<any[]>([]);
+
+  useEffect(() => {
+    // Fetch orders and purchase orders from local storage
+    const ordersData = JSON.parse(localStorage.getItem("ordersData") || "[]");
+    const purchaseOrdersData = JSON.parse(
+      localStorage.getItem("purchaseOrdersData") || "[]"
+    );
+
+    setOrders(ordersData);
+    setPurchaseOrders(purchaseOrdersData);
+
+    // Filter orders based on status
+    const newStatus = ["created", "pending"];
+    const inTransitStatus = ["ongoing"];
+    const completedStatus = ["completed"];
+
+    setNewOrders(
+      ordersData.filter((order: any) => newStatus.includes(order.status))
+    );
+    setInTransitOrders(
+      ordersData.filter((order: any) => inTransitStatus.includes(order.status))
+    );
+    setCompletedOrders(
+      ordersData.filter((order: any) => completedStatus.includes(order.status))
+    );
+  }, []);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
   return (
-    <Box sx={{ width: "100%"}}>
+    <Box sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
@@ -59,31 +90,59 @@ export default function OrdersTabs() {
                 color: "orange",
               },
             },
-            
           }}
           className="h-10"
-          aria-label="basic tabs example"
+          aria-label="orders tabs"
         >
-          <Tab className="scroll-auto 	" label="New" {...a11yProps(0)} />
+          <Tab label="New" {...a11yProps(0)} />
           <Tab label="In Transit" {...a11yProps(1)} />
           <Tab label="Completed" {...a11yProps(2)} />
         </Tabs>
       </Box>
-      <CustomTabPanel  value={value} index={0}>
-        <OrderCard />
-        <OrderCard />
-        <OrderCard />
-    
+      <CustomTabPanel value={value} index={0}>
+        <Box sx={{ maxHeight: "300px", overflowY: "auto" }}>
+          {newOrders.length > 0 ? (
+            newOrders.map((order: any) => (
+              <OrderCard
+                key={order.id}
+                order={order}
+                purchaseOrders={purchaseOrders}
+              />
+            ))
+          ) : (
+            <div>No new orders</div>
+          )}
+        </Box>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <OrderCard />
-        <OrderCard />
-   
+        <Box sx={{ maxHeight: "300px", overflowY: "auto" }}>
+          {inTransitOrders.length > 0 ? (
+            inTransitOrders.map((order: any) => (
+              <OrderCard
+                key={order.id}
+                order={order}
+                purchaseOrders={purchaseOrders}
+              />
+            ))
+          ) : (
+            <div>No orders in transit</div>
+          )}
+        </Box>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        <OrderCard />
-        <OrderCard />
-        <OrderCard />{" "}
+        <Box sx={{ maxHeight: "300px", overflowY: "auto" }}>
+          {completedOrders.length > 0 ? (
+            completedOrders.map((order: any) => (
+              <OrderCard
+                key={order.id}
+                order={order}
+                purchaseOrders={purchaseOrders}
+              />
+            ))
+          ) : (
+            <div>No completed orders</div>
+          )}
+        </Box>
       </CustomTabPanel>
     </Box>
   );

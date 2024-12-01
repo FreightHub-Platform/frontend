@@ -41,6 +41,8 @@ const ViewPurchaseOrders = () => {
     pickupDate: '',
     fromTime: '',
     toTime: '',
+    pickupLocation: '',
+    pickupPoint: '',
     purchaseOrders: []
   });
 
@@ -53,6 +55,8 @@ const ViewPurchaseOrders = () => {
           pickupDate: parsedOrder.pickupDate || '',
           fromTime: parsedOrder.fromTime || '',
           toTime: parsedOrder.toTime || '',
+          pickupLocation: parsedOrder.pickupLocation || '',
+          pickupPoint: parsedOrder.pickupPoint || '',
           purchaseOrders: parsedOrder.purchaseOrders || [] 
         });
       }
@@ -164,7 +168,7 @@ const ViewPurchaseOrders = () => {
             <div className='flex flex-col gap-2 mt-2'>
               <div className='flex items-center'>
                 <p className='font-semibold mr-1 text-xs'>Pickup Location:</p>
-                <p className='text-xs'>Saman Stores Jaffna</p>
+                <p className='text-xs'>{ordersDetails.pickupPoint}</p>
               </div>
               <div className='flex items-center'>
                 <p className='font-semibold mr-1 text-xs'>Pickup Date:</p>

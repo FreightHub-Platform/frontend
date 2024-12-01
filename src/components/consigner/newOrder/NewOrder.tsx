@@ -38,7 +38,9 @@ const NewOrder = () => {
   const router = useRouter();
 
   const [pickupdate, setPickupDate] = useState("");
+  const [pickupPoint, setPickupPoint] = useState("");
   const [pickupdateError, setPickupdateError] = useState(false);
+  const [pickupPointError, setpickupPointError] = useState(false);
   const [from, setFrom] = useState("");
   const [fromError, setFromError] = useState(false);
   const [to, setTo] = useState("");
@@ -54,6 +56,13 @@ const NewOrder = () => {
       hasError = true;
     } else {
       setPickupdateError(false);
+    }
+
+    if (!pickupPoint) {
+      setpickupPointError(true);
+      hasError = true;
+    } else {
+      setpickupPointError(false);
     }
 
     if (!from) {
@@ -89,8 +98,10 @@ const NewOrder = () => {
         fromTime: from,
         toTime: to,
         orderTime: currentTime.toLocaleTimeString(),
-        // location,
+        pickupLocation: location,
+        pickupPoint: pickupPoint
       };
+      console.log(order);
       localStorage.setItem("ordersDetails", JSON.stringify(order));
       router.push(`/consigner/orders/new/purchase_order`);
     }
@@ -129,6 +140,34 @@ const NewOrder = () => {
               component="section"
               className=" w-full justify-center flex content-center flex-col h-full align-middle"
             >
+              <Box
+                component="section"
+                sx={{ p: 2, marginBottom: "10px" }}
+                className="flex flex-col gap-3"
+              >
+                <h1 className="text-sm font-semibold ms-3">Pickup Point</h1>
+
+                <TextField
+                  size="small"
+                  color="warning"
+                  error={pickupPointError}
+                  id="outlined-basic"
+                  label="Pickup Point"
+                  variant="outlined"
+                  type="text"
+                  helperText={
+                    pickupPointError ? "Please enter a short and concise pickup point" : ""
+                  }
+                  value={pickupPoint}
+                  onChange={(e) => setPickupPoint(e.target.value)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  inputProps={{
+                    min: today,
+                  }}
+                />
+              </Box>
               <Box
                 component="section"
                 sx={{ p: 2, marginBottom: "20px" }}

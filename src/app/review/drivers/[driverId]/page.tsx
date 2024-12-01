@@ -16,17 +16,19 @@ import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
 import { getDriverDetails, verifyDriver, verifyVehicle } from "../../../../utils/review"
 import { updateNotification } from "../../../../utils/notification"
+import { useRouter } from "next/navigation"
 
 const ProfileDetails = () => {
-
-  const verifiedDriver = false
-  const verifiedVehicle = false
 
   const [submitting, setSubmitting] = useState(false);
   const [open, setOpen] = useState(false);
   const [sentMail, setSentMail] = useState(false);
 
-  const path = usePathname()
+  const [verifiedDr, setVerifiedDr] = useState(false);
+  const [verifiedVr, setVerifiedVr] = useState(false);
+
+  const path = usePathname();
+  
 
   const handleEmailSent = async(e, type) => {
     e.preventDefault();
@@ -40,7 +42,7 @@ const ProfileDetails = () => {
       },
       body: JSON.stringify({
         'name': "Nuwan Fernando",
-        'to': "fnimal402@gmail.com",
+        'to': "echostikmusic@gmail.com",
         'mailType': type
       })
     })
@@ -55,6 +57,7 @@ const ProfileDetails = () => {
 
     setSubmitting(false)
   }
+  const router = useRouter();
 
   //Meka handle verify thana meka ona widiyata hadaganna @GEETHIKA
   const handleVerify = async (e, type) => {
@@ -63,26 +66,34 @@ const ProfileDetails = () => {
     const driverId = path.split('/')[3]
     try {
       if(type === 'driverVerified') {
-        const response = await verifyDriver(driverId)
-        if(1){ // response eka succes nm yawnna
+        const did = {
+          id : driverId
+        }
+        const response = await verifyDriver(did, localStorage.getItem('jwt'))
+        if(response == 200){ // response eka succes nm yawnna
           handleEmailSent(e,type);
+          router.refresh()
           const notifactionDetails = {
             date: new Date(),
             body: "Your account has been successfully verified. Now you can continue with your works.",
             read: false,
           }
-          const res = await updateNotification(driverId, notifactionDetails)
+          // const res = await updateNotification(driverId, notifactionDetails)
         }
       } else {
-        const response = await verifyVehicle(1)
-        if(1){ // response eka succes nm yawnna
+        const vehicleId = 11
+        const vid = {
+          id : vehicleId
+        }
+        const response = await verifyVehicle(vid, localStorage.getItem('jwt'))
+        if(response == 200){ // response eka succes nm yawnna
         handleEmailSent(e,type);
         const notifactionDetails = {
           date: new Date().toISOString().slice(0, 19),
           body: "Your account has been successfully verified. Now you can continue with your works.",
           read: false,
         }
-        const res = await updateNotification(2, notifactionDetails)
+        // const res = await updateNotification(2, notifactionDetails)
       }
       }
       
@@ -91,12 +102,29 @@ const ProfileDetails = () => {
     }
   }
 
+  const [driverVehicleDetails, setDriverVehicleDetails] = useState({driver: "", vehicle: ""})
+
   /* Methana function eka gahaganna @GEETHIKA*/
   useEffect(() => {
     const fetchDriverDetails = async () => {
       const driverId = path.split('/')[3]
       try {
-        const data = await getDriverDetails(driverId)
+        setSubmitting(true)
+        const did = {
+          id : driverId
+        }
+        const data = await getDriverDetails(did, localStorage.getItem('jwt'))
+        setDriverVehicleDetails({driver: data.driver, vehicle: data.vehicle})
+        
+        if(data.driver.verifyStatus == "verified"){
+          setVerifiedDr(true)
+        } 
+
+        if(data.vehicle.verifyStatus == 'verified'){
+          setVerifiedVr(true)
+        } 
+        console.log(data)
+        setSubmitting(false)
       } catch (error) {
         
       }
@@ -104,6 +132,18 @@ const ProfileDetails = () => {
 
     fetchDriverDetails();
   }, [])
+
+  useEffect(() => {
+    console.log(driverVehicleDetails)
+  }, [driverVehicleDetails])
+
+  useEffect(() => {
+    console.log(verifiedDr)
+  }, [verifiedDr])
+
+  useEffect(() => {
+    console.log(verifiedVr)
+  }, [verifiedVr])
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -126,7 +166,7 @@ const ProfileDetails = () => {
                 <div className="p-1 w-full flex justify-between mb-3 rounded-lg" style={{ backgroundColor: '#FF9800'}}>
                   <div className="flex w-full text-white justify-center font-bold">Driver Details</div>
                   {
-                    !verifiedDriver ?
+                    !verifiedDr ?
                       <form onSubmit={(e) => handleEmailSent(e,"driverMissMatch")}>
                         <button type="submit" className="me-4 hover:text-white cursor-pointer"><ForwardToInboxIcon /></button>
                   </form>
@@ -134,10 +174,10 @@ const ProfileDetails = () => {
               }
               
             </div>
-            <ProfilePhoto />
+            <ProfilePhoto pic={driverVehicleDetails.driver ? driverVehicleDetails.driver : ""}/>
           </div>
           <div className="mt-2">
-            <Details />
+            <Details driver={driverVehicleDetails.driver ? driverVehicleDetails.driver : ""}/>
           </div>  
           <div>
             <BankDetails />
@@ -145,7 +185,7 @@ const ProfileDetails = () => {
           </div>
           
 
-          {!verifiedDriver ? 
+          {!verifiedDr ? 
             <div className="flex justify-center">
               <form onSubmit={(e) => handleVerify(e,"driverVerified")}>
                 <button type="submit" className="bg-green-500 py-2 px-5 rounded-lg hover:bg-green-600 duration-300 hover:text-white mt-2">Verify Driver</button>
@@ -161,7 +201,7 @@ const ProfileDetails = () => {
             <div className="p-1 bg-orange-300 w-full flex justify-between mb-2 rounded-lg" style={{ backgroundColor: '#FF9800'}}>
               <div className="flex w-full justify-center font-bold text-white">Vehicle Details</div>
               {
-                !verifiedVehicle ?
+                !verifiedVr ?
                   <form onSubmit={(e) => handleEmailSent(e,"vehicleMissMatch")}>
                     <button type="submit" className="me-4 hover:text-white cursor-pointer"><ForwardToInboxIcon /></button>
                   </form>
@@ -169,14 +209,14 @@ const ProfileDetails = () => {
               }
               
             </div>
-            <div><VehicleDetails /></div>
+            <div><VehicleDetails vehicle={driverVehicleDetails.vehicle ? driverVehicleDetails.vehicle : ""}/></div>
             <div className="p-1 border-3 font-bold w-full flex justify-center mb-2 mt-4 rounded-lg" style={{ borderColor: '#FF9800'}}>Vehicle Images</div>
-            <div><VehicleImages /></div>  
+            <div><VehicleImages vehicle={driverVehicleDetails.vehicle ? driverVehicleDetails.vehicle : ""}/></div>  
             <div className="p-1 border-3 font-bold w-full flex justify-center mb-2 mt-4 rounded-lg" style={{ borderColor: '#FF9800'}}>Vehicle Documents</div>
-            <div><VehicleDocument /></div> 
+            <div><VehicleDocument vehicle={driverVehicleDetails.vehicle ? driverVehicleDetails.vehicle : ""}/></div> 
           </div>
 
-          {!verifiedVehicle ? 
+          {!verifiedVr ? 
             <div className="flex justify-center">
               <form onSubmit={(e) => handleVerify(e,"vehicleVerified")}>
                 <button className="bg-green-500 py-2 px-5 rounded-lg hover:bg-green-600 duration-300 hover:text-white mt-2">Verify Vehicle</button>

@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useRouter, usePathname  } from 'next/navigation'
+import { useRouter, usePathname } from "next/navigation";
 
 import {
   Table,
@@ -26,31 +26,30 @@ import SearchIcon from "@mui/icons-material/Search";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { columns, consigners, statusOptions } from "./Data";
+import { columns, statusOptions } from "./Data";
 import { capitalize } from "./Utils";
 import { getAllConsignerDetails } from "../../../../utils/review";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
-  "Verified": "success",
-  "Not Verified": "danger",
+  verified: "success",
+  rejected: "danger",
+  pending: "warning",
 };
 
 const INITIAL_VISIBLE_COLUMNS = [
-  "name",
+  "businessName",
   "id",
-  "main",
-  "add1",
-  "add2",
-  "postal",
+  "mainNumber",
+  "addressLine1",
+  "addressLine2",
+  "postalCode",
   "city",
   "province",
-  "status",
+  "verifyStatus",
   "actions",
 ];
 
-type User = (typeof consigners)[0];
-
-export default function ConsignerTable({onViewMore}) {
+export default function ConsignerTable({ onViewMore }) {
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([])
@@ -61,24 +60,33 @@ export default function ConsignerTable({onViewMore}) {
   const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
-    column: "name",
+    column: "id",
     direction: "ascending",
   });
 
   const [page, setPage] = React.useState(1);
 
+  const [consignerData, setConsignerData] = useState([]);
+
   //Methana Function eka gahanna
   useEffect(() => {
     const fetchAllConsigners = async () => {
       try {
-        const data = await getAllConsignerDetails() 
-      } catch (error) {
-        
-      }
-    }
+        onViewMore(true);
+        const data = await getAllConsignerDetails(localStorage.getItem("jwt"));
+        setConsignerData(data);
+        onViewMore(false);
+      } catch (error) {}
+    };
 
-    fetchAllConsigners()
-  }, [])
+    fetchAllConsigners();
+  }, []);
+
+  useEffect(() => {
+    console.log(consignerData); // Log whenever consignerData changes
+  }, [consignerData]);
+
+  type User = (typeof consignerData)[0];
 
   const hasSearchFilter = Boolean(filterValue);
 
@@ -91,24 +99,24 @@ export default function ConsignerTable({onViewMore}) {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredconsigners = [...consigners];
+    let filteredconsigners = [...consignerData];
 
+    // Apply search filter
     if (hasSearchFilter) {
       filteredconsigners = filteredconsigners.filter((user) =>
-        user.id.toLowerCase().includes(filterValue.toLowerCase())
+        user.id.toString().toLowerCase().includes(filterValue.toLowerCase())
       );
     }
-    if (
-      statusFilter !== "all" &&
-      Array.from(statusFilter).length !== statusOptions.length
-    ) {
+
+    // Apply status filter
+    if (statusFilter !== "all") {
       filteredconsigners = filteredconsigners.filter((user) =>
-        Array.from(statusFilter).includes(user.status)
+        Array.from(statusFilter).includes(user.verifyStatus)
       );
     }
 
     return filteredconsigners;
-  }, [consigners, filterValue, statusFilter]);
+  }, [consignerData, filterValue, statusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -129,38 +137,34 @@ export default function ConsignerTable({onViewMore}) {
     });
   }, [sortDescriptor, items]);
 
-  const router = useRouter()
-  const pathName = usePathname()
+  const router = useRouter();
+  const pathName = usePathname();
 
   const handleViewMore = (id) => {
-    onViewMore();
-    router.push(`${pathName}/${id}`)
-  }
+    onViewMore(true);
+    router.push(`${pathName}/${id}`);
+  };
 
   const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
     const cellValue = user[columnKey as keyof User];
 
     // Handle verified function
-    const userStatus = user.status
-    const handleVerified = () => {
-      
-    }
-    
+    const userStatus = user.status;
+    const handleVerified = () => {};
 
     switch (columnKey) {
-     
-      case "status":
+      case "verifyStatus":
         return (
           <Chip
             className="capitalize"
-            color={statusColorMap[user.status]}
+            color={statusColorMap[user.verifyStatus]}
             size="sm"
             variant="flat"
           >
-            {cellValue}
+            {capitalize(user.verifyStatus)}
           </Chip>
         );
-      
+
       case "actions":
         return (
           <div className="relative flex justify-center items-center gap-2">
@@ -171,7 +175,9 @@ export default function ConsignerTable({onViewMore}) {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem onClick={() => handleViewMore(user.id)}>View More</DropdownItem>
+                <DropdownItem onClick={() => handleViewMore(user.id)}>
+                  View More
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -281,7 +287,7 @@ export default function ConsignerTable({onViewMore}) {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {consigners.length} vehicles
+            Total {consignerData.length} consigners
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -303,7 +309,7 @@ export default function ConsignerTable({onViewMore}) {
     visibleColumns,
     onSearchChange,
     onRowsPerPageChange,
-    consigners.length,
+    consignerData.length,
     hasSearchFilter,
   ]);
 
@@ -373,7 +379,7 @@ export default function ConsignerTable({onViewMore}) {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={"No vehicles found"} items={sortedItems}>
+      <TableBody emptyContent={"No consigners found"} items={sortedItems}>
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (

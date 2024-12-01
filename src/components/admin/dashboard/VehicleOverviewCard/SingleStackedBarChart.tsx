@@ -1,48 +1,36 @@
-'use client';
-import dynamic from 'next/dynamic';
-import React from 'react';
-import { ApexOptions } from 'apexcharts';
+"use client";
+import dynamic from "next/dynamic";
+import React from "react";
+import { ApexOptions } from "apexcharts";
 
-const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 interface SingleStackedBarChartProps {
-  onTheWay: number;
-  unloading: number;
-  loading: number;
-  waiting: number;
+  available: number;
+  unavailable: number;
 }
 
 const SingleStackedBarChart: React.FC<SingleStackedBarChartProps> = ({
-  onTheWay,
-  unloading,
-  loading,
-  waiting,
+  available,
+  unavailable,
 }) => {
   const data = [
     {
-      name: 'On the way',
-      data: [onTheWay],
+      name: "Available",
+      data: [available],
     },
     {
-      name: 'Unloading',
-      data: [unloading],
-    },
-    {
-      name: 'Loading',
-      data: [loading],
-    },
-    {
-      name: 'Waiting',
-      data: [waiting],
+      name: "Unavailable",
+      data: [unavailable],
     },
   ];
-  
+
   const chartOptions: ApexOptions = {
     chart: {
-      type: 'bar',
+      type: "bar",
       height: 100,
       stacked: true,
-      stackType: '100%',
+      stackType: "100%",
       toolbar: {
         show: false,
       },
@@ -50,16 +38,16 @@ const SingleStackedBarChart: React.FC<SingleStackedBarChartProps> = ({
     plotOptions: {
       bar: {
         horizontal: true,
-        barHeight: '100%',
+        barHeight: "100%",
       },
     },
     xaxis: {
-      categories: ['Time'],
+      categories: ["Vehicles"],
     },
     tooltip: {
       y: {
         formatter: function (val) {
-          return val + ' hours';
+          return val + " vehicles";
         },
       },
     },
@@ -67,17 +55,18 @@ const SingleStackedBarChart: React.FC<SingleStackedBarChartProps> = ({
       opacity: 1,
     },
     legend: {
-      position: 'top',
-      horizontalAlign: 'center',
+      position: "top",
+      horizontalAlign: "center",
       offsetX: 40,
     },
     dataLabels: {
       enabled: true,
-      formatter: (val, opts) => `${opts.w.globals.seriesPercent[opts.seriesIndex][0].toFixed(1)}%`,
+      formatter: (val, opts) =>
+        `${opts.w.globals.seriesPercent[opts.seriesIndex][0].toFixed(1)}%`,
       offsetX: 0,
       style: {
-        fontSize: '12px',
-        colors: ['#fff'],
+        fontSize: "12px",
+        colors: ["#fff"],
       },
     },
   };

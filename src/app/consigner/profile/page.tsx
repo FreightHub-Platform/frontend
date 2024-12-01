@@ -11,12 +11,26 @@ import Logo from '../../../components/review/consigners/info/Logo';
 import { FormControl, FormHelperText, IconButton, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { changePassword } from '../../../utils/consigner';
+import { getConsignerDetails } from '../../../utils/review';
 
 
 
 const ProfileC = () => {
 
-  const currentPassward = "abc123"
+  interface ConsignerData {
+    businessName: string;
+    brn: string;
+    username: string;
+    mainNumber: string;
+    altNumber?: string;
+    addressLine1: string;
+    addressLine2?: string;
+    city: string;
+    province: string;
+    postalCode: string;
+  }
+
+  // const currentPassward = "abc123"
 
   const [showOldPassword, setShowOldPassword] = React.useState(false);
   const [oldPassword, setOldPassword] = useState("")
@@ -31,11 +45,38 @@ const ProfileC = () => {
   const [oldPasswordMissmatchError, setOldPasswordMissmatchError] = React.useState(false);
   const [newConfirmPasswordMissmatchError, setNewConfirmPasswordMissmatchError] = React.useState(false);
 
+  const [ProfileDetails, setProfileDetails] = useState(null)
+
   const [loading, setLoading] = useState(false)
 
   const handleClickShowOldPassword = () => setShowOldPassword((show) => !show);
   const handleClickShowNewPassword = () => setShowNewPassword((show) => !show);
   const handleClickShowConfirmPassword = () => setShowConfirmPassword((show) => !show);
+
+  //METHANA FUNCTION EKA GAHANNA 
+  React.useEffect(() => {
+    const fetchConsignerDetails = async () => {
+      
+      try {
+        setLoading(true)
+        const pid = localStorage.getItem('id')
+        const cid = { id: pid };
+        const data: ConsignerData = await getConsignerDetails(
+          cid,
+          localStorage.getItem("jwt")
+        );
+        setProfileDetails(data);
+        setLoading(false)
+      } catch (error) {
+        console.error("Error fetching consigner data:", error);
+      }
+    };
+
+    fetchConsignerDetails();
+  }, []);
+
+  React.useEffect(() => {
+  }, [ProfileDetails]);
 
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -54,10 +95,10 @@ const ProfileC = () => {
     if(!oldPassword){
       hasError = true;
       setOldPasswordError(true)
-    } else if(oldPassword !== currentPassward) {
-      hasError = true;
-      setOldPasswordError(false)
-      setOldPasswordMissmatchError(true)
+    // } else if(oldPassword !== currentPassward) {
+    //   hasError = true;
+    //   setOldPasswordError(false)
+    //   setOldPasswordMissmatchError(true)
     } else {
       setOldPasswordError(false)
       setOldPasswordMissmatchError(false)
@@ -86,10 +127,23 @@ const ProfileC = () => {
     if(!hasError){
       setLoading(true)
       try {
-        await changePassword("ConsignerID", newPassword, oldPassword, "token")
-        setPasswordChange(true)  
+        const changePw = {
+          id : localStorage.getItem('id'),
+          newPassword: newPassword,
+          oldPassword: oldPassword
+        }
+        console.log(changePw)
+        var code = await changePassword(changePw, localStorage.getItem('jwt'))
+        console.log(code)
+        setPasswordChange(true)
+        setLoading(false)
+        
       } catch (error) {
+        hasError = true;
+        setOldPasswordError(false)
+        setOldPasswordMissmatchError(true)
         setPasswordChange(false) 
+        setLoading(false)
       }
       setOpen(true)
     }
@@ -127,23 +181,23 @@ const ProfileC = () => {
               <tbody className="text-sm flex flex-col justify-between h-56">
                 <tr className="flex mb-1">
                   <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Business Name</td>
-                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">{ProfileDetails ? ProfileDetails.businessName : null}</td> 
                 </tr>
                 <tr className="flex mb-1">
                   <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Business Registration Number</td>
-                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">{ProfileDetails ? ProfileDetails.brn : null}</td> 
                 </tr>
                 <tr className="flex mb-1">
                   <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Email</td>
-                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">{ProfileDetails ? ProfileDetails.username : null}</td> 
                 </tr>
                 <tr className="flex mb-1">
                   <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Main Contact Number</td>
-                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">{ProfileDetails ? ProfileDetails.mainNumber : null}</td> 
                 </tr>
                 <tr className="flex mb-1">
                   <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Alternative Contact Number</td>
-                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">{ProfileDetails ? ProfileDetails.altNumber : null}</td> 
                 </tr>
               </tbody>
             </table>
@@ -153,28 +207,28 @@ const ProfileC = () => {
               <tbody className="text-sm flex flex-col justify-between h-56">
                 <tr className="flex mb-1">
                   <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Address Line 1</td>
-                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">{ProfileDetails ? ProfileDetails.addressLine1 : null}</td> 
                 </tr>
                 <tr className="flex mb-1">
                   <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Address Line 2</td>
-                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">{ProfileDetails ? ProfileDetails.addressLine2 : null}</td> 
                 </tr>
                 <tr className="flex mb-1">
                   <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">City</td>
-                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">{ProfileDetails ? ProfileDetails.city : null}</td> 
                 </tr>
                 <tr className="flex mb-1">
                   <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Province</td>
-                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">{ProfileDetails ? ProfileDetails.province : null}</td> 
                 </tr>
                 <tr className="flex mb-1">
                   <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Postal Code</td>
-                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">{ProfileDetails ? ProfileDetails.postalCode : null}</td> 
                 </tr>
                 <tr className="flex mb-1">
                   <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Document</td>
                   <td className="p-1 border-2 flex-grow">
-                    <a href={'/pdf/1.pdf'} target="_blank" rel="noopener noreferrer" className="flex items-center ps-1">
+                    <a href={ProfileDetails ? ProfileDetails.regDoc : null} target="_blank" rel="noopener noreferrer" className="flex items-center ps-1">
                       <Image
                         src="/images/pdf.svg" 
                         alt="Description of the SVG"
@@ -330,6 +384,7 @@ const ProfileC = () => {
           </Alert>
         </Snackbar>
       </div>
+      
     </div>
   )
 }

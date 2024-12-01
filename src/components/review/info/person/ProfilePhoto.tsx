@@ -4,7 +4,7 @@ import * as React from 'react';
 import Image from 'next/image';
 import ViewPhoto from '../ViewPhoto';
 
-const ProfilePhoto = () => {
+const ProfilePhoto = ({ pic }) => {
   const [open, setOpen] = React.useState(false);
   const [imgSrc, setImgSrc] = React.useState('');
 
@@ -18,18 +18,20 @@ const ProfilePhoto = () => {
   return (
     <div>
       <Image 
-        src="/images/1.jpg"
+        src={pic.profilePic} // Use the pic prop for the image source
         width={400}
         height={400}
-        onClick={() => handleOpen('/images/1.jpg')}
-        style={{ cursor: 'pointer' }}
-        alt="" 
+        onClick={() => handleOpen(pic.profilePic)} // Pass pic to handleOpen
+        style={{
+          cursor: "pointer",
+        }}
+        alt="Profile Photo" // Provide a meaningful alt text
       />
 
       <ViewPhoto
         open={open}
         handleClose={handleClose}
-        imgSrc={imgSrc}
+        imgSrc={imgSrc} // Dynamically use imgSrc
       />
     </div>
   );

@@ -13,7 +13,7 @@ const ConsignerPage = () => {
 
   return (
     <div className="flex justify-center">
-      <Consigners onViewMore={() => setOpen(true)}/>
+      <Consigners onViewMore={(status) => setOpen(status)}/>
 
       <div>
         <Backdrop

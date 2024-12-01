@@ -24,7 +24,6 @@ export const handleSignin = async (userDetails: UserLogin) => {
   }
 };
 
-
 //upadte with axios
 export const updateBusiness = async (
   businessInformation: businessInfo,
@@ -33,8 +32,8 @@ export const updateBusiness = async (
   // const response = await consignerApi.post('/register/0', businessInformation);
   try {
     const response = await axios.post(
-      "https://auth.freighthub.danujaya.live/api/consigner/register/0",
-      // "http://localhost:8080/api/consigner/register/0",
+      // "https://auth.freighthub.danujaya.live/api/consigner/register/0",
+      "http://localhost:8080/api/consigner/register/0",
       businessInformation,
       {
         headers: {
@@ -49,7 +48,6 @@ export const updateBusiness = async (
     throw new Error("An unexpected error occurred.");
   }
 };
-
 
 //Update contact with axios
 export const updateContact = async (
@@ -74,7 +72,6 @@ export const updateContact = async (
   }
 };
 
-
 //update location with axios
 export const updateLocation = async (
   locationInformation: locationInfo,
@@ -98,7 +95,6 @@ export const updateLocation = async (
   }
 };
 
-
 //Mobile verification with axios
 export const sendMobileNumber = async (mobileNumber: string, jwt: string) => {
   try {
@@ -118,7 +114,6 @@ export const sendMobileNumber = async (mobileNumber: string, jwt: string) => {
     throw new Error("An unexpected error occurred.");
   }
 };
-
 
 //verify mobile number with axios
 export const verifyMobileNumber = async (

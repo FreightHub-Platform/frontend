@@ -15,7 +15,6 @@ import {
   DropdownMenu,
   DropdownItem,
   Chip,
-  User,
   Pagination,
   Selection,
   ChipProps,
@@ -25,33 +24,29 @@ import SearchIcon from "@mui/icons-material/Search";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { columns, consigners, statusOptions } from "./Data";
+import { columns, statusOptions } from "./Data";
 import { capitalize } from "./Utils";
 import { usePathname, useRouter } from "next/navigation";
 import { getAllVehicleDetails } from "../../../../utils/review";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
-  "Verified": "success",
-  "Not Verified": "danger",
+  verified: "success",
+  rejected: "danger",
+  pending: "warning",
 };
 
 const INITIAL_VISIBLE_COLUMNS = [
-  "license_plate",
+  "licenseNo",
+  "make",
+  "model",
   "reg_no",
   "type",
-  "is_refid",
-  "crane",
-  "year_manufac",
-  "zip_code",
   "color",
-  "owner",
-  "status",
+  "verifyStatus",
   "actions",
 ];
 
-type User = (typeof consigners)[0];
-
-export default function VehicleTable({onViewMore}) {
+export default function VehicleTable({ onViewMore }) {
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([])
@@ -69,20 +64,34 @@ export default function VehicleTable({onViewMore}) {
   const [page, setPage] = React.useState(1);
 
   const hasSearchFilter = Boolean(filterValue);
+  const [vehicleData, setVehicleData] = useState([]);
 
   //Methana Function eka gahanna
   useEffect(() => {
     const fetchAllVehicles = async () => {
       try {
-        const data = await getAllVehicleDetails() 
+        onViewMore(true);
+        const data = await getAllVehicleDetails(localStorage.getItem("jwt"));
+        const sanitizedData = data.map((item) => ({
+          ...item,
+          verifyStatus: item.verifyStatus?.toLowerCase() || "unknown",
+          licenseNo: item.licenseNo || "N/A",
+        }));
+        setVehicleData(sanitizedData);
+        onViewMore(false);
       } catch (error) {
-        
+        console.error("Error fetching vehicle data:", error);
       }
-    }
+    };
 
-    fetchAllVehicles()
-  }, [])
+    fetchAllVehicles();
+  }, []);
 
+  useEffect(() => {
+    console.log(vehicleData);
+  }, [vehicleData]);
+
+  type User = (typeof vehicleData)[0];
 
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;
@@ -93,24 +102,25 @@ export default function VehicleTable({onViewMore}) {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredconsigners = [...consigners];
+    let filteredVehicles = [...vehicleData];
 
     if (hasSearchFilter) {
-      filteredconsigners = filteredconsigners.filter((user) =>
-        user.license_plate.toLowerCase().includes(filterValue.toLowerCase())
+      filteredVehicles = filteredVehicles.filter((user) =>
+        user.licenseNo.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
+
     if (
       statusFilter !== "all" &&
       Array.from(statusFilter).length !== statusOptions.length
     ) {
-      filteredconsigners = filteredconsigners.filter((user) =>
-        Array.from(statusFilter).includes(user.status)
+      filteredVehicles = filteredVehicles.filter((user) =>
+        Array.from(statusFilter).includes(user.verifyStatus)
       );
     }
 
-    return filteredconsigners;
-  }, [consigners, filterValue, statusFilter]);
+    return filteredVehicles;
+  }, [vehicleData, filterValue, statusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -131,38 +141,32 @@ export default function VehicleTable({onViewMore}) {
     });
   }, [sortDescriptor, items]);
 
-  const path = usePathname()
-  const router = useRouter()
+  const path = usePathname();
+  const router = useRouter();
 
   const handleViewMore = (id) => {
-    onViewMore();
-    router.push(`${path}/${id}`)
-  }
+    onViewMore(true);
+    router.push(`${path}/${id}`);
+  };
 
   const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
     const cellValue = user[columnKey as keyof User];
 
-    // Handle verified function
-    const userStatus = user.status
-    const handleVerified = () => {
-      
-    }
-    
-
     switch (columnKey) {
-     
-      case "status":
+      case "verifyStatus":
+        const status = user.verifyStatus || "unknown";
+        const chipColor = statusColorMap[status] || "default";
         return (
           <Chip
             className="capitalize"
-            color={statusColorMap[user.status]}
+            color={chipColor}
             size="sm"
             variant="flat"
           >
-            {cellValue}
+            {capitalize(status)}
           </Chip>
         );
-      
+
       case "actions":
         return (
           <div className="relative flex justify-center items-center gap-2">
@@ -173,11 +177,14 @@ export default function VehicleTable({onViewMore}) {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem onClick={() => handleViewMore(user.license_plate)}>View More</DropdownItem>
+                <DropdownItem onClick={() => handleViewMore(user.id)}>
+                  View More
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
         );
+
       default:
         return cellValue;
     }
@@ -283,7 +290,7 @@ export default function VehicleTable({onViewMore}) {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {consigners.length} vehicles
+            Total {vehicleData.length} vehicles
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -305,7 +312,7 @@ export default function VehicleTable({onViewMore}) {
     visibleColumns,
     onSearchChange,
     onRowsPerPageChange,
-    consigners.length,
+    vehicleData.length,
     hasSearchFilter,
   ]);
 
@@ -377,7 +384,7 @@ export default function VehicleTable({onViewMore}) {
       </TableHeader>
       <TableBody emptyContent={"No vehicles found"} items={sortedItems}>
         {(item) => (
-          <TableRow key={item.license_plate}>
+          <TableRow key={item.licenseNo}>
             {(columnKey) => (
               <TableCell>{renderCell(item, columnKey)}</TableCell>
             )}

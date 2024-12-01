@@ -16,14 +16,14 @@ export const NavItems = () => {
   }
 
   return [
-    {
-      group: "ACTIONS",
-      name: "Dashboard",
-      href: "/consigner/dashboard",
-      icon: <DashboardOutlined />,
-      active: pathname === "/consigner/dashboard",
-      position: "top",
-    },
+    // {
+    //   group: "ACTIONS",
+    //   name: "Dashboard",
+    //   href: "/consigner/dashboard",
+    //   icon: <DashboardOutlined />,
+    //   active: pathname === "/consigner/dashboard",
+    //   position: "top",
+    // },
     {
       group: "ACTIONS",
       name: "Order List",
