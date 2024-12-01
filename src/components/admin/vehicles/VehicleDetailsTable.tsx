@@ -116,7 +116,6 @@ export default function VehicleDetailsTable() {
         verifyStatus: vehicle.verifyStatus,
       }));
 
-      // Save fetched data to local storage
       localStorage.setItem("vehiclesData", JSON.stringify(vehiclesData));
 
       setVehicles(vehiclesData);
