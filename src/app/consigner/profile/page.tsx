@@ -58,14 +58,15 @@ const ProfileC = () => {
     const fetchConsignerDetails = async () => {
       
       try {
-        
-        const cid = { id: "id eka" };
+        setLoading(true)
+        const pid = localStorage.getItem('id')
+        const cid = { id: pid };
         const data: ConsignerData = await getConsignerDetails(
           cid,
           localStorage.getItem("jwt")
         );
         setProfileDetails(data);
-       
+        setLoading(false)
       } catch (error) {
         console.error("Error fetching consigner data:", error);
       }
@@ -75,7 +76,6 @@ const ProfileC = () => {
   }, []);
 
   React.useEffect(() => {
-    console.log(ProfileDetails);
   }, [ProfileDetails]);
 
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -181,23 +181,23 @@ const ProfileC = () => {
               <tbody className="text-sm flex flex-col justify-between h-56">
                 <tr className="flex mb-1">
                   <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Business Name</td>
-                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">{ProfileDetails ? ProfileDetails.businessName : null}</td> 
                 </tr>
                 <tr className="flex mb-1">
                   <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Business Registration Number</td>
-                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">{ProfileDetails ? ProfileDetails.brn : null}</td> 
                 </tr>
                 <tr className="flex mb-1">
                   <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Email</td>
-                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">{ProfileDetails ? ProfileDetails.username : null}</td> 
                 </tr>
                 <tr className="flex mb-1">
                   <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Main Contact Number</td>
-                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">{ProfileDetails ? ProfileDetails.mainNumber : null}</td> 
                 </tr>
                 <tr className="flex mb-1">
                   <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Alternative Contact Number</td>
-                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">{ProfileDetails ? ProfileDetails.altNumber : null}</td> 
                 </tr>
               </tbody>
             </table>
@@ -207,28 +207,28 @@ const ProfileC = () => {
               <tbody className="text-sm flex flex-col justify-between h-56">
                 <tr className="flex mb-1">
                   <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Address Line 1</td>
-                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">{ProfileDetails ? ProfileDetails.addressLine1 : null}</td> 
                 </tr>
                 <tr className="flex mb-1">
                   <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Address Line 2</td>
-                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">{ProfileDetails ? ProfileDetails.addressLine2 : null}</td> 
                 </tr>
                 <tr className="flex mb-1">
                   <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">City</td>
-                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">{ProfileDetails ? ProfileDetails.city : null}</td> 
                 </tr>
                 <tr className="flex mb-1">
                   <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Province</td>
-                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">{ProfileDetails ? ProfileDetails.province : null}</td> 
                 </tr>
                 <tr className="flex mb-1">
                   <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Postal Code</td>
-                  <td className="p-1 border-2 flex-grow flex items-center ps-3">Pambaya</td> 
+                  <td className="p-1 border-2 flex-grow flex items-center ps-3">{ProfileDetails ? ProfileDetails.postalCode : null}</td> 
                 </tr>
                 <tr className="flex mb-1">
                   <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">Document</td>
                   <td className="p-1 border-2 flex-grow">
-                    <a href={'/pdf/1.pdf'} target="_blank" rel="noopener noreferrer" className="flex items-center ps-1">
+                    <a href={ProfileDetails ? ProfileDetails.regDoc : null} target="_blank" rel="noopener noreferrer" className="flex items-center ps-1">
                       <Image
                         src="/images/pdf.svg" 
                         alt="Description of the SVG"
@@ -384,6 +384,7 @@ const ProfileC = () => {
           </Alert>
         </Snackbar>
       </div>
+      
     </div>
   )
 }

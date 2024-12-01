@@ -38,7 +38,7 @@ const steps = [
 ];
 
 
-const types = ["Packaged Food", "Beverages", "Personal Care", "Cleaning Products", "", "Spices & Herbs", "Fresh Produce", "Diary Products", "Frozen Food", "Meat", "Seafood", "Pharmaceuticals"]
+const types = ["Packaged Food", "Beverages", "Personal Care", "Cleaning Products", "Pharmaceuticals", "Spices & Herbs", "Fresh Produce", "Diary Products", "Frozen Food", "Meat", "Seafood"]
 
 
 
