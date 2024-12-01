@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useRouter, usePathname  } from 'next/navigation'
+import { useRouter, usePathname } from "next/navigation";
 
 import {
   Table,
@@ -31,8 +31,9 @@ import { capitalize } from "./Utils";
 import { getAllConsignerDetails } from "../../../../utils/review";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
-  "verified": "success",
-  "rejected": "danger",
+  verified: "success",
+  rejected: "danger",
+  pending: "warning",
 };
 
 const INITIAL_VISIBLE_COLUMNS = [
@@ -48,7 +49,7 @@ const INITIAL_VISIBLE_COLUMNS = [
   "actions",
 ];
 
-export default function ConsignerTable({onViewMore}) {
+export default function ConsignerTable({ onViewMore }) {
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([])
@@ -65,23 +66,21 @@ export default function ConsignerTable({onViewMore}) {
 
   const [page, setPage] = React.useState(1);
 
-  const [consignerData, setConsignerData] = useState([])
+  const [consignerData, setConsignerData] = useState([]);
 
   //Methana Function eka gahanna
   useEffect(() => {
     const fetchAllConsigners = async () => {
       try {
         onViewMore(true);
-        const data = await getAllConsignerDetails(localStorage.getItem('jwt')) 
-        setConsignerData(data)
+        const data = await getAllConsignerDetails(localStorage.getItem("jwt"));
+        setConsignerData(data);
         onViewMore(false);
-      } catch (error) {
-        
-      }
-    }
+      } catch (error) {}
+    };
 
-    fetchAllConsigners()
-  }, [])
+    fetchAllConsigners();
+  }, []);
 
   useEffect(() => {
     console.log(consignerData); // Log whenever consignerData changes
@@ -102,17 +101,17 @@ export default function ConsignerTable({onViewMore}) {
   const filteredItems = React.useMemo(() => {
     let filteredconsigners = [...consignerData];
 
+    // Apply search filter
     if (hasSearchFilter) {
       filteredconsigners = filteredconsigners.filter((user) =>
-        user.id.toLowerCase().includes(filterValue.toLowerCase())
+        user.id.toString().toLowerCase().includes(filterValue.toLowerCase())
       );
     }
-    if (
-      statusFilter !== "all" &&
-      Array.from(statusFilter).length !== statusOptions.length
-    ) {
+
+    // Apply status filter
+    if (statusFilter !== "all") {
       filteredconsigners = filteredconsigners.filter((user) =>
-        Array.from(statusFilter).includes(user.status)
+        Array.from(statusFilter).includes(user.verifyStatus)
       );
     }
 
@@ -138,38 +137,34 @@ export default function ConsignerTable({onViewMore}) {
     });
   }, [sortDescriptor, items]);
 
-  const router = useRouter()
-  const pathName = usePathname()
+  const router = useRouter();
+  const pathName = usePathname();
 
   const handleViewMore = (id) => {
     onViewMore(true);
-    router.push(`${pathName}/${id}`)
-  }
+    router.push(`${pathName}/${id}`);
+  };
 
   const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
     const cellValue = user[columnKey as keyof User];
 
     // Handle verified function
-    const userStatus = user.status
-    const handleVerified = () => {
-      
-    }
-    
+    const userStatus = user.status;
+    const handleVerified = () => {};
 
     switch (columnKey) {
-     
-      case "status":
+      case "verifyStatus":
         return (
           <Chip
             className="capitalize"
-            color={statusColorMap[user.status]}
+            color={statusColorMap[user.verifyStatus]}
             size="sm"
             variant="flat"
           >
-            {cellValue}
+            {capitalize(user.verifyStatus)}
           </Chip>
         );
-      
+
       case "actions":
         return (
           <div className="relative flex justify-center items-center gap-2">
@@ -180,7 +175,9 @@ export default function ConsignerTable({onViewMore}) {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem onClick={() => handleViewMore(user.id)}>View More</DropdownItem>
+                <DropdownItem onClick={() => handleViewMore(user.id)}>
+                  View More
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
