@@ -30,24 +30,22 @@ import { usePathname, useRouter } from "next/navigation";
 import { getAllVehicleDetails } from "../../../../utils/review";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
-  "verified": "success",
-  "Not Verified": "danger",
+  verified: "success",
+  Rejected: "danger",
 };
 
 const INITIAL_VISIBLE_COLUMNS = [
   "licenseNo",
+  "make",
+  "model",
   "reg_no",
   "type",
-  "refrigFlag",
-  "craneFlag",
   "color",
   "verifyStatus",
   "actions",
 ];
 
-
-
-export default function VehicleTable({onViewMore}) {
+export default function VehicleTable({ onViewMore }) {
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([])
@@ -65,27 +63,32 @@ export default function VehicleTable({onViewMore}) {
   const [page, setPage] = React.useState(1);
 
   const hasSearchFilter = Boolean(filterValue);
-  const [vehicleData, setVehicleData] = useState([])
+  const [vehicleData, setVehicleData] = useState([]);
 
   //Methana Function eka gahanna
   useEffect(() => {
     const fetchAllVehicles = async () => {
       try {
-        onViewMore(true)
-        const data = await getAllVehicleDetails(localStorage.getItem('jwt')) 
-        setVehicleData(data)
-        onViewMore(false)
+        onViewMore(true);
+        const data = await getAllVehicleDetails(localStorage.getItem("jwt"));
+        const sanitizedData = data.map((item) => ({
+          ...item,
+          verifyStatus: item.verifyStatus?.toLowerCase() || "unknown",
+          licenseNo: item.licenseNo || "N/A",
+        }));
+        setVehicleData(sanitizedData);
+        onViewMore(false);
       } catch (error) {
-        
+        console.error("Error fetching vehicle data:", error);
       }
-    }
+    };
 
-    fetchAllVehicles()
-  }, [])
+    fetchAllVehicles();
+  }, []);
 
   useEffect(() => {
-    console.log(vehicleData)
-  }, [vehicleData])
+    console.log(vehicleData);
+  }, [vehicleData]);
 
   type User = (typeof vehicleData)[0];
 
@@ -98,23 +101,24 @@ export default function VehicleTable({onViewMore}) {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredconsigners = [...vehicleData];
+    let filteredVehicles = [...vehicleData];
 
     if (hasSearchFilter) {
-      filteredconsigners = filteredconsigners.filter((user) =>
-        user.license_plate.toLowerCase().includes(filterValue.toLowerCase())
+      filteredVehicles = filteredVehicles.filter((user) =>
+        user.licenseNo.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
+
     if (
       statusFilter !== "all" &&
       Array.from(statusFilter).length !== statusOptions.length
     ) {
-      filteredconsigners = filteredconsigners.filter((user) =>
-        Array.from(statusFilter).includes(user.status)
+      filteredVehicles = filteredVehicles.filter((user) =>
+        Array.from(statusFilter).includes(user.verifyStatus)
       );
     }
 
-    return filteredconsigners;
+    return filteredVehicles;
   }, [vehicleData, filterValue, statusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
@@ -136,35 +140,32 @@ export default function VehicleTable({onViewMore}) {
     });
   }, [sortDescriptor, items]);
 
-  const path = usePathname()
-  const router = useRouter()
+  const path = usePathname();
+  const router = useRouter();
 
   const handleViewMore = (id) => {
     onViewMore(true);
-    router.push(`${path}/${id}`)
-  }
+    router.push(`${path}/${id}`);
+  };
 
   const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
     const cellValue = user[columnKey as keyof User];
 
-    // Handle verified function
-    const userStatus = user.status
-    
-
     switch (columnKey) {
-     
-      case "status":
+      case "verifyStatus":
+        const status = user.verifyStatus || "unknown";
+        const chipColor = statusColorMap[status] || "default";
         return (
           <Chip
             className="capitalize"
-            color={statusColorMap[user.verifyStatus]}
+            color={chipColor}
             size="sm"
             variant="flat"
           >
-            {cellValue}
+            {capitalize(status)}
           </Chip>
         );
-      
+
       case "actions":
         return (
           <div className="relative flex justify-center items-center gap-2">
@@ -175,11 +176,14 @@ export default function VehicleTable({onViewMore}) {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem onClick={() => handleViewMore(user.id)}>View More</DropdownItem>
+                <DropdownItem onClick={() => handleViewMore(user.id)}>
+                  View More
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
         );
+
       default:
         return cellValue;
     }

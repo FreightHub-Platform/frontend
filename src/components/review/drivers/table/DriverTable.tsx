@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useRouter, usePathname  } from 'next/navigation'
+import { useRouter, usePathname } from "next/navigation";
 
 import {
   Table,
@@ -26,14 +26,21 @@ import SearchIcon from "@mui/icons-material/Search";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { columns, statusOptions } from "./Data";
+import { columns } from "./Data";
 import { capitalize } from "./Utils";
 import { getAllDriverDetails } from "../../../../utils/review";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
-  "Verified": "success",
-  "Not Verified": "danger",
+  pending: "warning",
+  verified: "success",
+  rejected: "danger",
 };
+
+export const statusOptions = [
+  { uid: "verified", name: "Verified" },
+  { uid: "pending", name: "Pending" },
+  { uid: "rejected", name: "Rejected" },
+];
 
 const INITIAL_VISIBLE_COLUMNS = [
   "fname",
@@ -48,7 +55,7 @@ const INITIAL_VISIBLE_COLUMNS = [
   "actions",
 ];
 
-export default function DriverTable({onViewMore}) {
+export default function DriverTable({ onViewMore }) {
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([])
@@ -64,28 +71,32 @@ export default function DriverTable({onViewMore}) {
   });
 
   const [page, setPage] = React.useState(1);
-  const [driverData, setDriverData] = useState([])
+  const [driverData, setDriverData] = useState([]);
 
   //Methana Function eka gahanna
   useEffect(() => {
     const fetchAllDrivers = async () => {
       try {
-        onViewMore(true)
-        const data = await getAllDriverDetails(localStorage.getItem('jwt')) 
-        setDriverData(data)
-        onViewMore(false)
+        onViewMore(true);
+        const data = await getAllDriverDetails(localStorage.getItem("jwt"));
+        const sanitizedData = data.map((item) => ({
+          ...item,
+          verifyStatus: item.verifyStatus?.toLowerCase() || "not verified",
+          nic: item.nic || "N/A", // Handle missing NICs
+        }));
+        setDriverData(sanitizedData);
+        onViewMore(false);
       } catch (error) {
-        
+        console.error("Error fetching driver data:", error);
       }
-    }
+    };
 
-    fetchAllDrivers()
-  }, [])
+    fetchAllDrivers();
+  }, []);
 
   useEffect(() => {
-    console.log(driverData)
-  }, [driverData])
-
+    console.log(driverData);
+  }, [driverData]);
 
   type User = (typeof driverData)[0];
   const hasSearchFilter = Boolean(filterValue);
@@ -99,24 +110,27 @@ export default function DriverTable({onViewMore}) {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredconsigners = [...driverData];
+    let filteredDrivers = [...driverData];
 
+    // Apply search filter
     if (hasSearchFilter) {
-      filteredconsigners = filteredconsigners.filter((user) =>
-        user.nic.toLowerCase().includes(filterValue.toLowerCase())
+      filteredDrivers = filteredDrivers.filter((user) =>
+        user.nic?.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
+
+    // Apply status filter
     if (
       statusFilter !== "all" &&
       Array.from(statusFilter).length !== statusOptions.length
     ) {
-      filteredconsigners = filteredconsigners.filter((user) =>
-        Array.from(statusFilter).includes(user.status)
+      filteredDrivers = filteredDrivers.filter((user) =>
+        Array.from(statusFilter).includes(user.verifyStatus || "not verified")
       );
     }
 
-    return filteredconsigners;
-  }, [ driverData, filterValue, statusFilter]);
+    return filteredDrivers;
+  }, [driverData, filterValue, statusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -137,38 +151,32 @@ export default function DriverTable({onViewMore}) {
     });
   }, [sortDescriptor, items]);
 
-  const router = useRouter()
-  const pathName = usePathname()
+  const router = useRouter();
+  const pathName = usePathname();
 
   const handleViewMore = (id) => {
     onViewMore(true);
-    router.push(`${pathName}/${id}`)
-  }
+    router.push(`${pathName}/${id}`);
+  };
 
   const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
     const cellValue = user[columnKey as keyof User];
 
-    // Handle verified function
-    const userStatus = user.status
-    const handleVerified = () => {
-      
-    }
-    
-
     switch (columnKey) {
-     
-      case "status":
+      case "verifyStatus":
+        const status = user.verifyStatus || "not verified"; // Fallback to default
+        const chipColor = statusColorMap[status] || "default"; // Map to color
         return (
           <Chip
             className="capitalize"
-            color={statusColorMap[user.status]}
+            color={chipColor}
             size="sm"
             variant="flat"
           >
-            {cellValue}
+            {capitalize(status)}
           </Chip>
         );
-      
+
       case "actions":
         return (
           <div className="relative flex justify-center items-center gap-2">
@@ -179,11 +187,14 @@ export default function DriverTable({onViewMore}) {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem onClick={() => handleViewMore(user.id)}>View More</DropdownItem>
+                <DropdownItem onClick={() => handleViewMore(user.id)}>
+                  View More
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
         );
+
       default:
         return cellValue;
     }
@@ -261,6 +272,7 @@ export default function DriverTable({onViewMore}) {
                 ))}
               </DropdownMenu>
             </Dropdown>
+
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
