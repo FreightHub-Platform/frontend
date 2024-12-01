@@ -38,7 +38,7 @@ const steps = [
 ];
 
 
-const types = ["Fruits", "Medicines", "Fishes", 'Chicken']
+const types = ["Packaged Food", "Beverages", "Personal Care", "Cleaning Products", "", "Spices & Herbs", "Fresh Produce", "Diary Products", "Frozen Food", "Meat", "Seafood", "Pharmaceuticals"]
 
 
 
@@ -101,10 +101,10 @@ const ItemForm = ({addItems}) => {
         "weight": weight,
         "cbm": cbm,
         "iTypeId": type,
-        "refrigerated": refrigirated,
-        "hazardous": hazardous,
-        "perishable": perishable,
-        "fragile": fragile
+        // "refrigerated": refrigirated,
+        // "hazardous": hazardous,
+        // "perishable": perishable,
+        // "fragile": fragile
       }
       
       addItems(newItem)
@@ -206,12 +206,12 @@ const ItemForm = ({addItems}) => {
             </Box>
           </div>
 
-          <div className='flex flex-row justify-between px-10'>
+          {/* <div className='flex flex-row justify-between px-10'>
             <FormControlLabel control={<Checkbox />} label="Refrigirated" onChange={(e) => setRefrigirated(true)}/>
             <FormControlLabel control={<Checkbox />} label="Hazardous" onChange={(e) => setHazardous(true)}/>
             <FormControlLabel control={<Checkbox />} label="Perishable" onChange={(e) => setPerishable(true)}/>
             <FormControlLabel control={<Checkbox />} label="Fragile" onChange={(e) => setFragile(true)}/>
-          </div>
+          </div> */}
         </Box>
       </Box>
       <div className='flex justify-center'>

@@ -91,6 +91,7 @@ const RegisterBox = ({onLinkClick}) => {
   const [emailError, setemailError] = useState(false);
   const [emailVerfication, setEmailVerfication] = useState(false);
   const [password, setPassword] = useState("");
+  const [strongPassword, setStrongPassword] = useState(false);
   const [passwordError, setpasswordError] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmPasswordError, setconfirmPasswordError] = useState(false);
@@ -140,7 +141,16 @@ const RegisterBox = ({onLinkClick}) => {
       setpasswordError(true)
       hasError = true
     } else {
-      setpasswordError(false)
+      const strongPassword = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      if(!strongPassword.test(password)){
+        setpasswordError(true);
+        setStrongPassword(true);
+        hasError = true
+      } else {
+        setpasswordError(false)
+        setStrongPassword(false)
+      }
+      
     }
 
     if(!confirmPassword){
@@ -222,11 +232,11 @@ const RegisterBox = ({onLinkClick}) => {
               label="Password"
               sx={{ borderRadius: '60px' }}
             />
-            {passwordError && (
+            {strongPassword ? (<FormHelperText error>Please enter a strong password.</FormHelperText>) : passwordError ? (
               <FormHelperText error >
                 Please enter a password.
               </FormHelperText>
-            )}
+            ) : ""}
             {passwordMissMatch && !passwordError && (
               <FormHelperText error>
                 Passwords do not match.

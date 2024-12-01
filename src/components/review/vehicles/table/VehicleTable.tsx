@@ -38,8 +38,6 @@ const INITIAL_VISIBLE_COLUMNS = [
   "licenseNo",
   "reg_no",
   "type",
-  "refrigFlag",
-  "craneFlag",
   "color",
   "verifyStatus",
   "actions",
