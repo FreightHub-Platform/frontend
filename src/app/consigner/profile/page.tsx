@@ -11,10 +11,24 @@ import Logo from '../../../components/review/consigners/info/Logo';
 import { FormControl, FormHelperText, IconButton, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { changePassword } from '../../../utils/consigner';
+import { getConsignerDetails } from '../../../utils/review';
 
 
 
 const ProfileC = () => {
+
+  interface ConsignerData {
+    businessName: string;
+    brn: string;
+    username: string;
+    mainNumber: string;
+    altNumber?: string;
+    addressLine1: string;
+    addressLine2?: string;
+    city: string;
+    province: string;
+    postalCode: string;
+  }
 
   // const currentPassward = "abc123"
 
@@ -31,11 +45,38 @@ const ProfileC = () => {
   const [oldPasswordMissmatchError, setOldPasswordMissmatchError] = React.useState(false);
   const [newConfirmPasswordMissmatchError, setNewConfirmPasswordMissmatchError] = React.useState(false);
 
+  const [ProfileDetails, setProfileDetails] = useState(null)
+
   const [loading, setLoading] = useState(false)
 
   const handleClickShowOldPassword = () => setShowOldPassword((show) => !show);
   const handleClickShowNewPassword = () => setShowNewPassword((show) => !show);
   const handleClickShowConfirmPassword = () => setShowConfirmPassword((show) => !show);
+
+  //METHANA FUNCTION EKA GAHANNA 
+  React.useEffect(() => {
+    const fetchConsignerDetails = async () => {
+      
+      try {
+        
+        const cid = { id: "id eka" };
+        const data: ConsignerData = await getConsignerDetails(
+          cid,
+          localStorage.getItem("jwt")
+        );
+        setProfileDetails(data);
+       
+      } catch (error) {
+        console.error("Error fetching consigner data:", error);
+      }
+    };
+
+    fetchConsignerDetails();
+  }, []);
+
+  React.useEffect(() => {
+    console.log(ProfileDetails);
+  }, [ProfileDetails]);
 
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();

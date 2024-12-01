@@ -80,6 +80,7 @@ const LoginBox = ({ onLinkClick }) => {
   const [email, setEmail] = useState("");
   const [emailError, setemailError] = useState(false);
   const [password, setPassword] = useState("");
+  const [strongPassword, setStrongPassword] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [emailVerification, setEmailVerification] = useState(false);
   const [emailWrong, setEmailWrong] = useState(false);
@@ -129,7 +130,16 @@ const LoginBox = ({ onLinkClick }) => {
       setPasswordError(true);
       hasError = true;
     } else {
-      setPasswordError(false);
+      const strongPassword = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      if(/*!strongPassword.test(password)*/ false){
+        setPasswordError(true);
+        setStrongPassword(true);
+        hasError = true;
+      } else {
+        setPasswordError(false);
+        setStrongPassword(false)
+      }
+      
     }
 
     if (!hasError) {
@@ -254,9 +264,9 @@ const LoginBox = ({ onLinkClick }) => {
               label="Password"
               sx={{ borderRadius: "60px" }}
             />
-            {passwordError && (
+            {strongPassword ? (<FormHelperText error>Please enter a strong password.</FormHelperText>) : passwordError ? (
               <FormHelperText error>Please enter a password.</FormHelperText>
-            )}
+            ) : ""}
             {emailWrong && (
               <FormHelperText error>
                 Incorrect email or password.
