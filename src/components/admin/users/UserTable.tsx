@@ -22,6 +22,7 @@ import {
   SortDescriptor,
   Spinner,
 } from "@nextui-org/react";
+
 import SearchIcon from "@mui/icons-material/Search";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -74,6 +75,12 @@ export default function UserTable() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const usersData = localStorage.getItem("usersData");
+    if (usersData) {
+      setUsers(JSON.parse(usersData));
+      setLoading(false);
+    }
+
     const fetchUsers = async () => {
       try {
         setLoading(true);
@@ -84,6 +91,7 @@ export default function UserTable() {
           },
         });
         setUsers(response.data.data);
+        localStorage.setItem("usersData", JSON.stringify(response.data.data));
         setError(null);
       } catch (err: any) {
         console.error("Error fetching users:", err);
@@ -95,9 +103,6 @@ export default function UserTable() {
 
     fetchUsers();
   }, []);
-
-  // Debug: Log the API response (optional)
-  console.log("API Response:", apiResponse);
 
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
