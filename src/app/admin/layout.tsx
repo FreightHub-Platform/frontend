@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Topbar } from "../../components/admin/topbar/Topbar";
 import Sidebar from "../../components/admin/sidebar/Sidebar";
 import Breadcrumb from "../../components/common/Breadcrumbs";
+import FetchUserById from "../../components/common/FetchUser";
 
 export const metadata: Metadata = {
   title: "Freight Hub",
