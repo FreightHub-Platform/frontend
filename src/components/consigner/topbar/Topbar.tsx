@@ -13,6 +13,7 @@ import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNone
 import Cookies from "js-cookie";
 import { getConsignerById } from "../../../utils/consigner";
 import Notification from "./Notification";
+import { useRouter } from "next/navigation";
 
 const displayFont = Smooch_Sans({
   weight: "700",
@@ -28,9 +29,11 @@ export function Topbar() {
   useEffect(() => {
     const fetchConsignerData = async () => {
       const consigner = {"id": localStorage.getItem("id")};
-      console.log(consigner)
-      console.log(consigner.id)
-      console.log(Cookies.get('jwt'))
+
+      if(!consigner.id){
+        window.location.href = "http://localhost:3000/"
+      }
+
       try {
         const data = await getConsignerById(consigner, Cookies.get('jwt'));
         if (data && data.businessName && data.logo) {
@@ -44,6 +47,7 @@ export function Topbar() {
 
     fetchConsignerData();
   }, []);
+
 
   const [notification, setNotification] = useState(false)
   const [showBadge, setShowBadge] = useState(true)

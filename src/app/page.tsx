@@ -1,14 +1,20 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Footer from "../components/footer/Footer";
 import Navbar from "../components/navbar/Navbar";
 import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
 import Link from "next/link";
 
+
 const Home = () => {
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    localStorage.clear();
+    sessionStorage.clear();
+  }, [])
 
   return (
     <div className="home">
