@@ -58,14 +58,14 @@ export const NavItems = () => {
     //   active: isNavItemActive(pathname, "/admin/revenue"),
     //   position: "top",
     // },
-    {
-      group: "Financial",
-      name: "Billing",
-      href: "/admin/billing",
-      icon: <RequestQuoteOutlinedIcon />,
-      active: isNavItemActive(pathname, "/admin/billing"),
-      position: "top",
-    },
+    // {
+    //   group: "Financial",
+    //   name: "Billing",
+    //   href: "/admin/billing",
+    //   icon: <RequestQuoteOutlinedIcon />,
+    //   active: isNavItemActive(pathname, "/admin/billing"),
+    //   position: "top",
+    // },
     // {
     //   group: "Reviews",
     //   name: "Reviews",

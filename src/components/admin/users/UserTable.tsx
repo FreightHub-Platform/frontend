@@ -31,6 +31,7 @@ import { capitalize } from "./Utils";
 import { userApi } from "../../../utils/config";
 import PersonIcon from "@mui/icons-material/Person";
 import ViewUserModal from "./ViewUserModal";
+import AddUserModal from "./AddUserModal";
 
 const columns = [
   { name: "ID", uid: "id", sortable: true },
@@ -75,6 +76,8 @@ export default function UserTable() {
   const [apiResponse, setApiResponse] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
+
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -82,6 +85,16 @@ export default function UserTable() {
     console.log("Viewing user:", userId);
     setSelectedUserId(userId);
     setIsModalOpen(true);
+  };
+
+  const handleAddUser = () => {
+    console.log("Add User button clicked");
+    setIsAddUserModalOpen(true);
+  };
+
+  // Handler to close the modal and refresh users after a successful addition
+  const handleUserAdded = () => {
+    setIsAddUserModalOpen(false);
   };
 
   const handleCloseModal = () => {
@@ -331,9 +344,10 @@ export default function UserTable() {
           />
           <div className="flex gap-3">
             {/* Add user button */}
-            <Button color="primary" onPress={() => console.log("Add User")}>
+            <Button color="primary" onClick={handleAddUser}>
               Add User
             </Button>
+
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
@@ -522,6 +536,11 @@ export default function UserTable() {
         userId={selectedUserId}
         open={isModalOpen}
         onClose={handleCloseModal}
+      />
+      <AddUserModal
+        open={isAddUserModalOpen}
+        onClose={() => setIsAddUserModalOpen(false)}
+        onUserAdded={handleUserAdded}
       />
     </>
   );

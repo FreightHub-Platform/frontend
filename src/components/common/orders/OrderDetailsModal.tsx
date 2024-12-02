@@ -152,19 +152,25 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({
                         style={{ marginRight: "8px", color: "gray" }}
                       />
                       <Typography>
-                        Vehicle Info (License: {route.vehicleId.licenseNo})
+                        Vehicle Info (License:{" "}
+                        {route.vehicleId ? route.vehicleId.licenseNo : "N/A"})
                       </Typography>
                     </div>
                     <Typography>
-                      <strong>Model:</strong> {route.vehicleId.model}
+                      <strong>Model:</strong>{" "}
+                      {route.vehicleId ? route.vehicleId.model : "N/A"}
                     </Typography>
+
                     <Typography>
-                      <strong>Type:</strong> {route.vehicleId.vtypeId.type}
+                      <strong>Type:</strong>{" "}
+                      {route.vehicleId?.vtypeId?.type || "N/A"}
                     </Typography>
+
                     <Typography>
-                      <strong>Dimensions:</strong>{" "}
-                      {`${route.vehicleId.vtypeId.length} x ${route.vehicleId.vtypeId.width} x ${route.vehicleId.vtypeId.height}`}{" "}
-                      ft
+                      <strong>Dimensions:</strong>
+                      {route.vehicleId?.vtypeId
+                        ? `${route.vehicleId.vtypeId.length} x ${route.vehicleId.vtypeId.width} x ${route.vehicleId.vtypeId.height} ft`
+                        : "N/A"}
                     </Typography>
 
                     {route.purchaseOrderDtos.map((po) => (
