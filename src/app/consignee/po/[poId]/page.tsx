@@ -1,15 +1,31 @@
 "use client";
 
-import { poById } from "../../../../utils/consignee";
+import { poById, UpdatePo } from "../../../../utils/consignee";
 import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { Spinner } from "@nextui-org/react";
+import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 const ConsigneePage = () => {
   const [purchaseData, setConsigneeData] = useState(null);
   const [items, setItemData] = useState([]);
   const [loding, setLoading] = useState(false);
   const path = usePathname();
+
+  const [open, setOpen] = React.useState(false);
+  const [error, setError] = useState(false);
+
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: SnackbarCloseReason,
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   useEffect(() => {
     const fetchConsigneeDetails = async () => {
@@ -68,9 +84,23 @@ const ConsigneePage = () => {
     );
   };
 
-  useEffect(() => {
-    console.log(items);
-  }, [items]);
+  const handleSubmit = async () => {
+    const Details = {
+      consigneeId: path.split("/")[3],
+      poId: purchaseData.id,
+      itemDetails: items
+    }
+
+    try {
+      const response = await UpdatePo(Details)
+    } catch (error) {
+      console.error("Error fetching consigner data:", error);
+      setError(true)
+    } finally {
+      setOpen(true)
+    }
+    
+  }
 
   return (
     <div className="p-4">
@@ -157,10 +187,35 @@ const ConsigneePage = () => {
       </div>
 
       <div className="flex w-full justify-center">
-        <button className="bg-green-500 px-6 py-2 rounded-lg text-white hover:bg-green-600">
+        <button className="bg-green-500 px-6 py-2 rounded-lg text-white hover:bg-green-600" onClick={handleSubmit}>
           Submit
         </button>
       </div>
+
+      <div>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        { !error ? 
+          <Alert
+            onClose={handleClose}
+            severity="success"
+            variant="filled"
+            sx={{ width: '100%' }}
+            >
+            Database updated success!
+          </Alert> 
+          :
+           <Alert
+           onClose={handleClose}
+           severity="error"
+           variant="filled"
+           sx={{ width: '100%' }}
+         >
+           Something went wrong please refresh and try again!
+         </Alert>
+        }
+       
+      </Snackbar>
+    </div>
     </div>
   );
 };
