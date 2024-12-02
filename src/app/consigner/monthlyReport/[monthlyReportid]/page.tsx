@@ -11,6 +11,9 @@ import {
   Legend,
 } from "chart.js";
 import { getConsignerDetails } from "../../../../utils/review";
+import { getConsignerReportsById } from "../../../../utils/consigner";
+import { usePathname } from "next/navigation";
+import { Spinner } from "@nextui-org/react";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -30,12 +33,20 @@ const Invoice = () => {
   }
 
   const [consignerDetail, setConsignerDetails] = useState(null)
+  const pathName = usePathname()
+
+
+  const [completed, setCompleted] = useState([])
+  const [canceled, setCanceled] = useState([])
+  const [unfulfillment, setUnfulfillment] = useState([])
+  const [loding, setLoading] = useState(false)
+  
 
   useEffect(() => {
     const fetchConsignerDetails = async () => {
       
       try {
-        
+        setLoading(true)
         const pid = localStorage.getItem('id')
         const cid = { id: pid };
         const data: ConsignerData = await getConsignerDetails(
@@ -43,38 +54,56 @@ const Invoice = () => {
           localStorage.getItem("jwt")
         );
         setConsignerDetails(data);
+
+        const detail = {
+          id: pid,
+          yearMonth: pathName.split('/')[3]
+        }
+        console.log(detail);
+        const reportData = await getConsignerReportsById(detail, localStorage.getItem("jwt"))
+
+        const tempCompleted = [];
+        const tempCanceled = [];
+        const tempUnfulfillment = [];
+
+        reportData.forEach(item => {
+          const formattedItem = {
+            orderId: `O${item.orderId}`, // Add a prefix to orderId
+            routeId: `R${item.routeId}`, // Add a prefix to routeId
+            distance: `${parseFloat(item.actualDistanceKm)}km`,
+            cost: parseFloat(item.cost)
+          };
+        
+          if (item.status === "completed") {
+            tempCompleted.push(formattedItem);
+          } else if (item.status === "cancelled") {
+            tempCanceled.push({ ...formattedItem, fine: formattedItem.cost * 0.25 });
+          } else if (item.status === "unfulfilled") {
+            tempUnfulfillment.push(formattedItem);
+          }
+        });
+
+        setCompleted([...tempCompleted]);
+        setCanceled([...tempCanceled]);
+        setUnfulfillment([...tempUnfulfillment]);
         
       } catch (error) {
         console.error("Error fetching consigner data:", error);
+      } finally {
+        setLoading(false)
       }
     };
 
     fetchConsignerDetails();
   }, []);
 
-  useEffect(() => {
-  }, [consignerDetail]);
-
   // Sample data
   const consignerDetails = {
     logo: consignerDetail ? consignerDetail.logo : "", // Replace with your logo path
     businessName: consignerDetail ? consignerDetail.businessName : "",
     businessNumber: consignerDetail ? consignerDetail.brn : "",
-    invoiceReleaseDate: "2024-12-02",
+    // invoiceReleaseDate: "2024-12-02",
   };
-
-  const completed = [
-    { orderId: "C001", routeId: "R001", distance: "200km", cost: 500 },
-    { orderId: "C002", routeId: "R002", distance: "150km", cost: 400 },
-  ];
-  const canceled = [
-    { orderId: "X001", routeId: "R003", distance: "100km", fine: 200 },
-    { orderId: "X002", routeId: "R004", distance: "50km", fine: 100 },
-  ];
-  const unfulfillment = [
-    { orderId: "U001", routeId: "R005", distance: "250km", cost: 600 },
-    { orderId: "U002", routeId: "R006", distance: "300km", cost: 700 },
-  ];
 
   // Chart Data based on the number of orders
   const chartData = {
@@ -136,113 +165,128 @@ const Invoice = () => {
           <div className="text-right">
             <h2 className="text-2xl font-bold">{consignerDetails.businessName}</h2>
             <p>Business Number: {consignerDetails.businessNumber}</p>
-            <p>Invoice Date: {consignerDetails.invoiceReleaseDate}</p>
+            {/* <p>Invoice Date: {consignerDetails.invoiceReleaseDate}</p> */}
           </div>
         </div>
 
         {/* Middle Section: Tables */}
         <div className="mb-6">
-          {/* Completed Table */}
-          <div className="mb-6">
-            <h3 className="text-lg font-bold mb-2">Completed Orders</h3>
-            <table className="w-full border-collapse border border-gray-300 mb-2">
-              <thead className="bg-gray-200">
-                <tr>
-                  <th className="border border-gray-300 px-4 py-2">Order ID</th>
-                  <th className="border border-gray-300 px-4 py-2">Route ID</th>
-                  <th className="border border-gray-300 px-4 py-2">Distance</th>
-                  <th className="border border-gray-300 px-4 py-2">Cost</th>
-                </tr>
-              </thead>
-              <tbody>
-                {completed.map((item, index) => (
-                  <tr key={index} className="hover:bg-gray-100">
-                    <td className="border border-gray-300 px-4 py-2">{item.orderId}</td>
-                    <td className="border border-gray-300 px-4 py-2">{item.routeId}</td>
-                    <td className="border border-gray-300 px-4 py-2">{item.distance}</td>
-                    <td className="border border-gray-300 px-4 py-2">${item.cost}</td>
+          {completed.length > 0 ? 
+            <div className="mb-6">
+              <h3 className="text-lg font-bold mb-2">Completed Orders</h3>
+              <table className="w-full border-collapse border border-gray-300 mb-2">
+                <thead className="bg-gray-200">
+                  <tr>
+                    <th className="border border-gray-300 px-4 py-2">Order ID</th>
+                    <th className="border border-gray-300 px-4 py-2">Route ID</th>
+                    <th className="border border-gray-300 px-4 py-2">Distance</th>
+                    <th className="border border-gray-300 px-4 py-2">Cost</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-            <p className="text-right font-bold">Total Cost: ${calculateTotal(completed, "cost")}</p>
-          </div>
+                </thead>
+                <tbody>
+                  {completed.map((item, index) => (
+                    <tr key={index} className="hover:bg-gray-100">
+                      <td className="border border-gray-300 px-4 py-2">{item.orderId}</td>
+                      <td className="border border-gray-300 px-4 py-2">{item.routeId}</td>
+                      <td className="border border-gray-300 px-4 py-2">{item.distance}</td>
+                      <td className="border border-gray-300 px-4 py-2">${item.cost}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p className="text-right font-bold">Total Cost: ${calculateTotal(completed, "cost")}</p>
+            </div> : ""
+          }
+         
 
-          {/* Canceled Table */}
-          <div className="mb-6">
-            <h3 className="text-lg font-bold mb-2">Canceled Orders</h3>
-            <table className="w-full border-collapse border border-gray-300 mb-2">
-              <thead className="bg-gray-200">
-                <tr>
-                  <th className="border border-gray-300 px-4 py-2">Order ID</th>
-                  <th className="border border-gray-300 px-4 py-2">Route ID</th>
-                  <th className="border border-gray-300 px-4 py-2">Distance</th>
-                  <th className="border border-gray-300 px-4 py-2">Fine</th>
-                </tr>
-              </thead>
-              <tbody>
-                {canceled.map((item, index) => (
-                  <tr key={index} className="hover:bg-gray-100">
-                    <td className="border border-gray-300 px-4 py-2">{item.orderId}</td>
-                    <td className="border border-gray-300 px-4 py-2">{item.routeId}</td>
-                    <td className="border border-gray-300 px-4 py-2">{item.distance}</td>
-                    <td className="border border-gray-300 px-4 py-2">${item.fine}</td>
+          {canceled.length > 0 ? 
+            <div className="mb-6">
+              <h3 className="text-lg font-bold mb-2">Canceled Orders</h3>
+              <table className="w-full border-collapse border border-gray-300 mb-2">
+                <thead className="bg-gray-200">
+                  <tr>
+                    <th className="border border-gray-300 px-4 py-2">Order ID</th>
+                    <th className="border border-gray-300 px-4 py-2">Route ID</th>
+                    <th className="border border-gray-300 px-4 py-2">Distance</th>
+                    <th className="border border-gray-300 px-4 py-2">Fine</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-            <p className="text-right font-bold">Total Fine: ${calculateTotal(canceled, "fine")}</p>
-          </div>
+                </thead>
+                <tbody>
+                  {canceled.map((item, index) => (
+                    <tr key={index} className="hover:bg-gray-100">
+                      <td className="border border-gray-300 px-4 py-2">{item.orderId}</td>
+                      <td className="border border-gray-300 px-4 py-2">{item.routeId}</td>
+                      <td className="border border-gray-300 px-4 py-2">{item.distance}</td>
+                      <td className="border border-gray-300 px-4 py-2">${item.fine}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p className="text-right font-bold">Total Fine: ${calculateTotal(canceled, "fine")}</p>
+            </div> : ""
+          }
+          
 
-          {/* Unfulfillment Table */}
-          <div className="mb-6">
-            <h3 className="text-lg font-bold mb-2">Unfulfilled Orders</h3>
-            <table className="w-full border-collapse border border-gray-300 mb-2">
-              <thead className="bg-gray-200">
-                <tr>
-                  <th className="border border-gray-300 px-4 py-2">Order ID</th>
-                  <th className="border border-gray-300 px-4 py-2">Route ID</th>
-                  <th className="border border-gray-300 px-4 py-2">Distance</th>
-                  <th className="border border-gray-300 px-4 py-2">Cost</th>
-                </tr>
-              </thead>
-              <tbody>
-                {unfulfillment.map((item, index) => (
-                  <tr key={index} className="hover:bg-gray-100">
-                    <td className="border border-gray-300 px-4 py-2">{item.orderId}</td>
-                    <td className="border border-gray-300 px-4 py-2">{item.routeId}</td>
-                    <td className="border border-gray-300 px-4 py-2">{item.distance}</td>
-                    <td className="border border-gray-300 px-4 py-2">${item.cost}</td>
+          {unfulfillment.length > 0 ? 
+            <div className="mb-6">
+              <h3 className="text-lg font-bold mb-2">Unfulfilled Orders</h3>
+              <table className="w-full border-collapse border border-gray-300 mb-2">
+                <thead className="bg-gray-200">
+                  <tr>
+                    <th className="border border-gray-300 px-4 py-2">Order ID</th>
+                    <th className="border border-gray-300 px-4 py-2">Route ID</th>
+                    <th className="border border-gray-300 px-4 py-2">Distance</th>
+                    <th className="border border-gray-300 px-4 py-2">Cost</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-            <p className="text-right font-bold">
-              Total Cost: ${calculateTotal(unfulfillment, "cost")}
-            </p>
-          </div>
+                </thead>
+                <tbody>
+                  {unfulfillment.map((item, index) => (
+                    <tr key={index} className="hover:bg-gray-100">
+                      <td className="border border-gray-300 px-4 py-2">{item.orderId}</td>
+                      <td className="border border-gray-300 px-4 py-2">{item.routeId}</td>
+                      <td className="border border-gray-300 px-4 py-2">{item.distance}</td>
+                      <td className="border border-gray-300 px-4 py-2">${item.cost}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p className="text-right font-bold">
+                Total Cost: ${calculateTotal(unfulfillment, "cost")}
+              </p>
+            </div> :""
+          }  
         </div>
 
         {/* Bottom Section: Pie Chart */}
-        <div className="mb-6">
-          <h3 className="text-lg font-bold mb-2">Order Breakdown</h3>
-          <div style={{ width: '100%', height: '500px' }}>
-            <Pie
-              data={chartData}
-              options={{
-                responsive: true,
-                plugins: {
-                  legend: {
-                    position: "top",
-                  },
-                },
-                // Allow for custom height and width without overflow:
-                maintainAspectRatio: false,
-                aspectRatio: 1, // Ensures that the chart keeps its aspect ratio
-              }}
-            />
-          </div>
-        </div>
+        {
+          loding ? 
+            <div className="flex justify-center items-center w-full h-4/5">
+              <div>
+                <Spinner size="lg" />
+              </div>
+            </div> 
+          :  
+            <div className="mb-6">
+              <h3 className="text-lg font-bold mb-2">Order Breakdown</h3>
+              <div style={{ width: '100%', height: '500px' }}>
+                <Pie
+                  data={chartData}
+                  options={{
+                    responsive: true,
+                    plugins: {
+                      legend: {
+                        position: "top",
+                      },
+                    },
+                    // Allow for custom height and width without overflow:
+                    maintainAspectRatio: false,
+                    aspectRatio: 1, // Ensures that the chart keeps its aspect ratio
+                  }}
+                />
+              </div>
+            </div>
+        }
+       
 
 
         {/* Download Button */}

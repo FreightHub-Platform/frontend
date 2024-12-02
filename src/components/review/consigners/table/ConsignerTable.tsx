@@ -21,6 +21,7 @@ import {
   Selection,
   ChipProps,
   SortDescriptor,
+  Spinner,
 } from "@nextui-org/react";
 import SearchIcon from "@mui/icons-material/Search";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
@@ -64,6 +65,9 @@ export default function ConsignerTable({ onViewMore }) {
     direction: "ascending",
   });
 
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
   const [page, setPage] = React.useState(1);
 
   const [consignerData, setConsignerData] = useState([]);
@@ -72,19 +76,19 @@ export default function ConsignerTable({ onViewMore }) {
   useEffect(() => {
     const fetchAllConsigners = async () => {
       try {
-        onViewMore(true);
+        setLoading(true);
         const data = await getAllConsignerDetails(localStorage.getItem("jwt"));
         setConsignerData(data);
-        onViewMore(false);
-      } catch (error) {}
+        setError(null);
+      } catch (error) {
+        setError("Failed to load consigners. Please try again.");
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchAllConsigners();
   }, []);
-
-  useEffect(() => {
-    console.log(consignerData); // Log whenever consignerData changes
-  }, [consignerData]);
 
   type User = (typeof consignerData)[0];
 
@@ -379,7 +383,19 @@ export default function ConsignerTable({ onViewMore }) {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={"No consigners found"} items={sortedItems}>
+      <TableBody emptyContent={
+        loading ? (
+          <div className="flex justify-center items-center">
+            <Spinner size="lg" />
+          </div>
+        ) : error ? (
+          <div className="flex justify-center items-center text-danger">
+            {error}
+          </div>
+        ) : (
+          "No Consigners found"
+        )
+      } items={sortedItems}>
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (

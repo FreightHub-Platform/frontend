@@ -161,6 +161,7 @@ const LoginBox = ({ onLinkClick }) => {
       localStorage.setItem("jwt", data.token);
       Cookies.set("jwt", data.token, { expires: 1 });
 
+
       if (role == "consigner") {
         switch (completion) {
           case 0:

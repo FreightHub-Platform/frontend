@@ -50,3 +50,32 @@ export const getConsignerOrders = async (consigner : any, token : String) =>{
     throw new Error('An unexpected error occurred.');
   }
 }
+
+//GET REPORTS
+export const getConsignerReports = async (consigner : any, token : String) =>{
+  try {
+    const response = await orderApi.post("/months", consigner, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    return response.data.data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('An unexpected error occurred.');
+  }
+}
+
+export const getConsignerReportsById = async (consigner : any, token : String) =>{
+  try {
+    const response = await api.post("/transactions/consigner", consigner, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    return response.data.data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('An unexpected error occurred.');
+  }
+}

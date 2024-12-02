@@ -26,6 +26,13 @@ export function Topbar() {
   const [notification, setNotification] = React.useState(false)
   const [showBadge, setShowBadge] = React.useState(true)
 
+  React.useEffect(() => {
+    const jwt = localStorage.getItem('jwt')
+    if(!jwt){
+      window.location.href = "http://localhost:3000/"
+    }
+  },[])
+
   return (
     <nav className="flex w-full justify-between px-5 py-2 bg-white items-center">
       <div className="flex flex-row text-4xl items-center ">
@@ -85,7 +92,7 @@ export function Topbar() {
                   isBordered
                   color="warning"
                   radius="full"
-                  // src="https://i.pravatar.cc/150?u=a04258a2462d826712d"
+                  src="https://i.pravatar.cc/150?u=a04258a2462d826712d"
                 />
               </Badge>
             </div>
