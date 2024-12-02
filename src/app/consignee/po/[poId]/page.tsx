@@ -86,9 +86,7 @@ const ConsigneePage = () => {
 
   const handleSubmit = async () => {
     const Details = {
-      consigneeId: path.split("/")[3],
-      poId: purchaseData.id,
-      itemDetails: items
+      items: items
     }
 
     try {
