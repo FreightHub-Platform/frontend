@@ -24,7 +24,8 @@ export const reviewApi = axios.create({
 
 //NOTIFICATION API
 export const notificationApi = axios.create({
-  baseURL: "http://localhost:8080/api",
+  // baseURL: "https://auth.freighthub.danujaya.live/api/notifications",
+  baseURL: "http://localhost:8080/api/notifications",
 });
 
 //DRIVER APIS
