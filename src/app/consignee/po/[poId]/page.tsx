@@ -42,7 +42,7 @@ const ConsigneePage = () => {
           weight: item.weight,
           cbm: item.cbm,
           safeDelivery: item.safeDelivery,
-          condition: "Good",
+          condition: item.condition,
         }));
 
         setItemData([...transformedItems]);

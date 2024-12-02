@@ -1,79 +1,51 @@
 "use client"
 
 import { useEffect, useState } from "react";
+import { getNotification, markAsReadAllNotification, markAsReadNotification } from "../../../utils/notification";
 
 const Notification = () => {
 
-  const [notificationArray, setNotificationArray] = useState([
-    {
-      date: "2024-11-09T11:00:00",
-      body: "Your order #12345 has been successfully processed and is on its way.",
-      read: false,
-    },
-    {
-      date: "2024-11-08T14:30:00",
-      body: "Your profile information has been updated successfully.",
-      read: true,
-    },
-    {
-      date: "2024-11-07T09:45:00",
-      body: "You have a new message from support regarding your recent inquiry.",
-      read: false,
-    },
-    {
-      date: "2024-11-06T17:20:00",
-      body: "Reminder: Your payment for order #67890 is due in 2 days.",
-      read: false,
-    },
-    {
-      date: "2024-11-05T12:10:00",
-      body: "Your subscription to Premium Service has been activated.",
-      read: true,
-    },
-    {
-      date: "2024-11-04T16:00:00",
-      body: "We detected an issue with your last payment. Please review your billing details.",
-      read: false,
-    },
-    {
-      date: "2024-11-03T18:30:00",
-      body: "You have been successfully logged out of all active sessions for security purposes.",
-      read: true,
-    },
-    {
-      date: "2024-11-02T08:00:00",
-      body: "Your new feature request has been received and is under review by our development team.",
-      read: false,
-    },
-    {
-      date: "2024-11-01T15:15:00",
-      body: "Your recent request for a product demo has been scheduled for tomorrow at 10:00 AM.",
-      read: true,
-    },
-    {
-      date: "2024-10-31T11:45:00",
-      body: "Your subscription will be renewed automatically in 5 days. No action required.",
-      read: true,
-    },
-  ]);
-
+  const [notificationArray, setNotificationArray] = useState([]);
   const [notReadCount, setNotReadCount] = useState(0)
 
   useEffect(() => {
-    const unreadCount = notificationArray.filter((notification) => !notification.read).length;
-    setNotReadCount(unreadCount);
-  }, [notificationArray]);
+    const fetchNotifications = async () => {
+      try {
+        const notify = {userId: localStorage.getItem('id')}
+        const notificationData = await getNotification(notify, localStorage.getItem('jwt'))
+        console.log(notificationData)
+        setNotificationArray(notificationData)
+      } catch (error) {
+        console.error('Error fetching notifications:', error);
+      }
+    }
+    
+    fetchNotifications()
+  },[])
 
-  const markAsRead = (index) =>{
-    const updatedNotfications = [...notificationArray]
-    updatedNotfications[index].read = true
-    setNotificationArray(updatedNotfications)
+
+  const markAsRead = async (index) =>{
+    const id = notificationArray[index].id
+    try {
+      const notifyId = {id: id}
+      const notify = {userId: localStorage.getItem('id')}
+      const response = await markAsReadNotification(notifyId, localStorage.getItem('jwt'))
+      const updatedNotifications = await getNotification(notify, localStorage.getItem('jwt'));
+      setNotificationArray(updatedNotifications);
+    } catch (error) {
+      
+    }
   }
 
-  const markAllRead = () => {
-    const updateNotification = [...notificationArray]
-    updateNotification.forEach(item => item.read = true)
-    setNotificationArray(updateNotification)
+  const markAllRead = async() => {
+    try {
+      const notify = {userId: localStorage.getItem('id')}
+      const response = await markAsReadAllNotification(notify, localStorage.getItem('jwt'))
+      const updatedNotifications = await getNotification(notify, localStorage.getItem('jwt'));
+      setNotificationArray(updatedNotifications);
+    } catch (error) {
+      
+    }
   }
 
   const calculateTime = (notificationDate) => {
@@ -141,10 +113,10 @@ const Notification = () => {
                   </div>
                   <div>
                     <p className="text-zinc-950 dark:text-white font-medium mb-1">
-                      {notification.body}
+                      {notification.message}
                     </p>
                     <p className="text-zinc-500 dark:text-zinc-400 font-medium">
-                      {calculateTime(notification.date)}
+                      {calculateTime(notification.notificationTime)}
                     </p>
                   </div>
                 </div>
