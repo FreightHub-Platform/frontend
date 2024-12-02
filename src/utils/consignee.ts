@@ -1,21 +1,13 @@
-import { api } from "./config";
+import axios from "axios";
 
-
-//GET PO DETAILS BY ID with axios ----- copy
-export const poById = async (poId: any, token: String) => {
+//GET PO DETAILS BY ID with axios 
+export const poById = async (poId: any) => {
   try {
-    const response = await api.post('purchase-order/single', poId, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    
+    const response = await axios.post("/api/purchase-order/single", poId);
+
     return response.data.data;
-    
   } catch (error) {
-    console.error('Error:', error);
-    throw new Error('An unexpected error occurred.');
-}
+    console.error("Error:", error);
+    throw new Error("An unexpected error occurred.");
+  }
 };
-
-
