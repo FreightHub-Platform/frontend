@@ -42,17 +42,17 @@ const Orders: React.FC = () => {
           </div>
         }
       >
-        <div className="bg-gray-100">
-          <div className="flex flex-col md:flex-row gap-4 p-4">
-            <div className="w-full max-w-lg">
-              {/* <SearchBar onPlaceSelected={handleOriginSelected} /> */}
-            </div>
-            <div className="w-full max-w-lg">
-              {/* <SearchBar onPlaceSelected={handleDestinationSelected} /> */}
-            </div>
-          </div>
-          <GoogleMapRouteComponent origin={origin} destination={destination} />
-        </div>
+        {/* <div className="bg-gray-100"> */}
+        {/* <div className="flex flex-col md:flex-row gap-4 p-4"> */}
+        {/* <div className="w-full max-w-lg"> */}
+        {/* <SearchBar onPlaceSelected={handleOriginSelected} /> */}
+        {/* </div> */}
+        {/* <div className="w-full max-w-lg"> */}
+        {/* <SearchBar onPlaceSelected={handleDestinationSelected} /> */}
+        {/* </div> */}
+        {/* </div> */}
+        {/* <GoogleMapRouteComponent origin={origin} destination={destination} /> */}
+        {/* </div> */}
         {/* Orders Table */}
         <div className="mt-8 px-4">
           <h2 className="text-xl font-bold mb-4">Orders List</h2>

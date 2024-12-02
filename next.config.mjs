@@ -7,7 +7,8 @@ const nextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: "http://localhost:8081/api/:path*", // Your Spring Boot backend URL
+        destination: "http://localhost:8081/api/:path*",
+        // destination: "https://auth.freighthub.danujaya.live/api/:path*",
       },
     ];
   },
