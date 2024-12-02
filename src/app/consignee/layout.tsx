@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { Topbar } from "../../components/consignee/topbar/Topbar";
-import Sidebar from "../../components/consignee/sidebar/Sidebar";
+import { Topbar } from "../../components/consignee/Topbar";
 
 export const metadata: Metadata = {
   title: "Freight Hub",
@@ -12,13 +11,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <body>
         <Topbar />
-        <div className="flex">
-          <Sidebar />
-          <div className="w-full overflow-x-auto bg-gray-200">
-            <div className="sm:h-[calc(99vh-60px)] overflow-auto">
-              <div className="w-full flex justify-center mx-auto overflow-auto h-full">
-                <div className="w-full md:max-w-6xl mt-6">{children}</div>
-              </div>
+        <div className="w-full overflow-x-auto bg-gray-200">
+          <div className="sm:h-[calc(99vh-60px)] overflow-auto">
+            <div className="w-full flex justify-center mx-auto overflow-auto h-full">
+              <div className="w-full md:max-w-6xl mt-6">{children}</div>
             </div>
           </div>
         </div>
@@ -26,5 +22,3 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     </html>
   );
 }
-
-

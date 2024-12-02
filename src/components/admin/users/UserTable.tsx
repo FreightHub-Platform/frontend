@@ -30,6 +30,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { capitalize } from "./Utils";
 import { userApi } from "../../../utils/config";
 import PersonIcon from "@mui/icons-material/Person";
+import ViewUserModal from "./ViewUserModal";
 
 const columns = [
   { name: "ID", uid: "id", sortable: true },
@@ -61,8 +62,8 @@ const INITIAL_VISIBLE_COLUMNS = [
 ];
 
 type User = {
-  id: number | string;
-  userName: string;
+  id: number;
+  username: number;
   email: string;
   role: string;
   status: string;
@@ -73,6 +74,20 @@ export default function UserTable() {
   const [loading, setLoading] = useState<boolean>(true);
   const [apiResponse, setApiResponse] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleViewUserDetails = (userId: number) => {
+    console.log("Viewing user:", userId);
+    setSelectedUserId(userId);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedUserId(null);
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     const usersData = localStorage.getItem("usersData");
@@ -189,7 +204,7 @@ export default function UserTable() {
             <div className="flex flex-col">
               <p className="text-bold text-small capitalize">{cellValue}</p>
               <p className="text-bold text-tiny capitalize text-default-400">
-                {user.userName}
+                {user.username}
               </p>
             </div>
           </div>
@@ -231,7 +246,7 @@ export default function UserTable() {
               size="sm"
               variant="flat"
               color="primary"
-              onPress={() => console.log("View", user.id)}
+              onPress={() => handleViewUserDetails(user.username)}
             >
               View
             </Button>
@@ -240,7 +255,7 @@ export default function UserTable() {
               variant="flat"
               color="danger"
               isDisabled={user.status === "inactive"}
-              onPress={() => console.log("Delete", user.id)}
+              onPress={() => console.log("Delete", user.username)}
             >
               Delete
             </Button>
@@ -439,68 +454,75 @@ export default function UserTable() {
   }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
 
   return (
-    <Table
-      aria-label="Example table with custom cells, pagination and sorting"
-      isHeaderSticky
-      bottomContent={bottomContent}
-      bottomContentPlacement="outside"
-      classNames={{
-        wrapper: "",
-      }}
-      selectedKeys={selectedKeys}
-      sortDescriptor={sortDescriptor}
-      topContent={topContent}
-      topContentPlacement="outside"
-      onSelectionChange={setSelectedKeys}
-      onSortChange={setSortDescriptor}
-    >
-      <TableHeader columns={headerColumns}>
-        {(column) => (
-          <TableColumn
-            key={column.uid}
-            align={column.uid === "actions" ? "end" : "start"}
-            allowsSorting={column.sortable}
-            style={{
-              width:
-                column.uid === "email"
-                  ? "30%"
-                  : column.uid === "role"
-                  ? "20%"
-                  : column.uid === "status"
-                  ? "20%"
-                  : column.uid === "actions"
-                  ? "30%"
-                  : "auto", // Fallback for unspecified columns
-            }}
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody
-        emptyContent={
-          loading ? (
-            <div className="flex justify-center items-center">
-              <Spinner size="lg" />
-            </div>
-          ) : error ? (
-            <div className="flex justify-center items-center text-danger">
-              {error}
-            </div>
-          ) : (
-            "No Users found"
-          )
-        }
-        items={sortedItems}
+    <>
+      <Table
+        aria-label="Example table with custom cells, pagination and sorting"
+        isHeaderSticky
+        bottomContent={bottomContent}
+        bottomContentPlacement="outside"
+        classNames={{
+          wrapper: "",
+        }}
+        selectedKeys={selectedKeys}
+        sortDescriptor={sortDescriptor}
+        topContent={topContent}
+        topContentPlacement="outside"
+        onSelectionChange={setSelectedKeys}
+        onSortChange={setSortDescriptor}
       >
-        {(item) => (
-          <TableRow key={item.id}>
-            {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
-            )}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+        <TableHeader columns={headerColumns}>
+          {(column) => (
+            <TableColumn
+              key={column.uid}
+              align={column.uid === "actions" ? "end" : "start"}
+              allowsSorting={column.sortable}
+              style={{
+                width:
+                  column.uid === "email"
+                    ? "30%"
+                    : column.uid === "role"
+                    ? "20%"
+                    : column.uid === "status"
+                    ? "20%"
+                    : column.uid === "actions"
+                    ? "30%"
+                    : "auto", // Fallback for unspecified columns
+              }}
+            >
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody
+          emptyContent={
+            loading ? (
+              <div className="flex justify-center items-center">
+                <Spinner size="lg" />
+              </div>
+            ) : error ? (
+              <div className="flex justify-center items-center text-danger">
+                {error}
+              </div>
+            ) : (
+              "No Users found"
+            )
+          }
+          items={sortedItems}
+        >
+          {(item) => (
+            <TableRow key={item.id}>
+              {(columnKey) => (
+                <TableCell>{renderCell(item, columnKey)}</TableCell>
+              )}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+      <ViewUserModal
+        userId={selectedUserId}
+        open={isModalOpen}
+        onClose={handleCloseModal}
+      />
+    </>
   );
 }

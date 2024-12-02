@@ -27,6 +27,7 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { api } from "../../../utils/config";
 import { capitalize } from "../../../utils/functions/functions";
+import VehicleDetailsModal from "./VehicleDetailsModal";
 
 type VehicleType = {
   id: number;
@@ -62,6 +63,7 @@ const verifyStatusOptions = [
   { name: "Verified", uid: "verified" },
   { name: "Rejected", uid: "rejected" },
   { name: "Pending", uid: "pending" },
+  { name: "Deleted", uid: "deleted" },
 ];
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
@@ -93,6 +95,21 @@ export default function VehicleDetailsTable() {
   const [vehicles, setVehicles] = useState<VehicleType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  const [selectedVehicleId, setSelectedVehicleId] = useState<number | null>(
+    null
+  );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleViewVehicleDetails = (vehicleId: number) => {
+    setSelectedVehicleId(vehicleId);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedVehicleId(null);
+  };
 
   // Function to fetch vehicles from API
   const fetchVehiclesFromAPI = async () => {
@@ -278,10 +295,44 @@ export default function VehicleDetailsTable() {
         case "actions":
           return (
             <div className="relative flex justify-end items-center gap-2">
-              <Button size="sm" variant="flat" color="primary">
+              <Button
+                size="sm"
+                variant="flat"
+                color="primary"
+                onPress={() => handleViewVehicleDetails(vehicle.id)}
+              >
                 View
               </Button>
-              <Button size="sm" variant="flat" color="danger">
+
+              <Button
+                size="sm"
+                variant="flat"
+                color="danger"
+                isDisabled={vehicle.verifyStatus === "deleted"}
+                className={
+                  vehicle.verifyStatus === "deleted" ? "text-gray-400" : ""
+                }
+                onPress={async () => {
+                  const confirmed = window.confirm(
+                    "Are you sure you want to delete this vehicle?"
+                  );
+                  if (confirmed) {
+                    try {
+                      const jwtToken = localStorage.getItem("jwt");
+                      await api.post(
+                        "/vehicle/delete",
+                        { id: vehicle.id },
+                        {
+                          headers: { Authorization: `Bearer ${jwtToken}` },
+                        }
+                      );
+                      fetchVehiclesFromAPI();
+                    } catch (err) {
+                      console.error("Error deleting vehicle:", err);
+                    }
+                  }
+                }}
+              >
                 Delete
               </Button>
             </div>
@@ -558,6 +609,11 @@ export default function VehicleDetailsTable() {
           ))}
         </TableBody>
       </Table>
+      <VehicleDetailsModal
+        vehicleId={selectedVehicleId}
+        open={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </>
   );
 }
