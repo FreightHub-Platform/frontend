@@ -11,6 +11,7 @@ import DataInitializer from "../../../components/admin/dashboard/stats/DataIniti
 import DashboardSummaryCards from "../../../components/admin/dashboard/stats/DashboardSummaryCards";
 import VehicleStatusChart from "../../../components/admin/dashboard/VehicleOverviewCard/VehicleStatusChart";
 import OrdersTable from "../../../components/admin/dashboard/stats/OrdersTable";
+import FetchLoggedUserData from "../../../components/common/FetchUser";
 
 const Admin = () => {
   const todayOnTheWay: number = 2;
@@ -21,6 +22,7 @@ const Admin = () => {
   return (
     <>
       <AuthGuard>
+        <FetchLoggedUserData />
         <DataInitializer>
           <div className=" ">
             <DashboardSummaryCards />
