@@ -1,49 +1,54 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getConsignerReports } from "../../../utils/consigner";
+import { Spinner } from "@nextui-org/react";
 
 const Reports = () => {
-  // Sample data for the table
-  const data = [
-    { year: 2023, month: "January" },
-    { year: 2023, month: "February" },
-    { year: 2024, month: "March" },
-    { year: 2024, month: "April" },
-    { year: 2024, month: "May" },
-    { year: 2023, month: "January" },
-    { year: 2023, month: "February" },
-    { year: 2024, month: "March" },
-    { year: 2024, month: "April" },
-    { year: 2024, month: "May" },
-    { year: 2023, month: "January" },
-    { year: 2023, month: "February" },
-    { year: 2024, month: "March" },
-    { year: 2024, month: "April" },
-    { year: 2024, month: "May" },
-    { year: 2023, month: "January" },
-    { year: 2023, month: "February" },
-    { year: 2024, month: "March" },
-    { year: 2024, month: "April" },
-    { year: 2024, month: "May" },
-    { year: 2023, month: "January" },
-    { year: 2023, month: "February" },
-    { year: 2024, month: "March" },
-    { year: 2024, month: "April" },
-    { year: 2024, month: "May" },
-    { year: 2023, month: "January" },
-    { year: 2023, month: "February" },
-    { year: 2024, month: "March" },
-    { year: 2024, month: "April" },
-    { year: 2024, month: "May" },
+
+  const months = [
+    "January", "February", "March", "April", "May", "June", 
+    "July", "August", "September", "October", "November", "December"
   ];
+
+  // Sample data for the table
+  const [data, setData] = useState([])
+  const [inputData, setInputData] = useState([])
+  const [loding, setLoading] = useState(false)
+
+  useEffect(() => {
+    const fetchMonths = async () => {   
+      try {
+        setLoading(true);
+        const cid = { id: localStorage.getItem('id') };
+        const reports = await getConsignerReports(cid,localStorage.getItem("jwt"))
+        const output = reports.map(item => {
+          const [year, monthIndex] = item.split('-');
+          return {
+            year: parseInt(year), 
+            month: months[parseInt(monthIndex) - 1]
+          };
+        });
+        setData(output)
+        setInputData(reports)
+      } catch (error) {
+        
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchMonths()
+  },[])
+
 
   const [selectedYear, setSelectedYear] = useState("All");
   const router = useRouter()
   const pathName = usePathname()
 
   const handleNavigation = (id) => {
-    router.push(`${pathName}/${id}`)
+    const yearMonth = inputData[id]
+    router.push(`${pathName}/${yearMonth}`)
   }
 
   // Function to handle year filtering
@@ -95,6 +100,15 @@ const Reports = () => {
               ))}
             </tbody>
           </table>
+          {
+            loding ? 
+            <div className="flex justify-center items-center w-full h-4/5">
+              <div>
+                <Spinner size="lg" />
+              </div>
+            </div> : null
+          }
+          
         </div>
       </div>
     </div>

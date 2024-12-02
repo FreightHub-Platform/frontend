@@ -19,6 +19,7 @@ import {
   Selection,
   ChipProps,
   SortDescriptor,
+  Spinner,
 } from "@nextui-org/react";
 import SearchIcon from "@mui/icons-material/Search";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
@@ -61,6 +62,9 @@ export default function VehicleTable({ onViewMore }) {
     direction: "ascending",
   });
 
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
   const [page, setPage] = React.useState(1);
 
   const hasSearchFilter = Boolean(filterValue);
@@ -70,7 +74,8 @@ export default function VehicleTable({ onViewMore }) {
   useEffect(() => {
     const fetchAllVehicles = async () => {
       try {
-        onViewMore(true);
+        // onViewMore(true);
+        setLoading(true);
         const data = await getAllVehicleDetails(localStorage.getItem("jwt"));
         const sanitizedData = data.map((item) => ({
           ...item,
@@ -78,18 +83,18 @@ export default function VehicleTable({ onViewMore }) {
           licenseNo: item.licenseNo || "N/A",
         }));
         setVehicleData(sanitizedData);
-        onViewMore(false);
+        setError(null);
+        // onViewMore(false);
       } catch (error) {
         console.error("Error fetching vehicle data:", error);
+        setError("Failed to load vehicles. Please try again.");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchAllVehicles();
   }, []);
-
-  useEffect(() => {
-    console.log(vehicleData);
-  }, [vehicleData]);
 
   type User = (typeof vehicleData)[0];
 
@@ -382,7 +387,18 @@ export default function VehicleTable({ onViewMore }) {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={"No vehicles found"} items={sortedItems}>
+      <TableBody emptyContent={
+        loading ? (
+          <div className="flex justify-center items-center">
+            <Spinner size="lg" />
+          </div>
+        ) : error ? (
+          <div className="flex justify-center items-center text-danger">
+            {error}
+          </div>
+        ) : (
+          "No Vehicle found"
+        )} items={sortedItems}>
         {(item) => (
           <TableRow key={item.licenseNo}>
             {(columnKey) => (
