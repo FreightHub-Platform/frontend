@@ -11,3 +11,15 @@ export const poById = async (poId: any) => {
     throw new Error("An unexpected error occurred.");
   }
 };
+
+
+export const UpdatePo = async (items: any) => {
+  try {
+    const response = await axios.post("methana end point eka uda eka wage denna", items);
+
+    return response.data.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw new Error("An unexpected error occurred.");
+  }
+};
