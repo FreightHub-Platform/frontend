@@ -1,11 +1,54 @@
 "use client";
 
-import { GetServerSideProps } from "next";
-import { getPurchaseOrder, getItemsByPurchaseOrder} from "../../../../utils/consignee";
-import { useState } from "react";
+import { getPurchaseOrder, getItemsByPurchaseOrder, poById } from "../../../../utils/consignee";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { poId } = context.query;
+
+
+////otp and item details fetched from the backend
+///should edit!!!!
+interface ConsigneeData {
+  otp: string;
+  store_name: string;
+  item_name: string;
+  
+}
+
+const [consigneeData, setConsigneeData] = useState(null);
+
+  useEffect(() => {
+    const fetchConsigneeDetails = async () => {
+      //const consignetId = path.split("/")[3];
+      try {
+        // setSubmitting(true);
+        const poId = { id: consignetId };
+        const data: ConsigneeData = await poById(
+          poId,
+          localStorage.getItem("jwt")
+        );
+        setConsigneeData(data);
+        // setSubmitting(false);
+      } catch (error) {
+        console.error("Error fetching consigner data:", error);
+        // setSubmitting(false);
+      }
+    };
+
+    fetchConsigneeDetails();
+  }, []);
+
+  useEffect(() => {
+    console.log(consigneeData);
+  }, [consigneeData]);
+
+
+
+
+
+
+
+
 
   try {
     const purchaseOrder = await getPurchaseOrder(Number(poId));
@@ -25,6 +68,7 @@ const ConsigneePage = ({ purchaseOrder, items }: any) => {
       condition: "Good", 
     }))
   );
+
 
   // Handle checkbox change
   const handleCheckboxChange = (id: number) => {
@@ -117,12 +161,16 @@ export default ConsigneePage;
 //"use client";
 // import { useState } from "react";
 
+
 // const ConsigneePage = () => {
 //   // Mock data for purchase order and items
 //   const purchaseOrder = {
 //     storeName: "ABC Store", // Mocked store name
 //     otp: "123456", // Mocked OTP
 //   };
+
+
+
 
 //   const items = [
 //     { id: 1, itemName: "Item A" },

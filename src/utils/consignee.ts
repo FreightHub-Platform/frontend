@@ -1,4 +1,4 @@
-import { api } from "./config";
+import { api, consignerApi} from "./config";
 
 // PO - OTP
 export const getPurchaseOrder = async (id: number) => {
@@ -19,5 +19,23 @@ export const getItemsByPurchaseOrder = async (poId: number) => {
   } catch (error) {
     console.error("Error fetching items:", error);
     throw error;
+  }
+};
+
+
+//GET PO DETAILS BY ID with axios ----- copy
+export const poById = async (poId: any, token: String) => {
+  try {
+    const response = await consignerApi.post('/single', poId, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    return response.data.data;
+    
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('An unexpected error occurred.');
   }
 };
