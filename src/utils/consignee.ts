@@ -15,7 +15,7 @@ export const poById = async (poId: any) => {
 
 export const UpdatePo = async (items: any) => {
   try {
-    const response = await axios.post("methana end point eka uda eka wage denna", items);
+    const response = await axios.post("/api/item/safe-delivery", items);
 
     return response.data.data;
   } catch (error) {
