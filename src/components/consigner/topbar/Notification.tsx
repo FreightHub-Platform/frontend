@@ -13,6 +13,8 @@ const Notification = ({ updateNotificationCount }) => {
         const notificationData = await getNotification(notify, localStorage.getItem("jwt"));
         console.log(notificationData);
 
+        const reversedNotificationData = notificationData.reverse();
+
         // Count unread notifications
         const unreadCount = notificationData.filter((n) => !n.read).length;
         setNotReadCount(unreadCount);
@@ -20,7 +22,7 @@ const Notification = ({ updateNotificationCount }) => {
         // Update the count in the parent component
         updateNotificationCount(5);
 
-        setNotificationArray(notificationData);
+        setNotificationArray(reversedNotificationData);
       } catch (error) {
         console.error("Error fetching notifications:", error);
       }

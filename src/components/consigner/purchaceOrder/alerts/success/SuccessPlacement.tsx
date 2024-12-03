@@ -26,7 +26,9 @@ const SucessPlacement = () => {
     }
 
     orderDetails.purchaseOrders.forEach(item => {
-      item.items.forEach(ele => ele.iTypeId = Number(ele.iTypeId.split(',')[0]+1))
+      item.items.forEach(ele => {
+        ele.iTypeId = Number(ele.iTypeId.split(',')[0]) + 1;
+    });
     })
     console.log(orderDetails)    
 
@@ -43,10 +45,10 @@ const SucessPlacement = () => {
     // console.log(Cookies.get('jwt'))
     // console.log(success)
     
-    if (success) {
+  
       localStorage.removeItem('ordersDetails');
       router.replace("/consigner/orders")
-    }
+    
 
   }
 
