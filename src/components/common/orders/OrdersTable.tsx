@@ -37,6 +37,7 @@ type Order = {
   pickupDate: string;
   fromTime: string;
   toTime: string;
+  otp: string;
   status: string;
   userId: number;
 };
@@ -45,6 +46,7 @@ const columns = [
   { name: "Order ID", uid: "id", sortable: true },
   { name: "Order Time", uid: "orderTime", sortable: true },
   { name: "Pickup Date", uid: "pickupDate", sortable: true },
+  { name: "OTP", uid: "otp", sortable: false }, // Added OTP column
   { name: "From Time", uid: "fromTime" },
   { name: "To Time", uid: "toTime" },
   { name: "Status", uid: "status", sortable: true },
@@ -70,8 +72,8 @@ const INITIAL_VISIBLE_COLUMNS = [
   "id",
   "orderTime",
   "pickupDate",
-  "fromTime",
-  "toTime",
+  "otp",
+
   "userId",
   "status",
   "actions",
@@ -111,6 +113,7 @@ export default function OrdersTable() {
           pickupDate: order.pickupDate,
           fromTime: order.fromTime,
           toTime: order.toTime,
+          otp: order.otp || "N/A",
           status: capitalize(order.status),
           userId: order.userId,
         }));
@@ -286,15 +289,15 @@ export default function OrdersTable() {
             >
               View Details
             </Button>
-            <Button
+            {/* <Button
               size="sm"
               variant="flat"
               color="danger"
               onPress={() => console.log("Delete", order.id)}
             >
-              Delete
-            </Button>
-            <Dropdown>
+              Cancel
+            </Button> */}
+            {/* <Dropdown>
               <DropdownTrigger>
                 <Button size="sm" variant="flat">
                   Change Status
@@ -309,7 +312,7 @@ export default function OrdersTable() {
                   <DropdownItem key={status.uid}>{status.name}</DropdownItem>
                 ))}
               </DropdownMenu>
-            </Dropdown>
+            </Dropdown> */}
           </div>
         );
       default:

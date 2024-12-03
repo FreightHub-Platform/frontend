@@ -44,9 +44,7 @@ export function Topbar() {
         <p className={displayFont.className}>FREIGHT HUB</p>
       </div>
       <div>
-        <div>
-          <SearchIn />
-        </div>
+        <div>{/* <SearchIn /> */}</div>
       </div>
       <div>
         <div className="flex flex-row gap-x-6">

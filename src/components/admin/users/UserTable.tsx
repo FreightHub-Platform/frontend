@@ -270,7 +270,7 @@ export default function UserTable() {
               isDisabled={user.status === "inactive"}
               onPress={() => console.log("Delete", user.username)}
             >
-              Delete
+              Block
             </Button>
             <Dropdown>
               <DropdownTrigger>
@@ -283,9 +283,11 @@ export default function UserTable() {
                   console.log("Change status to", key, "for user", user.id)
                 }
               >
-                {statusOptions.map((status) => (
-                  <DropdownItem key={status.uid}>{status.name}</DropdownItem>
-                ))}
+                {statusOptions
+                  .filter((status) => status.uid !== "pending")
+                  .map((status) => (
+                    <DropdownItem key={status.uid}>{status.name}</DropdownItem>
+                  ))}
               </DropdownMenu>
             </Dropdown>
           </div>

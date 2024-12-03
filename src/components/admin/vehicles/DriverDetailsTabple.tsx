@@ -58,7 +58,7 @@ const verifyStatusOptions = [
   { name: "Verified", uid: "verified" },
   { name: "Rejected", uid: "rejected" },
   { name: "Pending", uid: "pending" },
-  { name: "Deleted", uid: "deleted" },
+  { name: "Blocked ", uid: "deleted" },
 ];
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
@@ -232,6 +232,8 @@ export default function DriverDetailsTabple() {
       switch (columnKey) {
         case "availability":
         case "verifyStatus":
+          const displayValue =
+            cellValue === "deleted" ? "Blocked" : capitalize(String(cellValue));
           return (
             <Chip
               size="sm"
@@ -244,7 +246,7 @@ export default function DriverDetailsTabple() {
                 ]
               }
             >
-              {capitalize(String(cellValue))}
+              {displayValue}
             </Chip>
           );
 
@@ -288,7 +290,7 @@ export default function DriverDetailsTabple() {
                   }
                 }}
               >
-                Delete
+                Block
               </Button>
             </div>
           );
