@@ -13,7 +13,7 @@ const CommonSummaryCardSmall = ({
   Subtitle,
   UpdatedDate,
   Quantity,
-  imageURL,
+  Icon,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -40,14 +40,15 @@ const CommonSummaryCardSmall = ({
           </div>
         </div>
         <div className="flex items-center justify-center w-1/3">
-          <Image
-            loader={imageLoader}
-            src={imageURL}
-            alt="placeholder image"
-            width={75}
-            height={75}
-            className="rounded-lg"
-          />
+          {/* Render the passed icon */}
+          {Icon && (
+            <Icon
+              style={{
+                fontSize: 70,
+                color: isHovered ? hoverBorderColor : borderColor,
+              }}
+            />
+          )}
         </div>
       </div>
       <div className="flex h-1/5 text-center justify-center text-xs items-center w-full mx-auto">
@@ -65,6 +66,7 @@ CommonSummaryCardSmall.propTypes = {
   UpdatedDate: PropTypes.string.isRequired,
   Quantity: PropTypes.number.isRequired,
   imageURL: PropTypes.string.isRequired,
+  Icon: PropTypes.elementType.isRequired,
 };
 
 export default CommonSummaryCardSmall;

@@ -1,6 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import CommonSummaryCardSmall from "../../../common/card/CommonSummaryCardSmall";
+import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
+import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import PeopleIcon from "@mui/icons-material/People";
 
 const DashboardSummaryCards = () => {
   const [vehicleData, setVehicleData] = useState([]);
@@ -42,7 +46,7 @@ const DashboardSummaryCards = () => {
         Subtitle="Currently operational vehicles"
         UpdatedDate={new Date().toLocaleDateString()}
         Quantity={totalActiveVehicles}
-        imageURL="https://placehold.co/400x400?text=Vehicles"
+        Icon={DirectionsCarIcon}
       />
 
       <CommonSummaryCardSmall
@@ -52,7 +56,7 @@ const DashboardSummaryCards = () => {
         Subtitle="Drivers cleared for operations"
         UpdatedDate={new Date().toLocaleDateString()}
         Quantity={totalVerifiedDrivers}
-        imageURL="https://placehold.co/400x400?text=Drivers"
+        Icon={VerifiedUserIcon}
       />
 
       <CommonSummaryCardSmall
@@ -62,7 +66,7 @@ const DashboardSummaryCards = () => {
         Subtitle="Orders awaiting action"
         UpdatedDate={new Date().toLocaleDateString()}
         Quantity={pendingOrders}
-        imageURL="https://placehold.co/400x400?text=Orders"
+        Icon={ShoppingCartIcon}
       />
 
       <CommonSummaryCardSmall
@@ -72,7 +76,7 @@ const DashboardSummaryCards = () => {
         Subtitle={userSubtitle}
         UpdatedDate={new Date().toLocaleDateString()}
         Quantity={totalUsers}
-        imageURL="https://placehold.co/400x400?text=Users"
+        Icon={PeopleIcon}
       />
     </div>
   );

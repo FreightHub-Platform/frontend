@@ -63,7 +63,7 @@ const verifyStatusOptions = [
   { name: "Verified", uid: "verified" },
   { name: "Rejected", uid: "rejected" },
   { name: "Pending", uid: "pending" },
-  { name: "Deleted", uid: "deleted" },
+  { name: "Blocked", uid: "deleted" },
 ];
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
@@ -280,15 +280,18 @@ export default function VehicleDetailsTable() {
           );
         case "availability":
         case "verifyStatus":
+          const displayValue = cellValue === "deleted" ? "Blocked" : cellValue;
           return (
             <Chip
               size="sm"
               variant="flat"
-              color={statusColorMap[cellValue as keyof typeof statusColorMap]}
+              color={
+                statusColorMap[displayValue as keyof typeof statusColorMap]
+              }
             >
-              {typeof cellValue === "string"
-                ? capitalize(cellValue)
-                : String(cellValue)}
+              {typeof displayValue === "string"
+                ? capitalize(displayValue)
+                : String(displayValue)}
             </Chip>
           );
 
@@ -333,7 +336,7 @@ export default function VehicleDetailsTable() {
                   }
                 }}
               >
-                Delete
+                Block
               </Button>
             </div>
           );
