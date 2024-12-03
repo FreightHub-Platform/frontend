@@ -198,22 +198,18 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({
                                 Order #{po.poNumber}
                               </Typography>
                             </div>
-                            <Chip
-                              label={po.status}
-                              color="success"
-                              size="small"
-                            />
+                            <Chip label={po.status} size="small" />
                           </div>
                         </AccordionSummary>
                         <AccordionDetails>
                           <div className="grid grid-cols-2 gap-4">
                             <div>
-                              <Typography>
+                              {/* <Typography>
                                 <strong>Drop Date:</strong> {po.dropDate}
                               </Typography>
                               <Typography>
                                 <strong>Drop Time:</strong> {po.dropTime}
-                              </Typography>
+                              </Typography> */}
                               <Typography>
                                 <strong>Address:</strong> {po.address}
                               </Typography>
