@@ -18,7 +18,7 @@ const Blocked = () => {
             <div>
               <div className='flex gap-3'>
                 <div className='w-[100px] font-semibold'>Email:</div>
-                <Link href=""><div className='hover:underline text-blue-600'>support@example.com</div></Link>
+                <Link href="mailto:support@freighthub.com"><div className='hover:underline text-blue-600'>support@freighthub.com</div></Link>
               </div>
               <div className='flex gap-3'>
                 <div className='w-[100px] font-semibold'>Phone:</div>
