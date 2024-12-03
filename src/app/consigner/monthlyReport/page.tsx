@@ -13,16 +13,16 @@ const Reports = () => {
   ];
 
   // Sample data for the table
-  const [data, setData] = useState([])
-  const [inputData, setInputData] = useState([])
-  const [loding, setLoading] = useState(false)
+  const [data, setData] = useState([]);
+  const [inputData, setInputData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchMonths = async () => {   
       try {
         setLoading(true);
         const cid = { id: localStorage.getItem('id') };
-        const reports = await getConsignerReports(cid,localStorage.getItem("jwt"))
+        const reports = await getConsignerReports(cid, localStorage.getItem("jwt"));
         const output = reports.map(item => {
           const [year, monthIndex] = item.split('-');
           return {
@@ -30,26 +30,25 @@ const Reports = () => {
             month: months[parseInt(monthIndex) - 1]
           };
         });
-        setData(output)
-        setInputData(reports)
+        setData(output);
+        setInputData(reports);
       } catch (error) {
-        
+        console.error('Error fetching reports:', error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
-    fetchMonths()
-  },[])
-
+    };
+    fetchMonths();
+  },[]);
 
   const [selectedYear, setSelectedYear] = useState("All");
-  const router = useRouter()
-  const pathName = usePathname()
+  const router = useRouter();
+  const pathName = usePathname();
 
   const handleNavigation = (id) => {
-    const yearMonth = inputData[id]
-    router.push(`${pathName}/${yearMonth}`)
-  }
+    const yearMonth = inputData[id];
+    router.push(`${pathName}/${yearMonth}`);
+  };
 
   // Function to handle year filtering
   const handleFilterChange = (e) => {
@@ -84,31 +83,42 @@ const Reports = () => {
 
         {/* Scrollable Table */}
         <div className="overflow-y-scroll h-[480px] custom-scrollbar-horizontal">
-          <table className="w-full border-collapse border border-gray-300">
-            <thead className="sticky top-0 bg-gray-200">
-              <tr>
-                <th className="border border-gray-300 px-4 py-2">Year</th>
-                <th className="border border-gray-300 px-4 py-2">Month</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredData.map((item, index) => (
-                <tr key={index} className="hover:bg-gray-100 cursor-pointer" onClick={() => handleNavigation(index)}>
-                  <td className="border border-gray-300 px-4 py-2 text-center">{item.year}</td>
-                  <td className="border border-gray-300 px-4 py-2 text-center">{item.month}</td>
+          {filteredData.length === 0 && !loading ? (
+            <div className="text-center py-10 text-lg text-gray-500">
+              No reports yet
+            </div>
+          ) : (
+            <table className="w-full border-collapse border border-gray-300">
+              <thead className="sticky top-0 bg-gray-200">
+                <tr>
+                  <th className="border border-gray-300 px-4 py-2">Year</th>
+                  <th className="border border-gray-300 px-4 py-2">Month</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          {
-            loding ? 
+              </thead>
+              <tbody>
+                {filteredData.map((item, index) => (
+                  <tr
+                    key={index}
+                    className="hover:bg-gray-100 cursor-pointer"
+                    onClick={() => handleNavigation(index)}
+                  >
+                    <td className="border border-gray-300 px-4 py-2 text-center">
+                      {item.year}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2 text-center">
+                      {item.month}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+
+          {loading && (
             <div className="flex justify-center items-center w-full h-4/5">
-              <div>
-                <Spinner size="lg" />
-              </div>
-            </div> : null
-          }
-          
+              <Spinner size="lg" />
+            </div>
+          )}
         </div>
       </div>
     </div>

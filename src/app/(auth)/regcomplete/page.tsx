@@ -18,11 +18,14 @@ const NotVerfied = () => {
             <div>
               <div className='flex gap-3'>
                 <div className='w-[100px] font-semibold'>Email:</div>
-                <Link href=""><div className='hover:underline text-blue-600'>support@example.com</div></Link>
+                <Link href="mailto:support@freighthub.com"><div className='hover:underline text-blue-600'>support@freighthub.com</div></Link>
               </div>
               <div className='flex gap-3'>
                 <div className='w-[100px] font-semibold'>Phone:</div>
                 <div>+123-456-7890</div> 
+              </div>
+              <div className='flex gap-3'>
+                <Link href="/business_information"><div className='hover:underline text-blue-600'>Update your details</div></Link>
               </div>
             </div>
           </div>

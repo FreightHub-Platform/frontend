@@ -6,7 +6,6 @@ const columns = [
   {name: "EMAIL", uid: "username", sortable: true},
   {name: "ADDRESS 1", uid: "addressLine1", sortable: true},
   {name: "ADDRESS 2", uid: "addressLine2", sortable: true},
-  {name: "VEHICLE" , uid: "vehicle", sortable: true},
   {name: "PROVINCE" , uid: "province", sortable: true},
   {name: "STATUS", uid: "verifyStatus"},
   {name: "ACTIONS", uid: "actions"},

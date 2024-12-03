@@ -57,6 +57,7 @@ const PurchaseOrder = ({ closeFunction }) => {
     setAddress(formattedAddress);
   };
 
+
   const today = new Date().toISOString().split("T")[0];
 
   const handlePlaceSelected = (place) => {
@@ -102,19 +103,20 @@ const PurchaseOrder = ({ closeFunction }) => {
       }
     }
 
-    if (!date) {
-      hasError = true;
-      setDateError(true);
-    } else {
-      setDateError(false);
-    }
 
-    if (!drop_offTime) {
-      hasError = true;
-      setDrop_offTimeError(true);
-    } else {
-      setDrop_offTimeError(false);
-    }
+    // if(!date){
+    //   hasError = true
+    //   setDateError(true)
+    // } else {
+    //   setDateError(false)
+    // }
+
+    // if(!drop_offTime){
+    //   hasError = true
+    //   setDrop_offTimeError(true)
+    // } else {
+    //   setDrop_offTimeError(false)
+    // }
 
     if (!address) {
       hasError = true;
@@ -132,19 +134,16 @@ const PurchaseOrder = ({ closeFunction }) => {
 
     if (!hasError) {
       const newDetail = {
-        poNumber: orderNo,
-        contactNumber: storeContact,
-        email: storeEmail,
-        dropDate: date,
-        dropTime: drop_offTime,
-        address: address,
-        storeName: storeName,
-        ltlFlag: allowSharing,
-        dropLocation: location,
-      };
-
-      console.log(newDetail);
-
+        "poNumber": orderNo,
+        "contactNumber": storeContact,
+        "email": storeEmail,
+        // "dropDate": date,
+        // "dropTime": drop_offTime,
+        "address": address,
+        "storeName": storeName,
+        "ltlFlag": allowSharing,
+        "dropLocation": location
+      }
       closeFunction(newDetail);
     }
   };
@@ -245,83 +244,75 @@ const PurchaseOrder = ({ closeFunction }) => {
                     sx={{ flex: 1 }}
                   />
 
-                  <TextField
-                    size="small"
-                    error={storeEmailError}
-                    color="warning"
-                    required
-                    id="outlined-required"
-                    label="Email"
-                    value={storeEmail}
-                    helperText={
-                      emailVerification
-                        ? "Please enter valid email address"
-                        : storeEmailError
-                        ? "Please enter email address"
-                        : ""
-                    }
-                    onChange={(e) => setStoreEmail(e.target.value)}
-                    sx={{ flex: 1 }}
-                  />
-                </div>
-                <div className="flex flex-row gap-4 items-center">
-                  <TextField
-                    size="small"
-                    color="warning"
-                    error={drop_offTimeError}
-                    required
-                    id="outlined-required"
-                    type="time"
-                    label="Drop-off time"
-                    value={drop_offTime}
-                    helperText={
-                      drop_offTimeError ? "Please enter drop_off time" : ""
-                    }
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    onChange={(e) => setDro_offTime(e.target.value)}
-                    sx={{ flex: 1 }}
-                  />
 
-                  <TextField
-                    size="small"
-                    error={dateError}
-                    color="warning"
-                    id="outlined-basic"
-                    label="Date"
-                    variant="outlined"
-                    type="date"
-                    value={date}
-                    helperText={
-                      dateError ? "Please select a drop off date" : ""
-                    }
-                    onChange={(e) => setDate(e.target.value)}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    inputProps={{
-                      min: today,
-                    }}
-                    sx={{ flex: 1 }}
-                  />
-                </div>
-                <div className="flex flex-row justify-center items-center">
-                  <TextField
-                    size="small"
-                    color="warning"
-                    multiline
-                    error={addressError}
-                    helperText={addressError ? "Please enter address" : ""}
-                    rows={2}
-                    required
-                    id="ooutlined-multiline-static"
-                    label="Address"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                    sx={{ flex: 1 }}
-                  />
-                </div>
+                <TextField
+                  size="small"
+                  error={storeEmailError}
+                  color='warning'
+                  required
+                  id="outlined-required"
+                  label="Email"
+                  value={storeEmail}
+                  helperText={emailVerification ? "Please enter valid email address" : storeEmailError ? "Please enter email address" : ""}
+                  onChange={(e) => setStoreEmail(e.target.value)}
+                  sx={{flex: 1}}
+                />
+              </div>
+              {/* <div className='flex flex-row gap-4 items-center'>
+                <TextField
+                  size="small"
+                  color='warning'
+                  error={drop_offTimeError}
+                  required
+                  id="outlined-required"
+                  type='time'
+                  label="Drop-off time"
+                  value={drop_offTime}
+                  helperText={drop_offTimeError ? "Please enter drop_off time" : ""}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  onChange={(e) => setDro_offTime(e.target.value)}
+                  sx={{flex: 1}}
+                />
+
+                <TextField
+                  size="small"
+                  error={dateError}
+                  color='warning' 
+                  id="outlined-basic" 
+                  label="Date" 
+                  variant="outlined" 
+                  type='date'
+                  value={date}
+                  helperText={dateError ? "Please select a drop off date" : ""}
+                  onChange={(e) => setDate(e.target.value)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  inputProps={{
+                    min: today, 
+                  }}
+                  sx ={{ flex: 1}}
+                />
+              </div> */}
+              <div className='flex flex-row justify-center items-center'>
+                <TextField
+                  size="small"
+                  color='warning'
+                  multiline
+                  error={addressError}
+                  helperText={addressError ? "Please enter address" : ""}
+                  rows={2}
+                  required
+                  id="ooutlined-multiline-static"
+                  label="Address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  sx={{flex: 1}}
+                />
+              </div>
+                
               </Box>
               <Box sx={{ display: "flex", justifyContent: "center" }}>
                 <FormControlLabel
