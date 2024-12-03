@@ -26,6 +26,7 @@ const ProfileDetails = () => {
   const [submitting, setSubmitting] = useState(false);
   const [open, setOpen] = useState(false);
   const [sentMail, setSentMail] = useState(false);
+  const [driverVehicleDetails, setDriverVehicleDetails] = useState({driver: "", vehicle: "", email: ""})
 
   const path = usePathname()
 
@@ -41,7 +42,7 @@ const ProfileDetails = () => {
       },
       body: JSON.stringify({
         'name': "Nuwan Fernando",
-        'to': "fnimal402@gmail.com",
+        'to': driverVehicleDetails.email,
         'mailType': type
       })
     })
@@ -74,23 +75,23 @@ const ProfileDetails = () => {
         const response = await verifyDriver(did, localStorage.getItem('jwt'))
         if(response == 200){ // response eka succes nm yawnna
           handleEmailSent(e,type);
-          const notifactionDetails = {
-            date: new Date().toISOString().slice(0, 19),
-            body: "Your account has been successfully verified. Now you can continue with your works.",
-            read: false,
+          const notificationBody = {
+            notificationTime: new Date().toISOString().slice(0, 19),
+            message: "Your profile has successfully verified",
+            userId: vehicleId
           }
-          const res = await updateNotification(1, notifactionDetails)
+          await updateNotification(notificationBody, localStorage.getItem('jwt'))
         }
       } else {
         const response = await verifyVehicle(vid, localStorage.getItem('jwt'))
         if( response == 200){ // response eka succes nm yawnna
         handleEmailSent(e,type);
-        const notifactionDetails = {
-          date: new Date(),
-          body: "Your account has been successfully verified. Now you can continue with your works.",
-          read: false,
+        const notificationBody = {
+          notificationTime: new Date().toISOString().slice(0, 19),
+          message: "Your vehicle has successfully verified",
+          userId: vehicleId
         }
-        const res = await updateNotification(2, notifactionDetails)
+        const res = await updateNotification(notificationBody, localStorage.getItem('jwt'))
       }
       }
     } catch (error) {
@@ -98,7 +99,7 @@ const ProfileDetails = () => {
     }
   }
   
-  const [driverVehicleDetails, setDriverVehicleDetails] = useState({driver: "", vehicle: ""})
+  
   const [verifiedDr, setVerifiedDr] = useState(false);
   const [verifiedVr, setVerifiedVr] = useState(false);
 
@@ -113,7 +114,7 @@ const ProfileDetails = () => {
         }
         const data = await getVehicleDetails(vid, localStorage.getItem('jwt'))
         
-        setDriverVehicleDetails({driver: data.driver, vehicle: data.vehicle})
+        setDriverVehicleDetails({driver: data.driver, vehicle: data.vehicle, email: data.driver.username})
         
         if(data.driver.verifyStatus == "verified"){
           setVerifiedDr(true)

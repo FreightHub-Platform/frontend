@@ -265,7 +265,7 @@ const Invoice = () => {
                 <Spinner size="lg" />
               </div>
             </div> 
-          :  
+          :  (completed.length > 0 || canceled.length > 0 || unfulfillment.length > 0) ?
             <div className="mb-6">
               <h3 className="text-lg font-bold mb-2">Order Breakdown</h3>
               <div style={{ width: '100%', height: '500px' }}>
@@ -285,6 +285,7 @@ const Invoice = () => {
                 />
               </div>
             </div>
+            : <div className="text-center py-10 text-lg text-gray-500">No reports yet</div>
         }
        
 

@@ -26,7 +26,7 @@ const ProfileDetails = () => {
 
   const [verifiedDr, setVerifiedDr] = useState(false);
   const [verifiedVr, setVerifiedVr] = useState(false);
-
+  const [driverVehicleDetails, setDriverVehicleDetails] = useState({driver: "", vehicle: "", email: ""})
   const path = usePathname();
   
 
@@ -42,7 +42,7 @@ const ProfileDetails = () => {
       },
       body: JSON.stringify({
         'name': "Nuwan Fernando",
-        'to': "echostikmusic@gmail.com",
+        'to': driverVehicleDetails.email,
         'mailType': type
       })
     })
@@ -73,12 +73,12 @@ const ProfileDetails = () => {
         if(response == 200){ // response eka succes nm yawnna
           handleEmailSent(e,type);
           router.refresh()
-          const notifactionDetails = {
-            date: new Date(),
-            body: "Your account has been successfully verified. Now you can continue with your works.",
-            read: false,
+          const notificationBody = {
+            notificationTime: new Date().toISOString().slice(0, 19),
+            message: "Your profile has successfully verified",
+            userId: driverId
           }
-          // const res = await updateNotification(driverId, notifactionDetails)
+          await updateNotification(notificationBody, localStorage.getItem('jwt'))
         }
       } else {
         const vehicleId = 11
@@ -88,11 +88,12 @@ const ProfileDetails = () => {
         const response = await verifyVehicle(vid, localStorage.getItem('jwt'))
         if(response == 200){ // response eka succes nm yawnna
         handleEmailSent(e,type);
-        const notifactionDetails = {
-          date: new Date().toISOString().slice(0, 19),
-          body: "Your account has been successfully verified. Now you can continue with your works.",
-          read: false,
+        const notificationBody = {
+          notificationTime: new Date().toISOString().slice(0, 19),
+          message: "Your vehicle has successfully verified",
+          userId: driverId
         }
+        const res = await updateNotification(notificationBody, localStorage.getItem('jwt'))
         // const res = await updateNotification(2, notifactionDetails)
       }
       }
@@ -102,7 +103,7 @@ const ProfileDetails = () => {
     }
   }
 
-  const [driverVehicleDetails, setDriverVehicleDetails] = useState({driver: "", vehicle: ""})
+  
 
   /* Methana function eka gahaganna @GEETHIKA*/
   useEffect(() => {
@@ -114,7 +115,7 @@ const ProfileDetails = () => {
           id : driverId
         }
         const data = await getDriverDetails(did, localStorage.getItem('jwt'))
-        setDriverVehicleDetails({driver: data.driver, vehicle: data.vehicle})
+        setDriverVehicleDetails({driver: data.driver, vehicle: data.vehicle, email: data.driver.username})
         
         if(data.driver.verifyStatus == "verified"){
           setVerifiedDr(true)
@@ -136,14 +137,6 @@ const ProfileDetails = () => {
   useEffect(() => {
     console.log(driverVehicleDetails)
   }, [driverVehicleDetails])
-
-  useEffect(() => {
-    console.log(verifiedDr)
-  }, [verifiedDr])
-
-  useEffect(() => {
-    console.log(verifiedVr)
-  }, [verifiedVr])
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -179,9 +172,9 @@ const ProfileDetails = () => {
           <div className="mt-2">
             <Details driver={driverVehicleDetails.driver ? driverVehicleDetails.driver : ""}/>
           </div>  
-          <div>
+          {/* <div>
             <BankDetails />
-          </div> 
+          </div>  */}
           </div>
           
 

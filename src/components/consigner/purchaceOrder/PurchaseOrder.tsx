@@ -45,10 +45,10 @@ const PurchaseOrder = ({closeFunction}) => {
   const [storeEmail, setStoreEmail] = useState("")
   const [storeEmailError, setStoreEmailError] = useState(false)
   const [emailVerification, setEmailVerification] = useState(false)
-  const [date, setDate] = useState("")
-  const [dateError, setDateError] = useState(false)
-  const [drop_offTime, setDro_offTime] = useState("")
-  const [drop_offTimeError, setDrop_offTimeError] = useState(false)
+  // const [date, setDate] = useState("")
+  // const [dateError, setDateError] = useState(false)
+  // const [drop_offTime, setDro_offTime] = useState("")
+  // const [drop_offTimeError, setDrop_offTimeError] = useState(false)
   const [address, setAddress] = useState("")
   const [addressError, setAddressError] = useState(false)
   const [storeName, setStoreName] = useState("")
@@ -97,19 +97,19 @@ const PurchaseOrder = ({closeFunction}) => {
       }
     }
 
-    if(!date){
-      hasError = true
-      setDateError(true)
-    } else {
-      setDateError(false)
-    }
+    // if(!date){
+    //   hasError = true
+    //   setDateError(true)
+    // } else {
+    //   setDateError(false)
+    // }
 
-    if(!drop_offTime){
-      hasError = true
-      setDrop_offTimeError(true)
-    } else {
-      setDrop_offTimeError(false)
-    }
+    // if(!drop_offTime){
+    //   hasError = true
+    //   setDrop_offTimeError(true)
+    // } else {
+    //   setDrop_offTimeError(false)
+    // }
 
     if(!address){
       hasError = true
@@ -130,8 +130,8 @@ const PurchaseOrder = ({closeFunction}) => {
         "poNumber": orderNo,
         "contactNumber": storeContact,
         "email": storeEmail,
-        "dropDate": date,
-        "dropTime": drop_offTime,
+        // "dropDate": date,
+        // "dropTime": drop_offTime,
         "address": address,
         "storeName": storeName,
         "ltlFlag": allowSharing,
@@ -225,7 +225,7 @@ const PurchaseOrder = ({closeFunction}) => {
                   sx={{flex: 1}}
                 />
               </div>
-              <div className='flex flex-row gap-4 items-center'>
+              {/* <div className='flex flex-row gap-4 items-center'>
                 <TextField
                   size="small"
                   color='warning'
@@ -262,7 +262,7 @@ const PurchaseOrder = ({closeFunction}) => {
                   }}
                   sx ={{ flex: 1}}
                 />
-              </div>
+              </div> */}
               <div className='flex flex-row justify-center items-center'>
                 <TextField
                   size="small"
