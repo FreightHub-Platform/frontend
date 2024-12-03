@@ -169,7 +169,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({
                     <Typography>
                       <strong>Dimensions:</strong>
                       {route.vehicleId?.vtypeId
-                        ? `${route.vehicleId.vtypeId.length} x ${route.vehicleId.vtypeId.width} x ${route.vehicleId.vtypeId.height} ft`
+                        ? ` ${route.vehicleId.vtypeId.length} ft`
                         : "N/A"}
                     </Typography>
 
