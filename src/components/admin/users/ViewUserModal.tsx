@@ -135,7 +135,11 @@ const ViewUserModal: React.FC<ViewUserModalProps> = ({
               <Typography variant="body1">
                 <strong>Role:</strong>{" "}
                 <Chip
-                  label={userData.role}
+                  label={
+                    userData.role === "review_board"
+                      ? "Review Board"
+                      : userData.role
+                  }
                   color="primary"
                   size="small"
                   sx={{
