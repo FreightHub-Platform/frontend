@@ -14,6 +14,7 @@ import SearchIcon from "@mui/icons-material/Search";
 
 interface MapWithSearchProps {
   onPlaceSelected: (location: { lat: number; lng: number }) => void;
+  onAddressSelected?: (address: string) => void;
 }
 
 const libraries = ["places"];
@@ -28,7 +29,10 @@ const defaultCenter = {
   lng: 79.86075851564465,
 };
 
-const MapWithSearch: React.FC<MapWithSearchProps> = ({ onPlaceSelected }) => {
+const MapWithSearch: React.FC<MapWithSearchProps> = ({
+  onPlaceSelected,
+  onAddressSelected,
+}) => {
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(
     null
   );
@@ -44,11 +48,14 @@ const MapWithSearch: React.FC<MapWithSearchProps> = ({ onPlaceSelected }) => {
       };
       setLocation(location);
       onPlaceSelected(location);
+      if (place.formatted_address) {
+        onAddressSelected(place.formatted_address);
+      }
     }
   };
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); 
+    event.preventDefault();
   };
 
   return (
@@ -64,29 +71,33 @@ const MapWithSearch: React.FC<MapWithSearchProps> = ({ onPlaceSelected }) => {
             onPlaceChanged={handlePlaceSelected}
           >
             <div className="justify-self-center">
-            <Paper
-              component="form"
-              sx={{
-                width: "100%",
-                borderRadius: "50px",
-                background: "#F5F6FA",
-                display: "flex",
-                padding: "0 10px",
-                alignItems: "center",
-                backgroundColor: "#F5F6FA",
-                boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-              }}
-              onSubmit={handleFormSubmit}
-            >
-              <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-                <SearchIcon />
-              </IconButton>
-              <InputBase
-                sx={{ ml: 1, flex: 1 }}
-                placeholder="Search Google Maps"
-                inputProps={{ "aria-label": "search google maps" }}
-              />
-            </Paper>
+              <Paper
+                component="form"
+                sx={{
+                  width: "100%",
+                  borderRadius: "50px",
+                  background: "#F5F6FA",
+                  display: "flex",
+                  padding: "0 10px",
+                  alignItems: "center",
+                  backgroundColor: "#F5F6FA",
+                  boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+                }}
+                onSubmit={handleFormSubmit}
+              >
+                <IconButton
+                  type="button"
+                  sx={{ p: "10px" }}
+                  aria-label="search"
+                >
+                  <SearchIcon />
+                </IconButton>
+                <InputBase
+                  sx={{ ml: 1, flex: 1 }}
+                  placeholder="Search Google Maps"
+                  inputProps={{ "aria-label": "search google maps" }}
+                />
+              </Paper>
             </div>
           </Autocomplete>
         </div>
@@ -96,7 +107,32 @@ const MapWithSearch: React.FC<MapWithSearchProps> = ({ onPlaceSelected }) => {
           zoom={10}
           onLoad={(map) => setMap(map)}
         >
-          {location && <Marker position={location} />}
+          {location && (
+            <Marker
+              position={location}
+              draggable={true}
+              onDragEnd={(e) => {
+                const newLocation = {
+                  lat: e.latLng?.lat() || location.lat,
+                  lng: e.latLng?.lng() || location.lng,
+                };
+                setLocation(newLocation);
+                onPlaceSelected(newLocation);
+
+                // Use Geocoding API to get the address
+                const geocoder = new google.maps.Geocoder();
+                geocoder.geocode(
+                  { location: newLocation },
+                  (results, status) => {
+                    if (status === "OK" && results[0]) {
+                      const newAddress = results[0].formatted_address;
+                      onAddressSelected?.(newAddress);
+                    }
+                  }
+                );
+              }}
+            />
+          )}
         </GoogleMap>
       </div>
     </LoadScript>

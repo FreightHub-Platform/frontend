@@ -68,7 +68,7 @@ const AddUserModal: React.FC<AddUserModalProps> = ({
 
       const jwtToken = localStorage.getItem("jwt");
       const response = await api.post(
-        "/register",
+        "/auth/register",
         { ...formData },
         {
           headers: { Authorization: `Bearer ${jwtToken}` },
@@ -86,6 +86,8 @@ const AddUserModal: React.FC<AddUserModalProps> = ({
       setError(err.response?.data?.message || "An error occurred.");
     } finally {
       setLoading(false);
+      //reload the page
+      window.location.reload();
     }
   };
 

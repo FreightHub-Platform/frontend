@@ -235,7 +235,9 @@ export default function UserTable() {
       case "role":
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
+            <p className="text-bold text-small capitalize">
+              {cellValue === "review_board" ? "Review Board" : cellValue}
+            </p>
             {/* <p className="text-bold text-tiny capitalize text-default-400"> */}
             {/* {user.role} */}
             {/* </p> */}
