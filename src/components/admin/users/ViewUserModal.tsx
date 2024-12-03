@@ -144,34 +144,49 @@ const ViewUserModal: React.FC<ViewUserModalProps> = ({
                   }}
                 />
               </Typography>
-              <Typography variant="body1">
-                <strong>Mobile Number:</strong> {userData.mobileNumber || "N/A"}
-              </Typography>
+              {userData.role !== "review_board" && (
+                <Typography variant="body1">
+                  <strong>Mobile Number:</strong>{" "}
+                  {userData.mobileNumber || "N/A"}
+                </Typography>
+              )}
               <Typography variant="body1">
                 <strong>Account Status:</strong>{" "}
                 <Chip
-                  label={userData.activeStatus ? "Active" : "Inactive"}
-                  color={userData.activeStatus ? "success" : "error"}
+                  label={
+                    userData.role === "review_board" || userData.activeStatus
+                      ? "Active"
+                      : "Inactive"
+                  }
+                  color={
+                    userData.role === "review_board" || userData.activeStatus
+                      ? "success"
+                      : "error"
+                  }
                   size="small"
                   sx={{
                     fontWeight: "bold",
                   }}
                 />
               </Typography>
-              <Typography variant="body1">
-                <strong>Created Date:</strong>{" "}
-                {new Date(userData.createdDate).toLocaleDateString()}
-              </Typography>
-              <Typography variant="body1">
-                <strong>Last Updated:</strong>{" "}
-                {new Date(userData.updatedDate).toLocaleDateString()}
-              </Typography>
-              <Typography variant="body1">
-                <strong>Last Login:</strong>{" "}
-                {userData.lastLoginDate
-                  ? new Date(userData.lastLoginDate).toLocaleDateString()
-                  : "Never"}
-              </Typography>
+              {userData.role !== "review_board" && (
+                <>
+                  <Typography variant="body1">
+                    <strong>Created Date:</strong>{" "}
+                    {new Date(userData.createdDate).toLocaleDateString()}
+                  </Typography>
+                  <Typography variant="body1">
+                    <strong>Last Updated:</strong>{" "}
+                    {new Date(userData.updatedDate).toLocaleDateString()}
+                  </Typography>
+                  <Typography variant="body1">
+                    <strong>Last Login:</strong>{" "}
+                    {userData.lastLoginDate
+                      ? new Date(userData.lastLoginDate).toLocaleDateString()
+                      : "Never"}
+                  </Typography>
+                </>
+              )}
             </div>
           )
         )}
