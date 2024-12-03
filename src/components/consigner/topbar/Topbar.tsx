@@ -30,9 +30,9 @@ export function Topbar() {
     const fetchConsignerData = async () => {
       const consigner = {"id": localStorage.getItem("id")};
 
-      if(!consigner.id){
-        window.location.href = "http://localhost:3000/"
-      }
+      // if(!consigner.id){
+      //   window.location.href = "http://localhost:3000/"
+      // }
 
       try {
         const data = await getConsignerById(consigner, Cookies.get('jwt'));
@@ -51,6 +51,11 @@ export function Topbar() {
 
   const [notification, setNotification] = useState(false)
   const [showBadge, setShowBadge] = useState(true)
+  const [numberNotification, setNumberNotification] = useState(0)
+
+  const updateNotificationCount = (count) => {
+    setNumberNotification(count);
+  };
 
   return (
     <nav className="flex w-full justify-between px-5 py-2 bg-white items-center">
@@ -67,22 +72,27 @@ export function Topbar() {
         <div className="flex flex-row gap-x-6">
           <div className="flex flex-row gap-3">
             <div className="relative">
-              <IconButton aria-label="delete" onClick={() => {setNotification(notification ? false : true); setShowBadge(false)}}>
-                {showBadge ? (
-                  <Badge content="99+" size="sm" shape="circle" color="danger">
-                    <NotificationsNoneOutlinedIcon
-                      fontSize="large"
-                      className="text-gray-600"
-                    />
-                  </Badge>
-                  ) : (
-                    <NotificationsNoneOutlinedIcon fontSize="large" className="text-gray-600" />
-                )}
+            <IconButton
+                aria-label="notifications"
+                onClick={() => {
+                  setNotification(!notification);
+                  setShowBadge(false);
+                }}
+              >
+                
+                <Badge
+                  content={ showBadge ? "" : null} // Always display the red dot
+                  size="sm"
+                  shape="circle"
+                  color="danger"
+                >
+                  <NotificationsNoneOutlinedIcon fontSize="large" className="text-gray-600" />
+                </Badge>
               </IconButton>
               {
                 notification ? 
                   <div className="max-h-[600px] w-[500px] absolute z-50 right-7 top-10 flex shadow-2xl rounded-2xl" >
-                    <Notification />
+                    <Notification updateNotificationCount={(count) => updateNotificationCount(count)}/>
                   </div>
                 : null
               }

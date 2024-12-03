@@ -25,9 +25,8 @@ const ConsignerDetails = () => {
     city: string;
     province: string;
     postalCode: string;
+    verifyStatus: string;
   }
-
-  const consignerStatus = false;
 
   const [submitting, setSubmitting] = useState(false);
   const [open, setOpen] = useState(false);
@@ -49,8 +48,8 @@ const ConsignerDetails = () => {
         Accept: "application/json",
       },
       body: JSON.stringify({
-        name: "Nuwan Fernando",
-        to: "fnimal402@gmail.com",
+        name: consignerData.businessName,
+        to: consignerData.username,
         mailType: type,
       }),
     });
@@ -79,17 +78,19 @@ const ConsignerDetails = () => {
       if (response == 200) {
         // response eka succes nm yawnna
         handleEmailSent(e, type);
-        const notifactionDetails = {
-          date: new Date().toISOString().slice(0, 19),
-          body: "The account has been successfully verified.",
-          read: false,
+        const notificationBody = {
+          notificationTime: new Date().toISOString().slice(0, 19),
+          message: "The account has been successfully verified.",
+          userId: consignetId
         };
-        const res = await updateNotification(consignetId, notifactionDetails);
+        const response = await updateNotification(notificationBody, localStorage.getItem('jwt'))
       }
     } catch (error) {
       console.error("Error fetching consigner data:", error);
     }
   };
+
+  const [verified, setverified] = useState(false)
 
   /* Methana function eka gahaganna @GEETHIKA*/
   useEffect(() => {
@@ -102,6 +103,11 @@ const ConsignerDetails = () => {
           cid,
           localStorage.getItem("jwt")
         );
+
+        if(data.verifyStatus == "verified"){
+          setverified(true)
+        }
+
         setConsignerData(data);
         setSubmitting(false);
       } catch (error) {
@@ -138,7 +144,7 @@ const ConsignerDetails = () => {
             <div className="flex w-full text-white font-bold justify-center">
               Consigner Details
             </div>
-            {!consignerStatus ? (
+            {!verified ? (
               <form onSubmit={(e) => handleEmailSent(e, "businessMissMatch")}>
                 <button
                   title="Submit"
@@ -243,13 +249,13 @@ const ConsignerDetails = () => {
                       {consignerData ? consignerData.postalCode : null}
                     </td>
                   </tr>
-                  <tr className="flex mb-1">
+                  {/* <tr className="flex mb-1">
                     <td className="border-2 border-orange-300 w-40 p-1 rounded-l-lg flex items-center ps-4">
                       Document
                     </td>
                     <td className="p-1 border-2 flex-grow ps-3 rounded-r-lg">
                       <a
-                        href={"/pdf/1.pdf"}
+                        href={`data:application/pdf;base64,${consignerData ? consignerData.regDoc : }`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center"
@@ -263,13 +269,13 @@ const ConsignerDetails = () => {
                         1.pdf
                       </a>
                     </td>
-                  </tr>
+                  </tr> */}
                 </tbody>
               </table>
             </div>
           </div>
           <div className="flex justify-center">
-            {!consignerStatus ? (
+            {!verified ? (
               <form onSubmit={(e) => handleVerify(e, "businessVerified")}>
                 <button
                   type="submit"

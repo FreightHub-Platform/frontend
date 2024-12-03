@@ -26,7 +26,7 @@ const SucessPlacement = () => {
     }
 
     orderDetails.purchaseOrders.forEach(item => {
-      item.items.forEach(ele => ele.iTypeId = Number(ele.iTypeId.split(',')[0]))
+      item.items.forEach(ele => ele.iTypeId = Number(ele.iTypeId.split(',')[0]+1))
     })
     console.log(orderDetails)    
 
@@ -36,7 +36,7 @@ const SucessPlacement = () => {
     const success = await saveOrder(orderDetailsJson, localStorage.getItem('jwt'));
     const notificationBody = {
       notificationTime : new Date().toISOString().slice(0, 19),
-      message : "Your order #12345 has been successfully placed.",
+      message : "Your order has been successfully placed.",
       userId : localStorage.getItem('id'),
     }
     const response = await updateNotification(notificationBody, localStorage.getItem('jwt'))

@@ -41,7 +41,6 @@ const INITIAL_VISIBLE_COLUMNS = [
   "make",
   "model",
   "reg_no",
-  "type",
   "color",
   "verifyStatus",
   "actions",

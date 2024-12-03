@@ -67,10 +67,10 @@ const AddItem = ({ order, orderIndex, updateOrderItems, cancelOrder }) => {
           <p className='font-semibold mr-1 text-xs'>Drop-Off Location:</p>
           <p className='text-xs'>{order.storeName}</p>
         </div>
-        <div className='flex items-center mb-1'>
+        {/* <div className='flex items-center mb-1'>
           <p className='font-semibold mr-1 text-xs'>Drop-Off Date:</p>
           <p className='text-xs'>{order.dropDate}</p>
-        </div>
+        </div> */}
       </div>
 
       <div>

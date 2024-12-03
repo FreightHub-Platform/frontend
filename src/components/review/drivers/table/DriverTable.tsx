@@ -51,7 +51,6 @@ const INITIAL_VISIBLE_COLUMNS = [
   "addressLine1",
   "addressLine2",
   "province",
-  "vehicle",
   "verifyStatus",
   "actions",
 ];
