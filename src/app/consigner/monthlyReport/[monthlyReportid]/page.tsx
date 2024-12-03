@@ -189,12 +189,12 @@ const Invoice = () => {
                       <td className="border border-gray-300 px-4 py-2">{item.orderId}</td>
                       <td className="border border-gray-300 px-4 py-2">{item.routeId}</td>
                       <td className="border border-gray-300 px-4 py-2">{item.distance}</td>
-                      <td className="border border-gray-300 px-4 py-2">${item.cost}</td>
+                      <td className="border border-gray-300 px-4 py-2">Rs. {item.cost}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-              <p className="text-right font-bold">Total Cost: ${calculateTotal(completed, "cost")}</p>
+              <p className="text-right font-bold">Total Cost: Rs. {calculateTotal(completed, "cost")}</p>
             </div> : ""
           }
          
@@ -217,12 +217,12 @@ const Invoice = () => {
                       <td className="border border-gray-300 px-4 py-2">{item.orderId}</td>
                       <td className="border border-gray-300 px-4 py-2">{item.routeId}</td>
                       <td className="border border-gray-300 px-4 py-2">{item.distance}</td>
-                      <td className="border border-gray-300 px-4 py-2">${item.fine}</td>
+                      <td className="border border-gray-300 px-4 py-2">Rs. {item.fine}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-              <p className="text-right font-bold">Total Fine: ${calculateTotal(canceled, "fine")}</p>
+              <p className="text-right font-bold">Total Fine: Rs. {calculateTotal(canceled, "fine")}</p>
             </div> : ""
           }
           
@@ -245,13 +245,13 @@ const Invoice = () => {
                       <td className="border border-gray-300 px-4 py-2">{item.orderId}</td>
                       <td className="border border-gray-300 px-4 py-2">{item.routeId}</td>
                       <td className="border border-gray-300 px-4 py-2">{item.distance}</td>
-                      <td className="border border-gray-300 px-4 py-2">${item.cost}</td>
+                      <td className="border border-gray-300 px-4 py-2">Rs. {item.cost}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
               <p className="text-right font-bold">
-                Total Cost: ${calculateTotal(unfulfillment, "cost")}
+                Total Cost: Rs. {calculateTotal(unfulfillment, "cost")}
               </p>
             </div> :""
           }  
