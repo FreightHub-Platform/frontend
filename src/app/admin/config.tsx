@@ -53,7 +53,7 @@ export const NavItems = () => {
     {
       group: "Configuration",
       name: "Settings",
-      href: "/admin/settings",
+      href: "/admin/config",
       icon: <SettingsOutlinedIcon />,
       active: isNavItemActive(pathname, "/admin/settings"),
       position: "top",
