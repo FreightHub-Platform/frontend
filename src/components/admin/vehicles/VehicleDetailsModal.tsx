@@ -154,14 +154,14 @@ const VehicleDetailsModal: React.FC<VehicleDetailsModalProps> = ({
                     }}
                   />
                 </Typography>
-                <Typography variant="body1">
+                {/* <Typography variant="body1">
                   <strong>Crane:</strong>{" "}
                   {vehicleDetails.craneFlag ? "Yes" : "No"}
                 </Typography>
                 <Typography variant="body1">
                   <strong>Refrigeration:</strong>{" "}
                   {vehicleDetails.refrigFlag ? "Yes" : "No"}
-                </Typography>
+                </Typography> */}
                 <Typography variant="body1">
                   <strong>License Expiry:</strong>{" "}
                   {new Date(vehicleDetails.licenseExpiry).toLocaleDateString()}

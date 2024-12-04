@@ -84,8 +84,6 @@ const INITIAL_VISIBLE_COLUMNS = [
   "make",
   "year",
   "color",
-  "craneFlag",
-  "refrigFlag",
   "availability",
   "verifyStatus",
   "actions",
@@ -261,23 +259,6 @@ export default function VehicleDetailsTable() {
       const cellValue = vehicle[columnKey as keyof VehicleType];
 
       switch (columnKey) {
-        case "craneFlag":
-        case "refrigFlag":
-          return (
-            <Chip
-              size="sm"
-              variant="flat"
-              color={
-                statusColorMap[
-                  cellValue
-                    .toString()
-                    .toLowerCase() as keyof typeof statusColorMap
-                ]
-              }
-            >
-              {cellValue}
-            </Chip>
-          );
         case "availability":
         case "verifyStatus":
           const displayValue = cellValue === "deleted" ? "Blocked" : cellValue;
