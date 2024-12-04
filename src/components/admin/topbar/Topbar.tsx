@@ -21,6 +21,22 @@ const displayFont = Smooch_Sans({
 });
 
 export function Topbar() {
+  const [loggedUser, setLoggedUser] = React.useState({
+    name: "User",
+    role: "Role",
+  });
+  React.useEffect(() => {
+    // Fetch logged user data from localStorage
+    const loggedUserData = localStorage.getItem("loggedUserData");
+    if (loggedUserData) {
+      const parsedData = JSON.parse(loggedUserData);
+      setLoggedUser({
+        name: parsedData.name || "User",
+        role: parsedData.role || "Role", // Fallback to 'Role' if role is missing
+      });
+    }
+  }, []);
+
   return (
     <nav className="flex w-full justify-between px-5 py-2 bg-white items-center">
       <div className="flex flex-row text-4xl items-center ">
@@ -28,31 +44,13 @@ export function Topbar() {
         <p className={displayFont.className}>FREIGHT HUB</p>
       </div>
       <div>
-        <div>
-          <SearchIn />
-        </div>
+        <div>{/* <SearchIn /> */}</div>
       </div>
       <div>
         <div className="flex flex-row gap-x-6">
           <div className="flex flex-row gap-3">
-            <div>
-              <IconButton aria-label="delete">
-                <Badge content="99+" size="sm" shape="circle" color="danger">
-                  <NotificationsNoneOutlinedIcon
-                    fontSize="large"
-                    className="text-gray-600"
-                  />
-                </Badge>
-              </IconButton>
-            </div>
-            <div>
-              <IconButton aria-label="delete">
-                <SettingsOutlinedIcon
-                  fontSize="large"
-                  className="text-gray-600"
-                />
-              </IconButton>
-            </div>
+            <div></div>
+            <div></div>
             <div>
               <IconButton aria-label="delete">
                 <HelpOutlineIcon fontSize="large" className="text-gray-600" />
@@ -76,12 +74,11 @@ export function Topbar() {
           </div>
           <div className="flex flex-row gap-6">
             <div className="flex flex-col  align-middle my-auto">
-              <p className="text-medium">John Doe</p>
+              <p className="text-sm text-gray-500">{loggedUser.name}</p>
+
               <p className="text-sm text-gray-500">Admin</p>
             </div>
-            <IconButton aria-label="delete">
-              <ExpandMoreIcon />
-            </IconButton>
+            <IconButton aria-label="delete"></IconButton>
           </div>
         </div>
       </div>

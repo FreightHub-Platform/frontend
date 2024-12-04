@@ -21,6 +21,7 @@ import {
   Selection,
   ChipProps,
   SortDescriptor,
+  Spinner,
 } from "@nextui-org/react";
 import SearchIcon from "@mui/icons-material/Search";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
@@ -50,7 +51,6 @@ const INITIAL_VISIBLE_COLUMNS = [
   "addressLine1",
   "addressLine2",
   "province",
-  "vehicle",
   "verifyStatus",
   "actions",
 ];
@@ -70,6 +70,9 @@ export default function DriverTable({ onViewMore }) {
     direction: "ascending",
   });
 
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
   const [page, setPage] = React.useState(1);
   const [driverData, setDriverData] = useState([]);
 
@@ -77,7 +80,8 @@ export default function DriverTable({ onViewMore }) {
   useEffect(() => {
     const fetchAllDrivers = async () => {
       try {
-        onViewMore(true);
+        // onViewMore(true);
+        setLoading(true);
         const data = await getAllDriverDetails(localStorage.getItem("jwt"));
         const sanitizedData = data.map((item) => ({
           ...item,
@@ -85,18 +89,18 @@ export default function DriverTable({ onViewMore }) {
           nic: item.nic || "N/A", // Handle missing NICs
         }));
         setDriverData(sanitizedData);
-        onViewMore(false);
+        setError(null);
+        // onViewMore(false);
       } catch (error) {
         console.error("Error fetching driver data:", error);
+        setError("Failed to load drivers. Please try again.");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchAllDrivers();
   }, []);
-
-  useEffect(() => {
-    console.log(driverData);
-  }, [driverData]);
 
   type User = (typeof driverData)[0];
   const hasSearchFilter = Boolean(filterValue);
@@ -393,7 +397,19 @@ export default function DriverTable({ onViewMore }) {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={"No drivers found"} items={sortedItems}>
+      <TableBody emptyContent={
+        loading ? (
+          <div className="flex justify-center items-center">
+            <Spinner size="lg" />
+          </div>
+        ) : error ? (
+          <div className="flex justify-center items-center text-danger">
+            {error}
+          </div>
+        ) : (
+          "No Consigners found"
+        )
+      } items={sortedItems}>
         {(item) => (
           <TableRow key={item.nic}>
             {(columnKey) => (

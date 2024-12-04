@@ -37,6 +37,7 @@ type Order = {
   pickupDate: string;
   fromTime: string;
   toTime: string;
+  otp: string;
   status: string;
   userId: number;
 };
@@ -45,11 +46,11 @@ const columns = [
   { name: "Order ID", uid: "id", sortable: true },
   { name: "Order Time", uid: "orderTime", sortable: true },
   { name: "Pickup Date", uid: "pickupDate", sortable: true },
+  { name: "OTP", uid: "otp", sortable: false }, // Added OTP column
   { name: "From Time", uid: "fromTime" },
   { name: "To Time", uid: "toTime" },
   { name: "Status", uid: "status", sortable: true },
   { name: "User ID", uid: "userId", sortable: true },
-  { name: "Pickup Location", uid: "pickupLocation" },
   { name: "Actions", uid: "actions" },
 ];
 
@@ -71,9 +72,9 @@ const INITIAL_VISIBLE_COLUMNS = [
   "id",
   "orderTime",
   "pickupDate",
-  "fromTime",
-  "toTime",
-  "pickupLocation",
+  "otp",
+
+  "userId",
   "status",
   "actions",
 ];
@@ -101,7 +102,7 @@ export default function UserOrdersTable() {
     const fetchOrders = async () => {
       try {
         setLoading(true);
-        const userId = localStorage.getItem("key");
+        const userId = localStorage.getItem("id");
         const jwtToken = localStorage.getItem("jwt");
         const response = await orderApi.post(
           "/consigner",
@@ -117,6 +118,7 @@ export default function UserOrdersTable() {
           pickupDate: order.pickupDate,
           fromTime: order.fromTime,
           toTime: order.toTime,
+          otp: order.otp || "N/A",
           status: capitalize(order.status),
           userId: order.userId,
         }));

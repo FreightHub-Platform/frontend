@@ -130,17 +130,10 @@ const LoginBox = ({ onLinkClick }) => {
       setPasswordError(true);
       hasError = true;
     } else {
-      const strongPassword = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-      if(/*!strongPassword.test(password)*/ false){
-        setPasswordError(true);
-        setStrongPassword(true);
-        hasError = true;
-      } else {
-        setPasswordError(false);
-        setStrongPassword(false)
-      }
-      
+      setPasswordError(false);
     }
+      
+    
 
     if (!hasError) {
       onLinkClick();
@@ -160,6 +153,7 @@ const LoginBox = ({ onLinkClick }) => {
       localStorage.setItem("id", data.id);
       localStorage.setItem("jwt", data.token);
       Cookies.set("jwt", data.token, { expires: 1 });
+
 
       if (role == "consigner") {
         switch (completion) {
@@ -264,7 +258,7 @@ const LoginBox = ({ onLinkClick }) => {
               label="Password"
               sx={{ borderRadius: "60px" }}
             />
-            {strongPassword ? (<FormHelperText error>Please enter a strong password.</FormHelperText>) : passwordError ? (
+            { passwordError ? (
               <FormHelperText error>Please enter a password.</FormHelperText>
             ) : ""}
             {emailWrong && (

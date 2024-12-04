@@ -5,6 +5,11 @@ import CommonSummaryCardSmall from "../../common/card/CommonSummaryCardSmall";
 import { userApi } from "../../../utils/config";
 import { Spinner } from "@nextui-org/react";
 
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
+import PersonOffIcon from "@mui/icons-material/PersonOff";
+import GroupsIcon from "@mui/icons-material/Groups";
+
 type UserSummary = {
   totalUsers: number;
   activeUsers: number;
@@ -72,7 +77,7 @@ export default function UserSummaryCards() {
         Subtitle={subtitleSuggestion}
         UpdatedDate={new Date(summaryData.date).toLocaleDateString()}
         Quantity={summaryData.activeUsers}
-        imageURL="placeholder.png"
+        Icon={PeopleAltIcon}
       />
       <CommonSummaryCardSmall
         borderColor="#06ce6390"
@@ -81,7 +86,7 @@ export default function UserSummaryCards() {
         Subtitle="Pending user activations"
         UpdatedDate={new Date(summaryData.date).toLocaleDateString()}
         Quantity={summaryData.pendingUsers}
-        imageURL="placeholder.png"
+        Icon={HourglassEmptyIcon}
       />
       <CommonSummaryCardSmall
         borderColor="#d148ec90"
@@ -90,7 +95,7 @@ export default function UserSummaryCards() {
         Subtitle="Users not active recently"
         UpdatedDate={new Date(summaryData.date).toLocaleDateString()}
         Quantity={summaryData.inactiveUsers}
-        imageURL="placeholder.png"
+        Icon={PersonOffIcon}
       />
       <CommonSummaryCardSmall
         borderColor="#ffa50090"
@@ -99,7 +104,7 @@ export default function UserSummaryCards() {
         Subtitle="Overall users in the system"
         UpdatedDate={new Date(summaryData.date).toLocaleDateString()}
         Quantity={summaryData.totalUsers}
-        imageURL="placeholder.png"
+        Icon={GroupsIcon}
       />
     </div>
   );

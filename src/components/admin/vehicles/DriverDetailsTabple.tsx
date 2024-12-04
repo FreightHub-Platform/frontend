@@ -27,6 +27,7 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { api } from "../../../utils/config";
 import { capitalize } from "../../../utils/functions/functions";
+import DriverDetailsModal from "./DriverDetailsModal";
 
 type DriverType = {
   id: number;
@@ -57,6 +58,7 @@ const verifyStatusOptions = [
   { name: "Verified", uid: "verified" },
   { name: "Rejected", uid: "rejected" },
   { name: "Pending", uid: "pending" },
+  { name: "Blocked ", uid: "deleted" },
 ];
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
@@ -94,6 +96,19 @@ export default function DriverDetailsTabple() {
     direction: "ascending",
   });
   const [page, setPage] = useState<number>(1);
+
+  const [selectedDriverId, setSelectedDriverId] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleViewDriverDetails = (driverId: number) => {
+    setSelectedDriverId(driverId);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedDriverId(null);
+    setIsModalOpen(false);
+  };
 
   // Function to fetch vehicles from API
   const fetchDrivers = async () => {
@@ -217,6 +232,8 @@ export default function DriverDetailsTabple() {
       switch (columnKey) {
         case "availability":
         case "verifyStatus":
+          const displayValue =
+            cellValue === "deleted" ? "Blocked" : capitalize(String(cellValue));
           return (
             <Chip
               size="sm"
@@ -229,18 +246,51 @@ export default function DriverDetailsTabple() {
                 ]
               }
             >
-              {capitalize(String(cellValue))}
+              {displayValue}
             </Chip>
           );
 
         case "actions":
           return (
             <div className="relative flex justify-end items-center gap-2">
-              <Button size="sm" variant="flat" color="primary">
+              <Button
+                size="sm"
+                variant="flat"
+                color="primary"
+                onPress={() => handleViewDriverDetails(driver.id)}
+              >
                 View
               </Button>
-              <Button size="sm" variant="flat" color="danger">
-                Delete
+              <Button
+                size="sm"
+                variant="flat"
+                color="danger"
+                isDisabled={driver.verifyStatus === "deleted"}
+                className={
+                  driver.verifyStatus === "deleted" ? "text-gray-400" : ""
+                }
+                onPress={async () => {
+                  const confirmed = window.confirm(
+                    "Are you sure you want to delete this driver?"
+                  );
+                  if (confirmed) {
+                    try {
+                      const jwtToken = localStorage.getItem("jwt");
+                      await api.post(
+                        "/driver/delete",
+                        { id: driver.id },
+                        {
+                          headers: { Authorization: `Bearer ${jwtToken}` },
+                        }
+                      );
+                      fetchDrivers();
+                    } catch (err) {
+                      console.error("Error deleting driver:", err);
+                    }
+                  }
+                }}
+              >
+                Block
               </Button>
             </div>
           );
@@ -514,6 +564,11 @@ export default function DriverDetailsTabple() {
           ))}
         </TableBody>
       </Table>
+      <DriverDetailsModal
+        driverId={selectedDriverId}
+        open={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </>
   );
 }

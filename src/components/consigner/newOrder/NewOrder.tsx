@@ -6,10 +6,10 @@ import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-import * as React from 'react';
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
-import Button from '@mui/material/Button';
+import * as React from "react";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
+import Button from "@mui/material/Button";
 
 import MapWithSearch from "../../maps/MapWithSearch";
 
@@ -47,6 +47,10 @@ const NewOrder = () => {
   const [toError, setToError] = useState(false);
   const [timeMissMatch, setTimeMissMatch] = useState(false);
   const [open, setOpen] = React.useState(false);
+
+  const handleAddressSelected = (address: string) => {
+    setPickupPoint(address);
+  };
 
   const handleSubmit = () => {
     let hasError = false;
@@ -90,16 +94,16 @@ const NewOrder = () => {
         localStorage.removeItem("ordersDetails");
       }
 
-      const currentTime = new Date()
+      const currentTime = new Date();
 
       const order = {
-        userId: '',
+        userId: "",
         pickupDate: pickupdate,
         fromTime: from,
         toTime: to,
         orderTime: currentTime.toLocaleTimeString(),
         pickupLocation: location,
-        pickupPoint: pickupPoint
+        pickupPoint: pickupPoint,
       };
       console.log(order);
       localStorage.setItem("ordersDetails", JSON.stringify(order));
@@ -114,8 +118,6 @@ const NewOrder = () => {
   const handleLocationSelected = (location: { lat: number; lng: number }) => {
     setLocation(location);
   };
-
-  
 
   return (
     <Box component="section" className="w-3/4">
@@ -156,7 +158,9 @@ const NewOrder = () => {
                   variant="outlined"
                   type="text"
                   helperText={
-                    pickupPointError ? "Please enter a short and concise pickup point" : ""
+                    pickupPointError
+                      ? "Please enter a short and concise pickup point"
+                      : ""
                   }
                   value={pickupPoint}
                   onChange={(e) => setPickupPoint(e.target.value)}
@@ -264,7 +268,10 @@ const NewOrder = () => {
               className="flex flex-col gap-3 "
             >
               <h1 className="text-sm font-semibold ms-3">Pickup Location</h1>
-              <MapWithSearch onPlaceSelected={handleLocationSelected} />
+              <MapWithSearch
+                onPlaceSelected={handleLocationSelected}
+                onAddressSelected={handleAddressSelected}
+              />
             </Box>
           </Box>
         </Box>
@@ -279,7 +286,7 @@ const NewOrder = () => {
       </Box>
       <div>
         <Backdrop
-          sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
+          sx={(theme) => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
           open={open}
         >
           <CircularProgress color="inherit" />

@@ -50,6 +50,14 @@ export const NavItems = () => {
       active: isNavItemActive(pathname, "/admin/orders"),
       position: "top",
     },
+    {
+      group: "Configuration",
+      name: "Settings",
+      href: "/admin/config",
+      icon: <SettingsOutlinedIcon />,
+      active: isNavItemActive(pathname, "/admin/settings"),
+      position: "top",
+    },
     // {
     //   group: "Financial",
     //   name: "Revenue",
@@ -58,14 +66,14 @@ export const NavItems = () => {
     //   active: isNavItemActive(pathname, "/admin/revenue"),
     //   position: "top",
     // },
-    {
-      group: "Financial",
-      name: "Billing",
-      href: "/admin/billing",
-      icon: <RequestQuoteOutlinedIcon />,
-      active: isNavItemActive(pathname, "/admin/billing"),
-      position: "top",
-    },
+    // {
+    //   group: "Financial",
+    //   name: "Billing",
+    //   href: "/admin/billing",
+    //   icon: <RequestQuoteOutlinedIcon />,
+    //   active: isNavItemActive(pathname, "/admin/billing"),
+    //   position: "top",
+    // },
     // {
     //   group: "Reviews",
     //   name: "Reviews",
@@ -82,14 +90,7 @@ export const NavItems = () => {
       active: isNavItemActive(pathname, "/admin/profile"),
       position: "top",
     },
-    {
-      group: "",
-      name: "Settings",
-      href: "/admin/settings",
-      icon: <SettingsOutlinedIcon />,
-      active: isNavItemActive(pathname, "/admin/settings"),
-      position: "bottom",
-    },
+
     {
       group: null,
       name: "Logout",

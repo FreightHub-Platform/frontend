@@ -11,6 +11,8 @@ import DataInitializer from "../../../components/admin/dashboard/stats/DataIniti
 import DashboardSummaryCards from "../../../components/admin/dashboard/stats/DashboardSummaryCards";
 import VehicleStatusChart from "../../../components/admin/dashboard/VehicleOverviewCard/VehicleStatusChart";
 import OrdersTable from "../../../components/admin/dashboard/stats/OrdersTable";
+import FetchLoggedUserData from "../../../components/common/FetchUser";
+import OrderVolumeByTime from "../../../components/admin/dashboard/orders/OrderVolumeChart";
 
 const Admin = () => {
   const todayOnTheWay: number = 2;
@@ -21,6 +23,7 @@ const Admin = () => {
   return (
     <>
       <AuthGuard>
+        <FetchLoggedUserData />
         <DataInitializer>
           <div className=" ">
             <DashboardSummaryCards />
@@ -47,7 +50,7 @@ const Admin = () => {
           <div className="flex pb-9  px-6 gap-x-8   justify-between">
             <div className=" w-2/6 pb-6 bg-white rounded-md  px-7">
               <div className="flex mt-4 flex-row justify-between mb-3 align-middle">
-                <div className="text-lg">Delivery Performance</div>
+                <div className="text-lg">Order Volume by Time Period</div>
                 <div>
                   <IconButton aria-label="delete" size="small">
                     <RefreshIcon />
@@ -56,48 +59,7 @@ const Admin = () => {
               </div>
               <Divider className="mb-4 mt-1" />
 
-              <div className=" flex flex-col gap-y-3">
-                <DeliveryPerformanceCard
-                  icon="gift"
-                  upordown="up"
-                  amount="299"
-                  text="Packages in transit"
-                  percentage="12%"
-                  bgColor="bg-green-300"
-                />
-                <DeliveryPerformanceCard
-                  icon="gift"
-                  upordown="up"
-                  amount="299"
-                  text="Packages in transit"
-                  percentage="12%"
-                  bgColor="bg-green-500"
-                />
-                <DeliveryPerformanceCard
-                  icon="gift"
-                  upordown="down"
-                  amount="299"
-                  text="Packages in transit"
-                  percentage="12%"
-                  bgColor="bg-green-600"
-                />
-                <DeliveryPerformanceCard
-                  icon="gift"
-                  upordown="up"
-                  amount="299"
-                  text="Packages in transit"
-                  percentage="12%"
-                  bgColor="bg-green-800"
-                />
-                <DeliveryPerformanceCard
-                  icon="gift"
-                  upordown="down"
-                  amount="299"
-                  text="Packages in transit"
-                  percentage="12%"
-                  bgColor="bg-green-900"
-                />
-              </div>
+              <OrderVolumeByTime />
             </div>
             <div className=" w-2/6 bg-white rounded-md p-5">
               <div className="flex flex-row justify-between mb-3 align-middle ">

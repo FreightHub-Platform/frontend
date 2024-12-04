@@ -7,27 +7,16 @@ import { useRouter } from 'next/navigation';
 import * as React from 'react';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
-import { updateNotification } from '../../../../../utils/notification';
 
 const CanceledPlacement = () => {
 
   const router = useRouter()
   const [open, setOpen] = React.useState(false);
   
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     setOpen(true);
-    try {
-      const notificationBody = {
-        date: new Date().toISOString().slice(0, 19),
-        body: "Your order #12345 has been cancelled.",
-        read: false,
-      }
-      const response = await updateNotification(1, notificationBody)
-      localStorage.clear();
-      router.replace("/consigner/orders")
-    } catch (error) {
-      
-    }
+    localStorage.clear();
+    router.replace("/consigner/orders")
     
   }
 

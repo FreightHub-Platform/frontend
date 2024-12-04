@@ -30,6 +30,8 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { capitalize } from "./Utils";
 import { userApi } from "../../../utils/config";
 import PersonIcon from "@mui/icons-material/Person";
+import ViewUserModal from "./ViewUserModal";
+import AddUserModal from "./AddUserModal";
 
 const columns = [
   { name: "ID", uid: "id", sortable: true },
@@ -61,8 +63,8 @@ const INITIAL_VISIBLE_COLUMNS = [
 ];
 
 type User = {
-  id: number | string;
-  userName: string;
+  id: number;
+  username: number;
   email: string;
   role: string;
   status: string;
@@ -73,6 +75,32 @@ export default function UserTable() {
   const [loading, setLoading] = useState<boolean>(true);
   const [apiResponse, setApiResponse] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
+
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleViewUserDetails = (userId: number) => {
+    console.log("Viewing user:", userId);
+    setSelectedUserId(userId);
+    setIsModalOpen(true);
+  };
+
+  const handleAddUser = () => {
+    console.log("Add User button clicked");
+    setIsAddUserModalOpen(true);
+  };
+
+  // Handler to close the modal and refresh users after a successful addition
+  const handleUserAdded = () => {
+    setIsAddUserModalOpen(false);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedUserId(null);
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     const usersData = localStorage.getItem("usersData");
@@ -189,7 +217,7 @@ export default function UserTable() {
             <div className="flex flex-col">
               <p className="text-bold text-small capitalize">{cellValue}</p>
               <p className="text-bold text-tiny capitalize text-default-400">
-                {user.userName}
+                {user.username}
               </p>
             </div>
           </div>
@@ -207,7 +235,9 @@ export default function UserTable() {
       case "role":
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
+            <p className="text-bold text-small capitalize">
+              {cellValue === "review_board" ? "Review Board" : cellValue}
+            </p>
             {/* <p className="text-bold text-tiny capitalize text-default-400"> */}
             {/* {user.role} */}
             {/* </p> */}
@@ -231,7 +261,7 @@ export default function UserTable() {
               size="sm"
               variant="flat"
               color="primary"
-              onPress={() => console.log("View", user.id)}
+              onPress={() => handleViewUserDetails(user.username)}
             >
               View
             </Button>
@@ -240,9 +270,9 @@ export default function UserTable() {
               variant="flat"
               color="danger"
               isDisabled={user.status === "inactive"}
-              onPress={() => console.log("Delete", user.id)}
+              onPress={() => console.log("Delete", user.username)}
             >
-              Delete
+              Block
             </Button>
             <Dropdown>
               <DropdownTrigger>
@@ -255,9 +285,11 @@ export default function UserTable() {
                   console.log("Change status to", key, "for user", user.id)
                 }
               >
-                {statusOptions.map((status) => (
-                  <DropdownItem key={status.uid}>{status.name}</DropdownItem>
-                ))}
+                {statusOptions
+                  .filter((status) => status.uid !== "pending")
+                  .map((status) => (
+                    <DropdownItem key={status.uid}>{status.name}</DropdownItem>
+                  ))}
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -316,9 +348,10 @@ export default function UserTable() {
           />
           <div className="flex gap-3">
             {/* Add user button */}
-            <Button color="primary" onPress={() => console.log("Add User")}>
+            <Button color="primary" onClick={handleAddUser}>
               Add User
             </Button>
+
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
@@ -439,68 +472,80 @@ export default function UserTable() {
   }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
 
   return (
-    <Table
-      aria-label="Example table with custom cells, pagination and sorting"
-      isHeaderSticky
-      bottomContent={bottomContent}
-      bottomContentPlacement="outside"
-      classNames={{
-        wrapper: "",
-      }}
-      selectedKeys={selectedKeys}
-      sortDescriptor={sortDescriptor}
-      topContent={topContent}
-      topContentPlacement="outside"
-      onSelectionChange={setSelectedKeys}
-      onSortChange={setSortDescriptor}
-    >
-      <TableHeader columns={headerColumns}>
-        {(column) => (
-          <TableColumn
-            key={column.uid}
-            align={column.uid === "actions" ? "end" : "start"}
-            allowsSorting={column.sortable}
-            style={{
-              width:
-                column.uid === "email"
-                  ? "30%"
-                  : column.uid === "role"
-                  ? "20%"
-                  : column.uid === "status"
-                  ? "20%"
-                  : column.uid === "actions"
-                  ? "30%"
-                  : "auto", // Fallback for unspecified columns
-            }}
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody
-        emptyContent={
-          loading ? (
-            <div className="flex justify-center items-center">
-              <Spinner size="lg" />
-            </div>
-          ) : error ? (
-            <div className="flex justify-center items-center text-danger">
-              {error}
-            </div>
-          ) : (
-            "No Users found"
-          )
-        }
-        items={sortedItems}
+    <>
+      <Table
+        aria-label="Example table with custom cells, pagination and sorting"
+        isHeaderSticky
+        bottomContent={bottomContent}
+        bottomContentPlacement="outside"
+        classNames={{
+          wrapper: "",
+        }}
+        selectedKeys={selectedKeys}
+        sortDescriptor={sortDescriptor}
+        topContent={topContent}
+        topContentPlacement="outside"
+        onSelectionChange={setSelectedKeys}
+        onSortChange={setSortDescriptor}
       >
-        {(item) => (
-          <TableRow key={item.id}>
-            {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
-            )}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+        <TableHeader columns={headerColumns}>
+          {(column) => (
+            <TableColumn
+              key={column.uid}
+              align={column.uid === "actions" ? "end" : "start"}
+              allowsSorting={column.sortable}
+              style={{
+                width:
+                  column.uid === "email"
+                    ? "30%"
+                    : column.uid === "role"
+                    ? "20%"
+                    : column.uid === "status"
+                    ? "20%"
+                    : column.uid === "actions"
+                    ? "30%"
+                    : "auto", // Fallback for unspecified columns
+              }}
+            >
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody
+          emptyContent={
+            loading ? (
+              <div className="flex justify-center items-center">
+                <Spinner size="lg" />
+              </div>
+            ) : error ? (
+              <div className="flex justify-center items-center text-danger">
+                {error}
+              </div>
+            ) : (
+              "No Users found"
+            )
+          }
+          items={sortedItems}
+        >
+          {(item) => (
+            <TableRow key={item.id}>
+              {(columnKey) => (
+                <TableCell>{renderCell(item, columnKey)}</TableCell>
+              )}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+      <ViewUserModal
+        userId={selectedUserId}
+        open={isModalOpen}
+        onClose={handleCloseModal}
+      />
+      <AddUserModal
+        open={isAddUserModalOpen}
+        onClose={() => setIsAddUserModalOpen(false)}
+        onUserAdded={handleUserAdded}
+      />
+    </>
   );
 }

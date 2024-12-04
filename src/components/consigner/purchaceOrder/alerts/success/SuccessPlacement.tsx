@@ -26,7 +26,9 @@ const SucessPlacement = () => {
     }
 
     orderDetails.purchaseOrders.forEach(item => {
-      item.items.forEach(ele => ele.iTypeId = Number(ele.iTypeId.split(',')[0]))
+      item.items.forEach(ele => {
+        ele.iTypeId = Number(ele.iTypeId.split(',')[0]) + 1;
+    });
     })
     console.log(orderDetails)    
 
@@ -35,18 +37,18 @@ const SucessPlacement = () => {
 
     const success = await saveOrder(orderDetailsJson, localStorage.getItem('jwt'));
     const notificationBody = {
-      date: new Date().toISOString().slice(0, 19),
-      body: "Your order #12345 has been successfully placed.",
-      read: false,
+      notificationTime : new Date().toISOString().slice(0, 19),
+      message : "Your order has been successfully placed.",
+      userId : localStorage.getItem('id'),
     }
-    // const response = await updateNotification(1, notificationBody)
+    const response = await updateNotification(notificationBody, localStorage.getItem('jwt'))
     // console.log(Cookies.get('jwt'))
     // console.log(success)
     
-    if (success) {
+  
       localStorage.removeItem('ordersDetails');
       router.replace("/consigner/orders")
-    }
+    
 
   }
 

@@ -2,6 +2,10 @@
 
 import React from "react";
 import CommonSummaryCardSmall from "../../common/card/CommonSummaryCardSmall";
+import GarageIcon from "@mui/icons-material/Garage";
+import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
+import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 
 type VehicleSummaryProps = {
   vehicleData: any[];
@@ -34,7 +38,7 @@ export default function VehicleSummaryCards({
         Subtitle="Total fleet size"
         UpdatedDate={new Date().toLocaleDateString()}
         Quantity={totalVehicles}
-        imageURL="fleet-icon.png"
+        Icon={GarageIcon}
       />
       <CommonSummaryCardSmall
         borderColor="#06ce6390"
@@ -43,7 +47,7 @@ export default function VehicleSummaryCards({
         Subtitle="Vehicles ready for use"
         UpdatedDate={new Date().toLocaleDateString()}
         Quantity={availableVehicles}
-        imageURL="available-icon.png"
+        Icon={DirectionsCarIcon}
       />
       <CommonSummaryCardSmall
         borderColor="#ffa50090"
@@ -52,7 +56,7 @@ export default function VehicleSummaryCards({
         Subtitle="Drivers cleared for operations"
         UpdatedDate={new Date().toLocaleDateString()}
         Quantity={verifiedDrivers}
-        imageURL="verified-icon.png"
+        Icon={VerifiedUserIcon}
       />
       <CommonSummaryCardSmall
         borderColor="#d148ec90"
@@ -61,7 +65,7 @@ export default function VehicleSummaryCards({
         Subtitle="Vehicles/Drivers needing attention"
         UpdatedDate={new Date().toLocaleDateString()}
         Quantity={pendingActions}
-        imageURL="pending-icon.png"
+        Icon={WarningAmberIcon}
       />
     </div>
   );
